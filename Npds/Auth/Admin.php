@@ -41,7 +41,8 @@ class Admin implements AdminInterface
      */
     public static function formatAidHeader($aid)
     {
-        $holder = sql_query("SELECT url, email FROM " . sql_table('authors') . " WHERE aid='$aid'");
+        $holder = sql_query("SELECT url, email 
+                             FROM " . sql_table('authors') . " WHERE aid='$aid'");
 
         if ($holder) {
             list($url, $email) = sql_fetch_row($holder);

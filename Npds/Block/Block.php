@@ -178,13 +178,13 @@ class Block implements BlockInterface
                 foreach ($tmp as $id => $class) {
                     $temp = explode("#", $class);
 
-                    if ($temp[0] == "class-title")
+                    if ($temp[0] == "class-title") {
                         $B_class_title = str_replace("\r", "", $temp[1]);
-                    else if ($temp[0] == "class-content")
+                    } else if ($temp[0] == "class-content") {
                         $B_class_content = str_replace("\r", "", $temp[1]);
-                    else if ($temp[0] == "uri")
+                    } else if ($temp[0] == "uri") {
                         $R_uri = str_replace("\r", '', $temp[1]);
-                    else {
+                    } else {
                         if ($content != '') {
                             $content .= "\n ";
                         }
@@ -376,12 +376,22 @@ class Block implements BlockInterface
 
         if ($Xid)
             $result = $Xblock == 'RB' 
-                ? sql_query("SELECT title, content, member, cache, actif, id, css FROM " . sql_table('rblocks') . " WHERE id='$Xid'") 
-                : sql_query("SELECT title, content, member, cache, actif, id, css FROM " . sql_table('lblocks') . " WHERE id='$Xid'");
+                ? sql_query("SELECT title, content, member, cache, actif, id, css 
+                             FROM " . sql_table('rblocks') . " 
+                             WHERE id='$Xid'") 
+
+                : sql_query("SELECT title, content, member, cache, actif, id, css 
+                             FROM " . sql_table('lblocks') . " 
+                             WHERE id='$Xid'");
         else
             $result = $Xblock == 'RB' 
-                ? sql_query("SELECT title, content, member, cache, actif, id, css FROM " . sql_table('rblocks') . " ORDER BY Rindex ASC") 
-                : sql_query("SELECT title, content, member, cache, actif, id, css FROM " . sql_table('lblocks') . " ORDER BY Lindex ASC");
+                ? sql_query("SELECT title, content, member, cache, actif, id, css 
+                             FROM " . sql_table('rblocks') . " 
+                             ORDER BY Rindex ASC") 
+
+                : sql_query("SELECT title, content, member, cache, actif, id, css 
+                             FROM " . sql_table('lblocks') . " 
+                             ORDER BY Lindex ASC");
 
         $bloc_side = $Xblock == 'RB' ? 'RIGHT' : 'LEFT';
 
@@ -411,7 +421,9 @@ class Block implements BlockInterface
      */
     public static function nivBlock($Xcontent)
     {
-        $result = sql_query("SELECT member, actif FROM " . sql_table('rblocks') . " WHERE content REGEXP '$Xcontent'");
+        $result = sql_query("SELECT member, actif 
+                             FROM " . sql_table('rblocks') . " 
+                             WHERE content REGEXP '$Xcontent'");
 
         if (sql_num_rows($result)) {
             list($member, $actif) = sql_fetch_row($result);
@@ -419,7 +431,9 @@ class Block implements BlockInterface
             return ($member . ',' . $actif);
         }
 
-        $result = sql_query("SELECT member, actif FROM " . sql_table('lblocks') . " WHERE content REGEXP '$Xcontent'");
+        $result = sql_query("SELECT member, actif 
+                             FROM " . sql_table('lblocks') . " 
+                             WHERE content REGEXP '$Xcontent'");
 
         if (sql_num_rows($result)) {
             list($member, $actif) = sql_fetch_row($result);

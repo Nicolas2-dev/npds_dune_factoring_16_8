@@ -6,6 +6,7 @@ use Npds\Config\Config;
 
 use RuntimeException;
 
+
 class AliasLoader
 {
 
@@ -19,12 +20,12 @@ class AliasLoader
         $classes = Config::get('aliases', array());
 
         foreach ($classes as $classAlias => $className) {
-            // This ensures the alias is created in the global namespace.
+            // Cela garantit que l'alias est créé dans l'espace de noms global.
             $classAlias = '\\' .ltrim($classAlias, '\\');
 
-            // Check if the Class already exists.
+            // Vérifiez si la classe existe déjà.
             if (class_exists($classAlias)) {
-                // Bail out, a Class already exists with the same name.
+                // une classe existe déjà avec le même nom.
                 throw new RuntimeException('A class [' .$classAlias .'] already exists with the same name.');
             }
 

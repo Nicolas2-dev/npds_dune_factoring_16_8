@@ -52,7 +52,11 @@ class Chat implements ChatInterface
         $numofchatters = 0;
 
         if ($dimauto <= 1) {
-            $result = sql_query("SELECT DISTINCT ip FROM " . sql_table('chatbox') . " WHERE id='" . $auto[0] . "' AND date >= " . (time() - (60 * 3)) . "");
+            $result = sql_query("SELECT DISTINCT ip 
+                                 FROM " . sql_table('chatbox') . " 
+                                 WHERE id='" . $auto[0] . "' 
+                                 AND date >= " . (time() - (60 * 3)) . "");
+
             $numofchatters = sql_num_rows($result);
         }
 
@@ -78,7 +82,9 @@ class Chat implements ChatInterface
 
             $ip = Request::getip();
 
-            sql_query("INSERT INTO " . sql_table('chatbox') . " VALUES ('" . $username . "', '" . $ip . "', '" . $message . "', '" . time() . "', '$id', " . $dbname . ")");
+            sql_query("INSERT 
+                       INTO " . sql_table('chatbox') . " 
+                       VALUES ('" . $username . "', '" . $ip . "', '" . $message . "', '" . time() . "', '$id', " . $dbname . ")");
         }
     }
 
@@ -123,12 +129,17 @@ class Chat implements ChatInterface
             $adminX = base64_decode($admin);
             $adminR = explode(':', $adminX);
 
-            $Q = sql_fetch_assoc(sql_query("SELECT * FROM " . sql_table('authors') . " WHERE aid='$adminR[0]' LIMIT 1"));
+            $Q = sql_fetch_assoc(sql_query("SELECT * 
+                                            FROM " . sql_table('authors') . " 
+                                            WHERE aid='$adminR[0]' 
+                                            LIMIT 1"));
 
             if ($Q['radminsuper'] == 1)
 
                 if (Request::query('chatbox_clearDB') == 'OK') {
-                    sql_query("DELETE FROM " . sql_table('chatbox') . " WHERE date <= " . (time() - (60 * 5)) . "");
+                    sql_query("DELETE 
+                               FROM " . sql_table('chatbox') . " 
+                               WHERE date <= " . (time() - (60 * 5)) . "");
                 }
         }
 

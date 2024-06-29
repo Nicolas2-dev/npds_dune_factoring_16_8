@@ -52,7 +52,9 @@ class Forum implements ForumInterface
      */
     public static function get_total_topics($forum_id)
     {
-        $sql = "SELECT COUNT(*) AS total FROM " . sql_table('forumtopics') . " WHERE forum_id='$forum_id'";
+        $sql = "SELECT COUNT(*) AS total 
+                FROM " . sql_table('forumtopics') . " 
+                WHERE forum_id='$forum_id'";
 
         if (!$result = sql_query($sql)) {
             return ("ERROR");
@@ -77,7 +79,10 @@ class Forum implements ForumInterface
      */
     public static function get_contributeurs($fid, $tid)
     {
-        $rowQ1 = Q_Select("SELECT DISTINCT poster_id FROM " . sql_table('posts') . " WHERE topic_id='$tid' AND forum_id='$fid'", 2);
+        $rowQ1 = Q_Select("SELECT DISTINCT poster_id 
+                           FROM " . sql_table('posts') . " 
+                           WHERE topic_id='$tid' 
+                           AND forum_id='$fid'", 2);
 
         $posterids = '';
 
@@ -106,11 +111,16 @@ class Forum implements ForumInterface
 
         switch ($type) {
             case 'forum':
-                $sql = "SELECT COUNT(*) AS total FROM " . sql_table('posts') . " WHERE forum_id='$fid'$post_aff";
+                $sql = "SELECT COUNT(*) AS total 
+                        FROM " . sql_table('posts') . " 
+                        WHERE forum_id='$fid'$post_aff";
                 break;
 
             case 'topic':
-                $sql = "SELECT COUNT(*) AS total FROM " . sql_table('posts') . " WHERE topic_id='$tid' AND forum_id='$fid' $post_aff";
+                $sql = "SELECT COUNT(*) AS total 
+                        FROM " . sql_table('posts') . " 
+                        WHERE topic_id='$tid' 
+                        AND forum_id='$fid' $post_aff";
                 break;
 
             case 'user':
@@ -145,13 +155,25 @@ class Forum implements ForumInterface
         // $Mmod ne sert plus - maintenu pour compatibilité
         switch ($type) {
             case 'forum':
-                $sql1 = "SELECT topic_time, current_poster FROM " . sql_table('forumtopics') . " WHERE forum_id = '$id' ORDER BY topic_time DESC LIMIT 0,1";
-                $sql2 = "SELECT uname FROM " . sql_table('users') . " WHERE uid=";
+                $sql1 = "SELECT topic_time, current_poster 
+                         FROM " . sql_table('forumtopics') . " 
+                         WHERE forum_id = '$id' 
+                         ORDER BY topic_time DESC 
+                         LIMIT 0,1";
+
+                $sql2 = "SELECT uname 
+                         FROM " . sql_table('users') . " 
+                         WHERE uid=";
                 break;
     
             case 'topic':
-                $sql1 = "SELECT topic_time, current_poster FROM " . sql_table('forumtopics') . " WHERE topic_id = '$id'";
-                $sql2 = "SELECT uname FROM " . sql_table('users') . " WHERE uid=";
+                $sql1 = "SELECT topic_time, current_poster 
+                         FROM " . sql_table('forumtopics') . " 
+                         WHERE topic_id = '$id'";
+
+                $sql2 = "SELECT uname 
+                         FROM " . sql_table('users') . " 
+                         WHERE uid=";
                 break;
         }
 
@@ -186,11 +208,15 @@ class Forum implements ForumInterface
     {
         switch ($type) {
             case 'forum':
-                $sql = "SELECT forum_id FROM " . sql_table('forums') . " WHERE forum_id = '$id'";
+                $sql = "SELECT forum_id 
+                        FROM " . sql_table('forums') . " 
+                        WHERE forum_id = '$id'";
                 break;
 
             case 'topic':
-                $sql = "SELECT topic_id FROM " . sql_table('forumtopics') . " WHERE topic_id = '$id'";
+                $sql = "SELECT topic_id 
+                        FROM " . sql_table('forumtopics') . "
+                        WHERE topic_id = '$id'";
                 break;
         }
 
@@ -214,7 +240,9 @@ class Forum implements ForumInterface
      */
     public static function is_locked($topic)
     {
-        $sql = "SELECT topic_status FROM " . sql_table('forumtopics') . " WHERE topic_id = '$topic'";
+        $sql = "SELECT topic_status 
+                FROM " . sql_table('forumtopics') . " 
+                WHERE topic_id = '$topic'";
 
         if (!$r = sql_query($sql)) {
             return false;
@@ -392,8 +420,13 @@ class Forum implements ForumInterface
 
         include("modules/upload/include_forum/upload.conf.forum.php");
 
-        $sql1 = "SELECT att_id, att_name, att_path FROM " . sql_table($upload_table) . " WHERE apli='$apli' AND";
-        $sql2 = "DELETE FROM " . sql_table($upload_table) . " WHERE apli='$apli' AND";
+        $sql1 = "SELECT att_id, att_name, att_path 
+                 FROM " . sql_table($upload_table) . " 
+                 WHERE apli='$apli' AND";
+
+        $sql2 = "DELETE 
+                 FROM " . sql_table($upload_table) . " 
+                 WHERE apli='$apli' AND";
 
         if ($IdForum != '') {
             $sql1 .= " forum_id = '$IdForum'";
@@ -425,13 +458,18 @@ class Forum implements ForumInterface
     {
         global $IdPost, $IdTopic, $IdForum, $user;
 
-        list($poster_id) = sql_fetch_row(sql_query("SELECT poster_id FROM " . sql_table('posts') . " WHERE post_id='$IdPost' AND topic_id='$IdTopic'"));
+        list($poster_id) = sql_fetch_row(sql_query("SELECT poster_id 
+                                                    FROM " . sql_table('posts') . " 
+                                                    WHERE post_id='$IdPost' 
+                                                    AND topic_id='$IdTopic'"));
 
         $Mmod = false;
 
         if ($poster_id) {
 
-            $myrow = sql_fetch_assoc(sql_query("SELECT forum_moderator FROM " . sql_table('forums') . " WHERE (forum_id='$IdForum')"));
+            $myrow = sql_fetch_assoc(sql_query("SELECT forum_moderator 
+                                                FROM " . sql_table('forums') . " 
+                                                WHERE (forum_id='$IdForum')"));
 
             if ($myrow) {
                 $moderator = User::get_moderator($myrow['forum_moderator']);
@@ -477,7 +515,9 @@ class Forum implements ForumInterface
         $compte = !array_key_exists('uname', $userdataX) ? Config::get('user.anonymous') : $userdataX['uname'];
 
         if ((!$modoX) and ($paramAFX > 0)) {
-            $sql = "SELECT COUNT(poster_ip) AS total FROM " . sql_table('posts') . " WHERE post_time>'";
+            $sql = "SELECT COUNT(poster_ip) AS total 
+                    FROM " . sql_table('posts') . "
+                    WHERE post_time>'";
 
             $sql2 = $userdataX['uid'] != 1 
                 ? "' AND (poster_ip='$poster_ipX' OR poster_id='" . $userdataX['uid'] . "')" 
@@ -514,12 +554,22 @@ class Forum implements ForumInterface
             $adminX = base64_decode($admin);
             $adminR = explode(':', $adminX);
 
-            $Q = sql_fetch_assoc(sql_query("SELECT * FROM " . sql_table('authors') . " WHERE aid='$adminR[0]' LIMIT 1"));
+            $Q = sql_fetch_assoc(sql_query("SELECT * 
+                                            FROM " . sql_table('authors') . " 
+                                            WHERE aid='$adminR[0]' LIMIT 1"));
             
             if ($Q['radminsuper'] == 1) {
                 $adminforum = 1;
             } else {
-                $R = sql_query("SELECT fnom, fid, radminsuper FROM " . sql_table('authors') . " a LEFT JOIN " . sql_table('droits') . " d ON a.aid = d.d_aut_aid LEFT JOIN " . sql_table('fonctions') . " f ON d.d_fon_fid = f.fid WHERE a.aid='$adminR[0]' AND f.fid BETWEEN 13 AND 15");
+                $R = sql_query("SELECT fnom, fid, radminsuper 
+                                FROM " . sql_table('authors') . " a 
+                                LEFT JOIN " . sql_table('droits') . " d 
+                                ON a.aid = d.d_aut_aid 
+                                LEFT JOIN " . sql_table('fonctions') . " f 
+                                ON d.d_fon_fid = f.fid 
+                                WHERE a.aid='$adminR[0]' 
+                                AND f.fid BETWEEN 13 AND 15");
+
                 if (sql_num_rows($R) >= 1) $adminforum = 1;
             }
         }
@@ -544,27 +594,38 @@ class Forum implements ForumInterface
         }
     
         // preparation de la gestion des folders
-        $result = sql_query("SELECT forum_id, COUNT(topic_id) AS total FROM " . sql_table('forumtopics') . " GROUP BY (forum_id)");
+        $result = sql_query("SELECT forum_id, COUNT(topic_id) AS total 
+                             FROM " . sql_table('forumtopics') . " 
+                             GROUP BY (forum_id)");
 
         while (list($forumid, $total) = sql_fetch_row($result)) {
             $tab_folder[$forumid][0] = $total; // Topic
         }
 
-        $result = sql_query("SELECT forum_id, COUNT(DISTINCT topicid) AS total FROM " . sql_table('forum_read') . " WHERE uid='$userR[0]' AND topicid>'0' AND status!='0' GROUP BY (forum_id)");
+        $result = sql_query("SELECT forum_id, COUNT(DISTINCT topicid) AS total 
+                             FROM " . sql_table('forum_read') . " 
+                             WHERE uid='$userR[0]' 
+                             AND topicid>'0' 
+                             AND status!='0' 
+                             GROUP BY (forum_id)");
         
         while (list($forumid, $total) = sql_fetch_row($result)) {
             $tab_folder[$forumid][1] = $total; // Folder
         }
 
         // préparation de la gestion des abonnements
-        $result = sql_query("SELECT forumid FROM " . sql_table('subscribe') . " WHERE uid='$userR[0]'");
+        $result = sql_query("SELECT forumid 
+                             FROM " . sql_table('subscribe') . " 
+                             WHERE uid='$userR[0]'");
         
         while (list($forumid) = sql_fetch_row($result)) {
             $tab_subscribe[$forumid] = true;
         }
 
         // preparation du compteur total_post
-        $rowQ0 = Q_Select("SELECT forum_id, COUNT(post_aff) AS total FROM " . sql_table('posts') . " GROUP BY forum_id", 600);
+        $rowQ0 = Q_Select("SELECT forum_id, COUNT(post_aff) AS total 
+                           FROM " . sql_table('posts') . " 
+                           GROUP BY forum_id", 600);
         
         foreach ($rowQ0 as $row0) {
             $tab_total_post[$row0['forum_id']] = $row0['total'];
@@ -575,7 +636,11 @@ class Forum implements ForumInterface
             foreach ($rowQ1 as $row) {
 
                 $title_aff = true;
-                $rowQ2 = Q_Select("SELECT * FROM " . sql_table('forums') . " WHERE cat_id = '" . $row['cat_id'] . "' AND SUBSTRING(forum_name,1,3)!='<!>' ORDER BY forum_index,forum_id", 21600);
+                $rowQ2 = Q_Select("SELECT * 
+                                   FROM " . sql_table('forums') . " 
+                                   WHERE cat_id = '" . $row['cat_id'] . "' 
+                                   AND SUBSTRING(forum_name, 1, 3)!='<!>' 
+                                   ORDER BY forum_index, forum_id", 21600);
                 
                 if ($rowQ2) {
                     foreach ($rowQ2 as $myrow) {
@@ -773,10 +838,19 @@ class Forum implements ForumInterface
             $userR = explode(':', $userX);
         }
     
-        $result = sql_query("SELECT COUNT(topic_id) AS total FROM " . sql_table('forumtopics') . " WHERE forum_id='$forum'");
+        $result = sql_query("SELECT COUNT(topic_id) AS total 
+                             FROM " . sql_table('forumtopics') . " 
+                             WHERE forum_id='$forum'");
+
         list($totalT) = sql_fetch_row($result);
     
-        $result = sql_query("SELECT COUNT(DISTINCT topicid) AS total FROM " . sql_table('forum_read') . " WHERE uid='$userR[0]' AND topicid>'0' AND status!='0' AND forum_id='$forum'");
+        $result = sql_query("SELECT COUNT(DISTINCT topicid) AS total 
+                             FROM " . sql_table('forum_read') . " 
+                             WHERE uid='$userR[0]' 
+                             AND topicid>'0' 
+                             AND status!='0' 
+                             AND forum_id='$forum'");
+
         list($totalF) = sql_fetch_row($result);
     
         if ($ibid = Theme::theme_image("forum/icons/red_sub_folder.gif")) {
@@ -825,8 +899,16 @@ class Forum implements ForumInterface
         $lim = $maxforums == 0 ? '' : " LIMIT $maxforums";
 
         $query = $user 
-            ? "SELECT * FROM " . sql_table('forums') . " ORDER BY cat_id,forum_index,forum_id" . $lim 
-            : "SELECT * FROM " . sql_table('forums') . " WHERE forum_type!='9' AND forum_type!='7' AND forum_type!='5' ORDER BY cat_id,forum_index,forum_id" . $lim;
+            ? "SELECT * 
+               FROM " . sql_table('forums') . " 
+               ORDER BY cat_id, forum_index, forum_id" . $lim 
+
+            : "SELECT * 
+               FROM " . sql_table('forums') . " 
+               WHERE forum_type!='9' 
+               AND forum_type!='7' 
+               AND forum_type!='5' 
+               ORDER BY cat_id, forum_index, forum_id" . $lim;
 
         $result = sql_query($query);
 
@@ -862,7 +944,11 @@ class Forum implements ForumInterface
                     $forum_desc = stripslashes($forum_desc);
                 }
 
-                $res = sql_query("SELECT * FROM " . sql_table('forumtopics') . " WHERE forum_id = '$forumid' ORDER BY topic_time DESC");
+                $res = sql_query("SELECT * 
+                                  FROM " . sql_table('forumtopics') . " 
+                                  WHERE forum_id = '$forumid' 
+                                  ORDER BY topic_time DESC");
+
                 $ibidx = sql_num_rows($res);
 
                 $boxstuff .= '<li class="list-unstyled border-0 p-2 mt-1"><h6><a href="viewforum.php?forum=' . $forumid . '" title="' . strip_tags($forum_desc) . '" data-bs-toggle="tooltip">' . $forumname . '</a><span class="float-end badge bg-secondary" title="' . translate("Sujets") . '" data-bs-toggle="tooltip">' . $ibidx . '</span></h6></li>';
@@ -875,7 +961,9 @@ class Forum implements ForumInterface
                     $date = $topicrow[3];
                     $replies = 0;
 
-                    $postquery = "SELECT COUNT(*) AS total FROM " . sql_table('posts') . " WHERE topic_id = '$topicid'";
+                    $postquery = "SELECT COUNT(*) AS total 
+                                  FROM " . sql_table('posts') . " 
+                                  WHERE topic_id = '$topicid'";
 
                     if ($pres = sql_query($postquery)) {
                         if ($myrow = sql_fetch_assoc($pres)) {
@@ -890,7 +978,10 @@ class Forum implements ForumInterface
 
                     if ($displayposter) {
                         $posterid = $topicrow[2];
-                        $RowQ1 = Q_Select("SELECT uname FROM " . sql_table('users') . " WHERE uid = '$posterid'", 3600);
+                        $RowQ1 = Q_Select("SELECT uname 
+                                           FROM " . sql_table('users') . " 
+                                           WHERE uid = '$posterid'", 3600);
+                                           
                         $myrow = $RowQ1[0];
                         $postername = $myrow['uname'];
                     }

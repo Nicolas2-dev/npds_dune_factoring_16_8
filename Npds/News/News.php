@@ -68,7 +68,9 @@ class News implements NewsInterface
         $hour = $today['hours'];
         $min = $today['minutes'];
 
-        $result = sql_query("SELECT anid, date_debval FROM " . sql_table('autonews') . " WHERE date_debval LIKE '$year-$month%'");
+        $result = sql_query("SELECT anid, date_debval 
+                             FROM " . sql_table('autonews') . " 
+                             WHERE date_debval LIKE '$year-$month%'");
 
         while (list($anid, $date_debval) = sql_fetch_row($result)) {
             preg_match('#^(\d{4})-(\d{1,2})-(\d{1,2}) (\d{1,2}):(\d{1,2}):(\d{1,2})$#', $date_debval, $date);
@@ -76,7 +78,9 @@ class News implements NewsInterface
             if (($date[1] <= $year) and ($date[2] <= $month) and ($date[3] <= $day)) {
                 if (($date[4] < $hour) and ($date[5] >= $min) or ($date[4] <= $hour) and ($date[5] <= $min) or (($day - $date[3]) >= 1)) {
                     
-                    $result2 = sql_query("SELECT catid, aid, title, hometext, bodytext, topic, informant, notes, ihome, date_finval, auto_epur FROM " . sql_table('autonews') . " WHERE anid='$anid'");
+                    $result2 = sql_query("SELECT catid, aid, title, hometext, bodytext, topic, informant, notes, ihome, date_finval, auto_epur 
+                                          FROM " . sql_table('autonews') . " 
+                                          WHERE anid='$anid'");
                     
                     while (list($catid, $aid, $title, $hometext, $bodytext, $topic, $author, $notes, $ihome, $date_finval, $epur) = sql_fetch_row($result2)) {
                         $subject = stripslashes(Str::FixQuotes($title));
@@ -84,9 +88,13 @@ class News implements NewsInterface
                         $bodytext = stripslashes(Str::FixQuotes($bodytext));
                         $notes = stripslashes(Str::FixQuotes($notes));
 
-                        sql_query("INSERT INTO " . sql_table('stories') . " VALUES (NULL, '$catid', '$aid', '$subject', now(), '$hometext', '$bodytext', '0', '0', '$topic', '$author', '$notes', '$ihome', '0', '$date_finval', '$epur')");
+                        sql_query("INSERT 
+                                   INTO " . sql_table('stories') . " 
+                                   VALUES (NULL, '$catid', '$aid', '$subject', now(), '$hometext', '$bodytext', '0', '0', '$topic', '$author', '$notes', '$ihome', '0', '$date_finval', '$epur')");
                         
-                        sql_query("DELETE FROM " . sql_table('autonews') . " WHERE anid='$anid'");
+                        sql_query("DELETE 
+                                   FROM " . sql_table('autonews') . " 
+                                   WHERE anid='$anid'");
 
                         global $subscribe;
                         if ($subscribe) {
@@ -108,7 +116,9 @@ class News implements NewsInterface
         }
 
         // Purge automatique
-        $result = sql_query("SELECT sid, date_finval, auto_epur FROM " . sql_table('stories') . " WHERE date_finval LIKE '$year-$month%'");
+        $result = sql_query("SELECT sid, date_finval, auto_epur 
+                             FROM " . sql_table('stories') . " 
+                             WHERE date_finval LIKE '$year-$month%'");
 
         while (list($sid, $date_finval, $epur) = sql_fetch_row($result)) {
             preg_match('#^(\d{4})-(\d{1,2})-(\d{1,2}) (\d{1,2}):(\d{1,2}):(\d{1,2})$#', $date_finval, $date);
@@ -116,17 +126,24 @@ class News implements NewsInterface
             if (($date[1] <= $year) and ($date[2] <= $month) and ($date[3] <= $day)) {
                 if (($date[4] < $hour) and ($date[5] >= $min) or ($date[4] <= $hour) and ($date[5] <= $min)) {
                     if ($epur == 1) {
-                        sql_query("DELETE FROM " . sql_table('stories') . " WHERE sid='$sid'");
+                        sql_query("DELETE 
+                                   FROM " . sql_table('stories') . " 
+                                   WHERE sid='$sid'");
                         
                         if (file_exists("modules/comments/article.conf.php")) {
                             include("modules/comments/article.conf.php");
                             
-                            sql_query("DELETE FROM " . sql_table('posts') . " WHERE forum_id='$forum' AND topic_id='$topic'");
+                            sql_query("DELETE 
+                                       FROM " . sql_table('posts') . " 
+                                       WHERE forum_id='$forum' 
+                                       AND topic_id='$topic'");
                         }
 
                         Log::Ecr_Log('security', "removeStory ($sid, epur) by automated epur : system", '');
                     } else {
-                        sql_query("UPDATE " . sql_table('stories') . " SET archive='1' WHERE sid='$sid'");
+                        sql_query("UPDATE " . sql_table('stories') . " 
+                                   SET archive='1' 
+                                   WHERE sid='$sid'");
                     }
                 }
             }
@@ -291,7 +308,9 @@ class News implements NewsInterface
         // pas stabilisé ...!
         // Astuce pour afficher le nb de News correct même si certaines News ne sont pas visibles (membres, groupe de membres)
         // En fait on * le Nb de News par le Nb de groupes
-        $row_Q2 = Q_select("SELECT COUNT(groupe_id) AS total FROM " . sql_table('groupes'), 86400);
+        $row_Q2 = Q_select("SELECT COUNT(groupe_id) AS total 
+                            FROM " . sql_table('groupes'), 86400);
+
         $NumG = $row_Q2[0];
 
         if ($NumG['total'] < 2) {
@@ -304,31 +323,42 @@ class News implements NewsInterface
 
         if ($type_req == 'index') {
             $Xstorynum = $storynum * $coef;
-            $result = Q_select("SELECT sid, catid, ihome FROM " . sql_table('stories') . " $sel ORDER BY sid DESC LIMIT $Xstorynum", 3600);
+            $result = Q_select("SELECT sid, catid, ihome 
+                                FROM " . sql_table('stories') . " $sel 
+                                ORDER BY sid DESC 
+                                LIMIT $Xstorynum", 3600);
             $Znum = $storynum;
         }
 
         if ($type_req == 'old_news') {
             //      $Xstorynum=$oldnum*$coef;
-            $result = Q_select("SELECT sid, catid, ihome, time FROM " . sql_table('stories') . " $sel ORDER BY time DESC LIMIT $storynum", 3600);
+            $result = Q_select("SELECT sid, catid, ihome, time 
+                                FROM " . sql_table('stories') . " $sel 
+                                ORDER BY time DESC 
+                                LIMIT $storynum", 3600);
             $Znum = $oldnum;
         }
 
         if (($type_req == 'big_story') or ($type_req == 'big_topic')) {
             //      $Xstorynum=$oldnum*$coef;
-            $result = Q_select("SELECT sid, catid, ihome, counter FROM " . sql_table('stories') . " $sel ORDER BY counter DESC LIMIT $storynum", 0);
+            $result = Q_select("SELECT sid, catid, ihome, counter 
+                                FROM " . sql_table('stories') . " $sel 
+                                ORDER BY counter DESC 
+                                LIMIT $storynum", 0);
             $Znum = $oldnum;
         }
 
         if ($type_req == 'libre') {
             $Xstorynum = $oldnum * $coef; //need for what ?
-            $result = Q_select("SELECT sid, catid, ihome, time FROM " . sql_table('stories') . " $sel", 3600);
+            $result = Q_select("SELECT sid, catid, ihome, time 
+                                FROM " . sql_table('stories') . " $sel", 3600);
             $Znum = $oldnum;
         }
 
         if ($type_req == 'archive') {
             $Xstorynum = $oldnum * $coef; //need for what ?
-            $result = Q_select("SELECT sid, catid, ihome FROM " . sql_table('stories') . " $sel", 3600);
+            $result = Q_select("SELECT sid, catid, ihome 
+                                FROM " . sql_table('stories') . " $sel", 3600);
             $Znum = $oldnum;
         }
 
@@ -359,19 +389,31 @@ class News implements NewsInterface
 
             if (static::ctrl_aff($ihome, $catid)) {
                 if (($type_req == "index") or ($type_req == "libre")) {
-                    $result2 = sql_query("SELECT sid, catid, aid, title, time, hometext, bodytext, comments, counter, topic, informant, notes FROM " . sql_table('stories') . " WHERE sid='$s_sid' AND archive='0'");
+                    $result2 = sql_query("SELECT sid, catid, aid, title, time, hometext, bodytext, comments, counter, topic, informant, notes 
+                                          FROM " . sql_table('stories') . " 
+                                          WHERE sid='$s_sid' 
+                                          AND archive='0'");
                 }
 
                 if ($type_req == "archive") {
-                    $result2 = sql_query("SELECT sid, catid, aid, title, time, hometext, bodytext, comments, counter, topic, informant, notes FROM " . sql_table('stories') . " WHERE sid='$s_sid' AND archive='1'");
+                    $result2 = sql_query("SELECT sid, catid, aid, title, time, hometext, bodytext, comments, counter, topic, informant, notes 
+                                          FROM " . sql_table('stories') . " 
+                                          WHERE sid='$s_sid' 
+                                          AND archive='1'");
                 }
 
                 if ($type_req == "old_news") {
-                    $result2 = sql_query("SELECT sid, title, time, comments, counter FROM " . sql_table('stories') . " WHERE sid='$s_sid' AND archive='0'");
+                    $result2 = sql_query("SELECT sid, title, time, comments, counter 
+                                          FROM " . sql_table('stories') . " 
+                                          WHERE sid='$s_sid' 
+                                          AND archive='0'");
                 }
 
                 if (($type_req == "big_story") or ($type_req == "big_topic")) {
-                    $result2 = sql_query("SELECT sid, title FROM " . sql_table('stories') . " WHERE sid='$s_sid' AND archive='0'");
+                    $result2 = sql_query("SELECT sid, title 
+                                          FROM " . sql_table('stories') . " 
+                                          WHERE sid='$s_sid' 
+                                          AND archive='0'");
                 }
 
                 $tab[$ibid] = sql_fetch_row($result2);
@@ -426,7 +468,9 @@ class News implements NewsInterface
         }
 
         if ($op == "categories") {
-            sql_query("UPDATE " . sql_table('stories_cat') . " SET counter=counter+1 WHERE catid='$catid'");
+            sql_query("UPDATE " . sql_table('stories_cat') . " 
+                       SET counter=counter+1 
+                       WHERE catid='$catid'");
 
             // settype($marqeur, "integer");
 
@@ -507,7 +551,10 @@ class News implements NewsInterface
             $sid = $s_sid;
 
             if ($catid != 0) {
-                $resultm = sql_query("SELECT title FROM " . sql_table('stories_cat') . " WHERE catid='$catid'");
+                $resultm = sql_query("SELECT title 
+                                      FROM " . sql_table('stories_cat') . " 
+                                      WHERE catid='$catid'");
+
                 list($title1) = sql_fetch_row($resultm);
 
                 $title = $title;
@@ -550,12 +597,16 @@ class News implements NewsInterface
         global $topicname, $topicimage, $topictext;
 
         $sid = $s_sid;
-        $result = sql_query("SELECT topic FROM " . sql_table('stories') . " WHERE sid='$sid'");
+        $result = sql_query("SELECT topic 
+                             FROM " . sql_table('stories') . " 
+                             WHERE sid='$sid'");
 
         if ($result) {
             list($topic) = sql_fetch_row($result);
 
-            $result = sql_query("SELECT topicid, topicname, topicimage, topictext FROM " . sql_table('topics') . " WHERE topicid='$topic'");
+            $result = sql_query("SELECT topicid, topicname, topicimage, topictext 
+                                 FROM " . sql_table('topics') . " 
+                                 WHERE topicid='$topic'");
 
             if ($result) {
                 list($topicid, $topicname, $topicimage, $topictext) = sql_fetch_row($result);
@@ -596,7 +647,10 @@ class News implements NewsInterface
 
             $story_limit++;
 
-            $rfile2 = sql_query("SELECT topictext, topicimage FROM " . sql_table('topics') . " WHERE topicid='$topic'");
+            $rfile2 = sql_query("SELECT topictext, topicimage 
+                                 FROM " . sql_table('topics') . " 
+                                 WHERE topicid='$topic'");
+                                 
             list($topictext, $topicimage) = sql_fetch_row($rfile2);
 
             $hometext = Metalang::meta_lang(strip_tags($hometext));

@@ -3,13 +3,17 @@
 
 namespace Npds\Boot\Bootstrap;
 
-use Npds\Config\Config;
 use Npds\Support\Facades\Request;
 
 
 class InitLanguage
 {
 
+    /**
+     * [bootstrap description]
+     *
+     * @return  [type]  [return description]
+     */
     public function bootstrap()
     {
         global $language, $languageslist;
@@ -67,7 +71,13 @@ class InitLanguage
         $this->loadLanguage($language);
     }
 
-
+    /**
+     * [loadLanguage description]
+     *
+     * @param   [type]  $language  [$language description]
+     *
+     * @return  [type]             [return description]
+     */
     private function loadLanguage($language)
     {
         include("Language/lang-$language.php");

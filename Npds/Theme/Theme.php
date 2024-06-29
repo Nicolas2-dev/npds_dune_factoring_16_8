@@ -413,7 +413,9 @@ class Theme implements ThemeInterface
     {
         global $short_user, $user;
 
-        $result = sql_query("SELECT uname FROM " . sql_table('users') . " WHERE uname ='$who'");
+        $result = sql_query("SELECT uname 
+                             FROM " . sql_table('users') . " 
+                             WHERE uname ='$who'");
 
         if (sql_num_rows($result)) {
 
@@ -658,7 +660,8 @@ class Theme implements ThemeInterface
             </thead>
             <tbody>';
 
-        $resultX = sql_query("SELECT DISTINCT(theme) FROM " . sql_table('users'));
+        $resultX = sql_query("SELECT DISTINCT(theme) 
+                              FROM " . sql_table('users'));
 
         while (list($themelist) = sql_fetch_row($resultX)) {
             if ($themelist != '') {
@@ -667,10 +670,16 @@ class Theme implements ThemeInterface
 
                 global $Default_Theme;
                 if ($themelist == $Default_Theme) {
-                    $result = sql_query("SELECT uid FROM " . sql_table('users') . " WHERE theme='$themelist'");
+                    $result = sql_query("SELECT uid 
+                                         FROM " . sql_table('users') . " 
+                                         WHERE theme='$themelist'");
+
                     $themeD1 = $result ? sql_num_rows($result) : 0;
 
-                    $result = sql_query("SELECT uid FROM " . sql_table('users') . " WHERE theme=''");
+                    $result = sql_query("SELECT uid 
+                                         FROM " . sql_table('users') . " 
+                                         WHERE theme=''");
+
                     $themeD2 = $result ? sql_num_rows($result) : 0;
 
                     $content .= '
@@ -680,7 +689,10 @@ class Theme implements ThemeInterface
                     <td>' . $T_exist . '</td>
                     </tr>';
                 } else {
-                    $result = sql_query("SELECT uid FROM " . sql_table('users') . " WHERE theme='$themelist'");
+                    $result = sql_query("SELECT uid 
+                                         FROM " . sql_table('users') . " 
+                                         WHERE theme='$themelist'");
+                                         
                     $themeU = $result ? sql_num_rows($result) : 0;
 
                     $content .= '

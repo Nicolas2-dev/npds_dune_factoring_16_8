@@ -13,14 +13,21 @@ use Npds\Support\Facades\Request;
 use Npds\Support\Facades\Language;
 use Npds\Execption\ExecptionHandler;
 
+// fichier non terminée et sera deprecieé bientot !
+
+//
 require 'vendor/autoload.php';
 
 if (!defined('NPDS_GRAB_GLOBALS_INCLUDED')) {
     define('NPDS_GRAB_GLOBALS_INCLUDED', 1);
 
+    if (!defined("LOCK_EX")) {
+        define("LOCK_EX", 2);
+    }
 
-    if (!defined("LOCK_EX")) define("LOCK_EX", 2);
-    if (!defined("LOCK_EX")) define("LOCK_UN", 3);
+    if (!defined("LOCK_EX")) {
+        define("LOCK_UN", 3);
+    }
 
     include("Config/Deprecated/Config.php");
 
@@ -39,6 +46,7 @@ if (!defined('NPDS_GRAB_GLOBALS_INCLUDED')) {
 
         // Modify the report level of PHP
         Debug::reporting('all');
+        
         error_reporting(-1);
 
         ini_set('display_errors', 'Off');
@@ -52,31 +60,15 @@ if (!defined('NPDS_GRAB_GLOBALS_INCLUDED')) {
     // Get values, slash, filter and extract
     if (!empty($_GET)) {
         array_walk_recursive($_GET, [HttpProtect::class, 'addslashes_GPC']);
-
-        reset($_GET); // no need
-
+        reset($_GET);
         array_walk_recursive($_GET, [HttpProtect::class, 'url_protect']);
-
         extract(Request::queryAll(), EXTR_OVERWRITE);
     }
 
-
     if (!empty($_POST)) {
         array_walk_recursive($_POST, [HttpProtect::class, 'addslashes_GPC']);
-    //     /*
-    //     array_walk_recursive($_POST,'post_protect');
-    //     if(!isset($_SERVER['HTTP_REFERER'])) {
-    //         Ecr_Log('security','Ghost form in '.$_SERVER['ORIG_PATH_INFO'].' => who playing with form ?','');
-    //         L_spambot('',"false");
-    //         access_denied();
-    //     }
-    //     else if ($_SERVER['HTTP_REFERER'] !== $nuke_url.$_SERVER['ORIG_PATH_INFO']) {
-    //         Ecr_Log('security','Ghost form in '.$_SERVER['ORIG_PATH_INFO'].'. => '.$_SERVER["HTTP_REFERER"],'');
-    //         L_spambot('',"false");
-    //         access_denied();
-    //     }
-    //     */
-         extract(Request::inputAll(), EXTR_OVERWRITE);
+
+        extract(Request::inputAll(), EXTR_OVERWRITE);
     }
 
     // Cookies - analyse et purge - shiney 07-11-2010
@@ -129,25 +121,24 @@ if (!defined('NPDS_GRAB_GLOBALS_INCLUDED')) {
     //
     Mysql_Connexion();
 
+    //
     Npds::npds_php_version();
 
-    $mainfile = 1;
-
+    // 
     require_once("auth.inc.php");
 
     global $user, $cookie;
     $cookie = User::userCookie($user);
 
-    // $_cookie = Request::cookie('user');
-    // $_cookie = explode(':', base64_decode($_cookie));
-
-    // _vd($cookie[1], $_cookie[1]);
-
+    //
     Session::session_manage();
 
+    //
     $tab_langue = Language::make_tab_langue();
 
+    //
     Metalang::charg_metalang();
 
-    date_default_timezone_set("Europe/Paris"); // à voir si on garde ??
+
+    date_default_timezone_set(Config::get('npds.timezone')); 
 }

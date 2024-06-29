@@ -54,14 +54,22 @@ class Subscribe implements SubscribeInterface
         global $sitename, $nuke_url;
 
         if ($Xtype == 'topic') {
-            $result = sql_query("SELECT topictext FROM " . sql_table('topics') . " WHERE topicid='$Xtopic'");
+            $result = sql_query("SELECT topictext 
+                                 FROM " . sql_table('topics') . " 
+                                 WHERE topicid='$Xtopic'");
+
             list($abo) = sql_fetch_row($result);
 
-            $result = sql_query("SELECT uid FROM " . sql_table('subscribe') . " WHERE topicid='$Xtopic'");
+            $result = sql_query("SELECT uid 
+                                 FROM " . sql_table('subscribe') . " 
+                                 WHERE topicid='$Xtopic'");
         }
 
         if ($Xtype == 'forum') {
-            $result = sql_query("SELECT forum_name, arbre FROM " . sql_table('forums') . " WHERE forum_id='$Xforum'");
+            $result = sql_query("SELECT forum_name, arbre 
+                                 FROM " . sql_table('forums') . " 
+                                 WHERE forum_id='$Xforum'");
+
             list($abo, $arbre) = sql_fetch_row($result);
 
             if ($arbre) {
@@ -70,17 +78,25 @@ class Subscribe implements SubscribeInterface
                 $hrefX = 'viewtopic.php';
             }
 
-            $resultZ = sql_query("SELECT topic_title FROM " . sql_table('forumtopics') . " WHERE topic_id='$Xtopic'");
+            $resultZ = sql_query("SELECT topic_title 
+                                  FROM " . sql_table('forumtopics') . " 
+                                  WHERE topic_id='$Xtopic'");
+
             list($title_topic) = sql_fetch_row($resultZ);
 
-            $result = sql_query("SELECT uid FROM " . sql_table('subscribe') . " WHERE forumid='$Xforum'");
+            $result = sql_query("SELECT uid 
+                                 FROM " . sql_table('subscribe') . " 
+                                 WHERE forumid='$Xforum'");
         }
 
         include_once("language/lang-multi.php");
 
         while (list($uid) = sql_fetch_row($result)) {
             if ($uid != $Xsauf) {
-                $resultX = sql_query("SELECT email, user_langue FROM " . sql_table('users') . " WHERE uid='$uid'");
+                $resultX = sql_query("SELECT email, user_langue 
+                                      FROM " . sql_table('users') . " 
+                                      WHERE uid='$uid'");
+
                 list($email, $user_langue) = sql_fetch_row($resultX);
 
                 if ($Xtype == 'topic') {
@@ -125,11 +141,17 @@ class Subscribe implements SubscribeInterface
     public static function subscribe_query($Xuser, $Xtype, $Xclef)
     {
         if ($Xtype == 'topic') {
-            $result = sql_query("SELECT topicid FROM " . sql_table('subscribe') . " WHERE uid='$Xuser' AND topicid='$Xclef'");
+            $result = sql_query("SELECT topicid 
+                                 FROM " . sql_table('subscribe') . " 
+                                 WHERE uid='$Xuser' 
+                                 AND topicid='$Xclef'");
         }
 
         if ($Xtype == 'forum') {
-            $result = sql_query("SELECT forumid FROM " . sql_table('subscribe') . " WHERE uid='$Xuser' AND forumid='$Xclef'");
+            $result = sql_query("SELECT forumid 
+                                 FROM " . sql_table('subscribe') . " 
+                                 WHERE uid='$Xuser' 
+                                 AND forumid='$Xclef'");
         }
 
         list($Xtemp) = sql_fetch_row($result);

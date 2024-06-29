@@ -51,7 +51,10 @@ class Groupe implements GroupeInterface
         if ($xuser) {
             $userdata = explode(':', base64_decode($xuser));
 
-            $user_temp = Q_select("SELECT groupe FROM " . sql_table('users_status') . " WHERE uid='$userdata[0]'", 3600);
+            $user_temp = Q_select("SELECT groupe 
+                                   FROM " . sql_table('users_status') . " 
+                                   WHERE uid='$userdata[0]'", 3600);
+
             $groupe = $user_temp[0];
             
             $tab_groupe = explode(',', $groupe['groupe']);
@@ -69,7 +72,9 @@ class Groupe implements GroupeInterface
      */
     public static function liste_group()
     {
-        $r = sql_query("SELECT groupe_id, groupe_name FROM " . sql_table('groupes') . " ORDER BY groupe_id ASC");
+        $r = sql_query("SELECT groupe_id, groupe_name 
+                        FROM " . sql_table('groupes') . " 
+                        ORDER BY groupe_id ASC");
 
         $tmp_groupe[0] = '-> ' . adm_translate("Supprimer") . '/' . adm_translate("Choisir un groupe") . ' <-';
 
@@ -186,7 +191,9 @@ class Groupe implements GroupeInterface
     {
         global $short_user;
 
-        $rsql = sql_fetch_assoc(sql_query("SELECT groupe_id, groupe_name, groupe_description, groupe_forum, groupe_mns, groupe_chat, groupe_blocnote, groupe_pad FROM " . sql_table('groupes') . " WHERE groupe_id='$gr'"));
+        $rsql = sql_fetch_assoc(sql_query("SELECT groupe_id, groupe_name, groupe_description, groupe_forum, groupe_mns, groupe_chat, groupe_blocnote, groupe_pad 
+                                           FROM " . sql_table('groupes') . " 
+                                           WHERE groupe_id='$gr'"));
 
         $content = '
             <script type="text/javascript">
@@ -220,8 +227,15 @@ class Groupe implements GroupeInterface
         $li_ic = '';
 
         $result = mysqli_get_client_info() <= '8.0' 
-            ? sql_query("SELECT uid, groupe FROM " . sql_table('users_status') . " WHERE groupe REGEXP '[[:<:]]" . $gr . "[[:>:]]' ORDER BY uid ASC") 
-            : sql_query("SELECT uid, groupe FROM " . sql_table('users_status') . " WHERE `groupe` REGEXP \"\\\\b$gr\\\\b\" ORDER BY uid ASC;");
+            ? sql_query("SELECT uid, groupe 
+                         FROM " . sql_table('users_status') . " 
+                         WHERE groupe REGEXP '[[:<:]]" . $gr . "[[:>:]]' 
+                         ORDER BY uid ASC") 
+
+            : sql_query("SELECT uid, groupe 
+                         FROM " . sql_table('users_status') . " 
+                         WHERE `groupe` REGEXP \"\\\\b$gr\\\\b\" 
+                         ORDER BY uid ASC;");
 
         $nb_mb = sql_num_rows($result);
 
@@ -284,7 +298,9 @@ class Groupe implements GroupeInterface
                 }
             }
 
-            list($uname, $user_avatar, $mns, $url, $femail) = sql_fetch_row(sql_query("SELECT uname, user_avatar, mns, url, femail FROM " . sql_table('users') . " WHERE uid='$uid'"));
+            list($uname, $user_avatar, $mns, $url, $femail) = sql_fetch_row(sql_query("SELECT uname, user_avatar, mns, url, femail 
+                                                                                       FROM " . sql_table('users') . " 
+                                                                                       WHERE uid='$uid'"));
 
             include('modules/geoloc/Config/geoloc.conf');
 
@@ -380,7 +396,10 @@ class Groupe implements GroupeInterface
         $nb_for_gr = '';
 
         if ($rsql['groupe_forum'] == 1) {
-            $res_forum = sql_query("SELECT forum_id, forum_name FROM " . sql_table('forums') . " WHERE forum_pass REGEXP '$gr'");
+            $res_forum = sql_query("SELECT forum_id, forum_name 
+                                    FROM " . sql_table('forums') . " 
+                                    WHERE forum_pass REGEXP '$gr'");
+
             $nb_foru = sql_num_rows($res_forum);
 
             if ($nb_foru >= 1) {
@@ -407,7 +426,13 @@ class Groupe implements GroupeInterface
 
             include("modules/wspad/Config/config.php");
 
-            $docs_gr = sql_query("SELECT page, editedby, modtime, ranq FROM " . sql_table('wspad') . " WHERE (ws_id) IN (SELECT MAX(ws_id) FROM " . sql_table('wspad') . " WHERE member='$gr' GROUP BY page) ORDER BY page ASC");
+            $docs_gr = sql_query("SELECT page, editedby, modtime, ranq 
+                                  FROM " . sql_table('wspad') . " 
+                                  WHERE (ws_id) IN (SELECT MAX(ws_id) 
+                                  FROM " . sql_table('wspad') . " 
+                                  WHERE member='$gr' GROUP BY page) 
+                                  ORDER BY page ASC");
+
             $nb_doc = sql_num_rows($docs_gr);
 
             if ($nb_doc >= 1) {
@@ -500,7 +525,9 @@ class Groupe implements GroupeInterface
         $lstgr = array();
         $userdata = explode(':', base64_decode($user));
 
-        $result = sql_query("SELECT DISTINCT groupe FROM " . sql_table('users_status') . " WHERE groupe > 1;");
+        $result = sql_query("SELECT DISTINCT groupe 
+                             FROM " . sql_table('users_status') . " 
+                             WHERE groupe > 1;");
 
         while (list($groupe) = sql_fetch_row($result)) {
             $pos = strpos($groupe, ',');
@@ -522,7 +549,10 @@ class Groupe implements GroupeInterface
 
         sql_free_result($result);
 
-        $result = sql_query("SELECT groupe_id, groupe_name, groupe_description FROM " . sql_table('groupes') . " WHERE groupe_id IN ('$ids_gr')");
+        $result = sql_query("SELECT groupe_id, groupe_name, groupe_description 
+                             FROM " . sql_table('groupes') . " 
+                             WHERE groupe_id IN ('$ids_gr')");
+                             
         $nb_groupes = sql_num_rows($result);
 
         $content = '

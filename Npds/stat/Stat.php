@@ -84,7 +84,9 @@ class Stat implements StatInterface
      */
     public static function stat_page_vue() 
     {
-        $result = sql_query("SELECT count FROM " . sql_table('counter') . " WHERE type='total'");
+        $result = sql_query("SELECT count 
+                             FROM " . sql_table('counter') . " 
+                             WHERE type='total'");
 
         if ($result) {
             list($totalz) = sql_fetch_row($result);
@@ -102,7 +104,9 @@ class Stat implements StatInterface
      */
     public static function stat_user() 
     {
-        $result = sql_query("SELECT uid FROM " . sql_table('users'));
+        $result = sql_query("SELECT uid 
+                             FROM " . sql_table('users'));
+
         return $result ? sql_num_rows($result) - 1 : 0;
     }
 
@@ -113,7 +117,9 @@ class Stat implements StatInterface
      */
     public static function stat_forum() 
     {
-        $result = sql_query("SELECT forum_id FROM " . sql_table('forums'));
+        $result = sql_query("SELECT forum_id 
+                             FROM " . sql_table('forums'));
+
         return $result ? sql_num_rows($result) : '0';
     }
 
@@ -124,7 +130,9 @@ class Stat implements StatInterface
      */
     public static function stat_groupes() 
     {
-        $result = sql_query("SELECT groupe_id FROM " . sql_table('groupes'));
+        $result = sql_query("SELECT groupe_id 
+                             FROM " . sql_table('groupes'));
+
         return $result ? sql_num_rows($result) : 0;
     }
 
@@ -135,7 +143,9 @@ class Stat implements StatInterface
      */
     public static function stat_reviews() 
     {
-        $result = sql_query("SELECT id FROM " . sql_table('reviews'));
+        $result = sql_query("SELECT id 
+                             FROM " . sql_table('reviews'));
+
         return $result ? sql_num_rows($result) : '0';
     }
 
@@ -146,7 +156,9 @@ class Stat implements StatInterface
      */
     public static function stat_stories() 
     {
-        $result = sql_query("SELECT sid FROM " . sql_table('stories'));
+        $result = sql_query("SELECT sid 
+                             FROM " . sql_table('stories'));
+
         return $result ? sql_num_rows($result) : 0;
     }
 
@@ -157,7 +169,9 @@ class Stat implements StatInterface
      */
     public static function stat_authors() 
     {
-        $result = sql_query("SELECT aid FROM " . sql_table('authors'));
+        $result = sql_query("SELECT aid 
+                             FROM " . sql_table('authors'));
+
         return $result ? sql_num_rows($result) : 0;
     }
 
@@ -168,7 +182,10 @@ class Stat implements StatInterface
      */
     public static function stat_posts() 
     {
-        $result = sql_query("SELECT post_id FROM " . sql_table('posts') . " WHERE forum_id<0");
+        $result = sql_query("SELECT post_id 
+                             FROM " . sql_table('posts') . " 
+                             WHERE forum_id<0");
+
         return $result ? sql_num_rows($result) : 0;
     }
 
@@ -179,7 +196,9 @@ class Stat implements StatInterface
      */
     public static function stat_sections() 
     {
-        $result = sql_query("SELECT secid FROM " . sql_table('sections'));
+        $result = sql_query("SELECT secid 
+                             FROM " . sql_table('sections'));
+
         return $result ? sql_num_rows($result) : 0;
     }
 
@@ -190,7 +209,9 @@ class Stat implements StatInterface
      */
     public static function stat_seccont() 
     {
-        $result = sql_query("SELECT artid FROM " . sql_table('seccont'));
+        $result = sql_query("SELECT artid 
+                             FROM " . sql_table('seccont'));
+
         return $result ? sql_num_rows($result) : 0;
     }   
 
@@ -201,7 +222,9 @@ class Stat implements StatInterface
      */
     public static function stat_queue() 
     {
-        $result = sql_query("SELECT qid FROM " . sql_table('queue'));
+        $result = sql_query("SELECT qid 
+                             FROM " . sql_table('queue'));
+
         return $result ? sql_num_rows($result) : 0;
     }
 
@@ -212,7 +235,9 @@ class Stat implements StatInterface
      */
     public static function stat_topics() 
     {
-        $result = sql_query("SELECT topicid FROM " . sql_table('topics'));
+        $result = sql_query("SELECT topicid 
+                             FROM " . sql_table('topics'));
+
         return $result ? sql_num_rows($result) : 0;
     }
 
@@ -223,7 +248,9 @@ class Stat implements StatInterface
      */
     public static function stat_links() 
     {
-        $result = sql_query("SELECT lid FROM " . sql_table('links_links'));
+        $result = sql_query("SELECT lid 
+                             FROM " . sql_table('links_links'));
+
         return $result ? sql_num_rows($result) : 0;
     }
 
@@ -234,7 +261,9 @@ class Stat implements StatInterface
      */
     public static function stat_links_categories() 
     {
-        $result = sql_query("SELECT cid FROM " . sql_table('links_categories'));
+        $result = sql_query("SELECT cid 
+                             FROM " . sql_table('links_categories'));
+
         return $result ? sql_num_rows($result) : 0;
     }
 
@@ -245,7 +274,9 @@ class Stat implements StatInterface
      */
     public static function stat_links_subcategories() 
     {
-        $result = sql_query("SELECT sid FROM " . sql_table('links_subcategories'));
+        $result = sql_query("SELECT sid 
+                             FROM " . sql_table('links_subcategories'));
+                             
         return $result ? sql_num_rows($result) : 0;
     }
 

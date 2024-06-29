@@ -88,22 +88,36 @@ function online()
 
     $past = time() - 300;
 
-    sql_query("DELETE FROM " . sql_table('session') . " WHERE time < '$past'");
+    sql_query("DELETE 
+               FROM " . sql_table('session') . " 
+               WHERE time < '$past'");
 
-    $result = sql_query("SELECT time FROM " . sql_table('session') . " WHERE username='$username'");
+    $result = sql_query("SELECT time 
+                         FROM " . sql_table('session') . " 
+                         WHERE username='$username'");
 
     $ctime = time();
 
     if ($row = sql_fetch_row($result)) {
-        sql_query("UPDATE " . sql_table('session') . " SET username='$username', time='$ctime', host_addr='$ip', guest='$guest' WHERE username='$username'");
+        sql_query("UPDATE " . sql_table('session') . " 
+                   SET username='$username', time='$ctime', host_addr='$ip', guest='$guest'
+                   WHERE username='$username'");
     } else {
-        sql_query("INSERT INTO " . sql_table('session') . " (username, time, host_addr, guest) VALUES ('$username', '$ctime', '$ip', '$guest')");
+        sql_query("INSERT 
+                   INTO " . sql_table('session') . " (username, time, host_addr, guest) 
+                   VALUES ('$username', '$ctime', '$ip', '$guest')");
     }
 
-    $result = sql_query("SELECT username FROM " . sql_table('session') . " WHERE guest=1");
+    $result = sql_query("SELECT username 
+                         FROM " . sql_table('session') . " 
+                         WHERE guest=1");
+
     $guest_online_num = sql_num_rows($result);
 
-    $result = sql_query("SELECT username FROM " . sql_table('session') . " WHERE guest=0");
+    $result = sql_query("SELECT username 
+                         FROM " . sql_table('session') . " 
+                         WHERE guest=0");
+
     $member_online_num = sql_num_rows($result);
 
     $who_online_num = $guest_online_num + $member_online_num;
@@ -112,10 +126,17 @@ function online()
     
     if ($user) {
         $content .= '<br />' . translate("Vous êtes connecté en tant que") . ' <strong>' . $username . '</strong>.<br />';
-        $result = Q_select("SELECT uid FROM " . sql_table('users') . " WHERE uname='$username'", 86400);
+        $result = Q_select("SELECT uid 
+                            FROM " . sql_table('users') . " 
+                            WHERE uname='$username'", 86400);
+
         $uid = $result[0];
 
-        $result2 = sql_query("SELECT to_userid FROM " . sql_table('priv_msgs') . " WHERE to_userid='" . $uid['uid'] . "' AND type_msg='0'");
+        $result2 = sql_query("SELECT to_userid 
+                              FROM " . sql_table('priv_msgs') . " 
+                              WHERE to_userid='" . $uid['uid'] . "' 
+                              AND type_msg='0'");
+
         $numrow = sql_num_rows($result2);
 
         $content .= translate("Vous avez") . ' <a href="viewpmsg.php"><span class="badge bg-primary">' . $numrow . '</span></a> ' . translate("message(s) personnel(s).") . '</p>';
@@ -192,7 +213,10 @@ function searchbox()
  */
 function mainblock()
 {
-    $result = sql_query("SELECT title, content FROM " . sql_table('block') . " WHERE id=1");
+    $result = sql_query("SELECT title, content 
+                         FROM " . sql_table('block') . " 
+                         WHERE id=1");
+
     list($title, $content) = sql_fetch_row($result);
 
     global $block_title;
@@ -214,7 +238,11 @@ function adminblock()
     global $admin, $aid, $admingraphic, $adminimg, $admf_ext, $Version_Sub, $Version_Num, $nuke_url;
 
     if ($admin) {
-        $Q = sql_fetch_assoc(sql_query("SELECT * FROM " . sql_table('authors') . " WHERE aid='$aid' LIMIT 1"));
+        $Q = sql_fetch_assoc(sql_query("SELECT * 
+                                        FROM " . sql_table('authors') . " 
+                                        WHERE aid='$aid' 
+                                        LIMIT 1"));
+
         $R = $Q['radminsuper'] == 1 
             ? sql_query("SELECT * FROM " . sql_table('fonctions') . " f 
                          WHERE f.finterface =1 
@@ -284,7 +312,10 @@ function adminblock()
             }
         }
 
-        $result = sql_query("SELECT title, content FROM " . sql_table('block') . " WHERE id=2");
+        $result = sql_query("SELECT title, content 
+                             FROM " . sql_table('block') . " 
+                             WHERE id=2");
+
         list($title, $content) = sql_fetch_row($result);
 
         global $block_title;
@@ -302,9 +333,13 @@ function adminblock()
         $versus_info = explode('|', $messages_npds[0]);
         
         if ($versus_info[1] == $Version_Sub and $versus_info[2] == $Version_Num) {
-            sql_query("UPDATE " . sql_table('fonctions') . " SET fetat='1', fretour='', fretour_h='Version NPDS " . $Version_Sub . " " . $Version_Num . "', furlscript='' WHERE fid='36'");
+            sql_query("UPDATE " . sql_table('fonctions') . " 
+                       SET fetat='1', fretour='', fretour_h='Version NPDS " . $Version_Sub . " " . $Version_Num . "', furlscript='' 
+                       WHERE fid='36'");
         } else {
-            sql_query("UPDATE " . sql_table('fonctions') . " SET fetat='1', fretour='N', furlscript='data-bs-toggle=\"modal\" data-bs-target=\"#versusModal\"', fretour_h='Une nouvelle version NPDS est disponible !<br />" . $versus_info[1] . " " . $versus_info[2] . "<br />Cliquez pour télécharger.' WHERE fid='36'");
+            sql_query("UPDATE " . sql_table('fonctions') . " 
+                       SET fetat='1', fretour='N', furlscript='data-bs-toggle=\"modal\" data-bs-target=\"#versusModal\"', fretour_h='Une nouvelle version NPDS est disponible !<br />" . $versus_info[1] . " " . $versus_info[2] . "<br />Cliquez pour télécharger.' 
+                       WHERE fid='36'");
         }
 
         $content .= '
@@ -400,10 +435,14 @@ function ephemblock()
     global $gmt;
 
     $cnt = 0;
-    $eday = date("d", time() + ((int)$gmt * 3600));
-    $emonth = date("m", time() + ((int)$gmt * 3600));
+    $eday = date("d", time() + ((int) $gmt * 3600));
+    $emonth = date("m", time() + ((int) $gmt * 3600));
 
-    $result = sql_query("SELECT yid, content FROM " . sql_table('ephem') . " WHERE did='$eday' AND mid='$emonth' ORDER BY yid ASC");
+    $result = sql_query("SELECT yid, content 
+                         FROM " . sql_table('ephem') . " 
+                         WHERE did='$eday' 
+                         AND mid='$emonth' 
+                         ORDER BY yid ASC");
 
     $boxstuff = '<div>' . translate("En ce jour...") . '</div>';
 
@@ -475,7 +514,10 @@ function userblock()
     global $user, $cookie;
 
     if (($user) and ($cookie[8])) {
-        $getblock = Q_select("SELECT ublock FROM " . sql_table('users') . " WHERE uid='$cookie[0]'", 86400);
+        $getblock = Q_select("SELECT ublock 
+                              FROM " . sql_table('users') . " 
+                              WHERE uid='$cookie[0]'", 86400);
+
         $ublock = $getblock[0];
 
         global $block_title;
@@ -677,7 +719,10 @@ function category()
 {
     global $cat, $language;
 
-    $result = sql_query("SELECT catid, title FROM " . sql_table('stories_cat') . " ORDER BY title");
+    $result = sql_query("SELECT catid, title 
+                         FROM " . sql_table('stories_cat') . " 
+                         ORDER BY title");
+
     $numrows = sql_num_rows($result);
 
     if ($numrows == 0) {
@@ -686,11 +731,20 @@ function category()
         $boxstuff = '<ul>';
 
         while (list($catid, $title) = sql_fetch_row($result)) {
-            $result2 = sql_query("SELECT sid FROM " . sql_table('stories') . " WHERE catid='$catid' LIMIT 0,1");
+            $result2 = sql_query("SELECT sid 
+                                  FROM " . sql_table('stories') . " 
+                                  WHERE catid='$catid' 
+                                  LIMIT 0,1");
+
             $numrows = sql_num_rows($result2);
 
             if ($numrows > 0) {
-                $res = sql_query("SELECT time FROM " . sql_table('stories') . " WHERE catid='$catid' ORDER BY sid DESC LIMIT 0,1");
+                $res = sql_query("SELECT time 
+                                  FROM " . sql_table('stories') . " 
+                                  WHERE catid='$catid' 
+                                  ORDER BY sid DESC 
+                                  LIMIT 0,1");
+
                 list($time) = sql_fetch_row($res);
 
                 $boxstuff .= $cat == $catid 
@@ -729,9 +783,14 @@ function headlines($hid = '', $block = true)
     }
 
     if ($hid == '') {
-        $result = sql_query("SELECT sitename, url, headlinesurl, hid FROM " . sql_table('headlines') . " WHERE status=1");
+        $result = sql_query("SELECT sitename, url, headlinesurl, hid 
+                             FROM " . sql_table('headlines') . " 
+                             WHERE status=1");
     } else {
-        $result = sql_query("SELECT sitename, url, headlinesurl, hid FROM " . sql_table('headlines') . " WHERE hid='$hid' AND status=1");
+        $result = sql_query("SELECT sitename, url, headlinesurl, hid 
+                             FROM " . sql_table('headlines') . " 
+                             WHERE hid='$hid' 
+                             AND status=1");
     }
 
     while (list($sitename, $url, $headlinesurl, $hid) = sql_fetch_row($result)) {
@@ -910,7 +969,11 @@ function bloc_rubrique()
 {
     global $language, $user;
 
-    $result = sql_query("SELECT rubid, rubname, ordre FROM " . sql_table('rubriques') . " WHERE enligne='1' AND rubname<>'divers' ORDER BY ordre");
+    $result = sql_query("SELECT rubid, rubname, ordre 
+                         FROM " . sql_table('rubriques') . "
+                         WHERE enligne='1' 
+                         AND rubname<>'divers' 
+                         ORDER BY ordre");
 
     $boxstuff = '<ul>';
 
@@ -918,14 +981,20 @@ function bloc_rubrique()
 
         $title = Language::aff_langue($rubname);
 
-        $result2 = sql_query("SELECT secid, secname, userlevel, ordre FROM " . sql_table('sections') . " WHERE rubid='$rubid' ORDER BY ordre");
+        $result2 = sql_query("SELECT secid, secname, userlevel, ordre 
+                              FROM " . sql_table('sections') . " 
+                              WHERE rubid='$rubid' 
+                              ORDER BY ordre");
 
         $boxstuff .= '<li><strong>' . $title . '</strong></li>';
 
         //$ibid++;//??? only for notice ???
         while (list($secid, $secname, $userlevel) = sql_fetch_row($result2)) {
 
-            $query3 = "SELECT artid FROM " . sql_table('seccont') . " WHERE secid='$secid'";
+            $query3 = "SELECT artid 
+                       FROM " . sql_table('seccont') . " 
+                       WHERE secid='$secid'";
+
             $result3 = sql_query($query3);
             $nb_article = sql_num_rows($result3);
 
@@ -974,7 +1043,10 @@ function bloc_espace_groupe($gr, $i_gr)
     global $block_title;
 
     if ($block_title == '') {
-        $rsql = sql_fetch_assoc(sql_query("SELECT groupe_name FROM " . sql_table('groupes') . " WHERE groupe_id='$gr'"));
+        $rsql = sql_fetch_assoc(sql_query("SELECT groupe_name 
+                                           FROM " . sql_table('groupes') . " 
+                                           WHERE groupe_id='$gr'"));
+
         $title = $rsql['groupe_name'];
     } else {
         $title = $block_title;
@@ -1026,7 +1098,10 @@ function pollMain($pollID, $pollClose)
         <input type="hidden" name="pollID" value="' . $pollID . '" />
         <input type="hidden" name="forwarder" value="' . $url . '" />';
 
-    $result = sql_query("SELECT pollTitle, voters FROM " . sql_table('poll_desc') . " WHERE pollID='$pollID'");
+    $result = sql_query("SELECT pollTitle, voters 
+                         FROM " . sql_table('poll_desc') . " 
+                         WHERE pollID='$pollID'");
+
     list($pollTitle, $voters) = sql_fetch_row($result);
 
     global $block_title;
@@ -1034,7 +1109,11 @@ function pollMain($pollID, $pollClose)
 
     $boxContent .= '<legend>' . Language::aff_langue($pollTitle) . '</legend>';
 
-    $result = sql_query("SELECT pollID, optionText, optionCount, voteID FROM " . sql_table('poll_data') . " WHERE (pollID='$pollID' AND optionText<>'') ORDER BY voteID");
+    $result = sql_query("SELECT pollID, optionText, optionCount, voteID 
+                         FROM " . sql_table('poll_data') . " 
+                         WHERE (pollID='$pollID' 
+                         AND optionText<>'') 
+                         ORDER BY voteID");
     
     $sum = 0;
     $j = 0;
@@ -1079,7 +1158,11 @@ function pollMain($pollID, $pollClose)
             include("modules/comments/Config/pollBoth.conf.php");
         }
 
-        list($numcom) = sql_fetch_row(sql_query("SELECT COUNT(*) FROM " . sql_table('posts') . " WHERE forum_id='$forum' AND topic_id='$pollID' AND post_aff='1'"));
+        list($numcom) = sql_fetch_row(sql_query("SELECT COUNT(*) 
+                                                 FROM " . sql_table('posts') . " 
+                                                 WHERE forum_id='$forum' 
+                                                 AND topic_id='$pollID' 
+                                                 AND post_aff='1'"));
 
         $boxContent .= '
         <li class="list-group-item">' . translate("Commentaire(s) : ") . ' <span class="badge rounded-pill bg-secondary float-end">' . $numcom . '</span></li>';
@@ -1115,13 +1198,19 @@ function makeChatBox($pour)
     $une_ligne = false;
 
     if ($dimauto <= 1) {
-        $counter = sql_num_rows(sql_query("SELECT message FROM " . sql_table('chatbox') . " WHERE id='" . $auto[0] . "'")) - 6;
+        $counter = sql_num_rows(sql_query("SELECT message 
+                                           FROM " . sql_table('chatbox') . " 
+                                           WHERE id='" . $auto[0] . "'")) - 6;
 
         if ($counter < 0) {
             $counter = 0;
         }
 
-        $result = sql_query("SELECT username, message, dbname FROM " . sql_table('chatbox') . " WHERE id='" . $auto[0] . "' ORDER BY date ASC LIMIT $counter,6");
+        $result = sql_query("SELECT username, message, dbname 
+                             FROM " . sql_table('chatbox') . " 
+                             WHERE id='" . $auto[0] . "' 
+                             ORDER BY date ASC 
+                             LIMIT $counter, 6");
 
         if ($result) {
             while (list($username, $message, $dbname) = sql_fetch_row($result)) {
@@ -1150,7 +1239,11 @@ function makeChatBox($pour)
             $thing .= '<hr />';
         }
 
-        $result = sql_query("SELECT DISTINCT ip FROM " . sql_table('chatbox') . " WHERE id='" . $auto[0] . "' AND date >= " . (time() - (60 * 2)) . "");
+        $result = sql_query("SELECT DISTINCT ip 
+                             FROM " . sql_table('chatbox') . " 
+                             WHERE id='" . $auto[0] . "' 
+                             AND date >= " . (time() - (60 * 2)) . "");
+
         $numofchatters = sql_num_rows($result);
 
         $thing .= $numofchatters > 0 
@@ -1163,13 +1256,20 @@ function makeChatBox($pour)
             $thing .= '<ul>';
 
             foreach ($auto as $autovalue) {
-                $result = Q_select("SELECT groupe_id, groupe_name FROM " . sql_table('groupes') . " WHERE groupe_id='$autovalue'", 3600);
+                $result = Q_select("SELECT groupe_id, groupe_name 
+                                    FROM " . sql_table('groupes') . " 
+                                    WHERE groupe_id='$autovalue'", 3600);
+
                 $autovalueX = $result[0];
 
                 $PopUp = JavaPopUp("chat.php?id=" . $autovalueX['groupe_id'] . "&auto=" . Crypt::encrypt(serialize($autovalueX['groupe_id'])), "chat" . $autovalueX['groupe_id'], 380, 480);
                 $thing .= "<li><a href=\"javascript:void(0);\" onclick=\"window.open($PopUp);\">" . $autovalueX['groupe_name'] . "</a>";
 
-                $result = sql_query("SELECT DISTINCT ip FROM " . sql_table('chatbox') . " WHERE id='" . $autovalueX['groupe_id'] . "' AND date >= " . (time() - (60 * 3)) . "");
+                $result = sql_query("SELECT DISTINCT ip 
+                                     FROM " . sql_table('chatbox') . " 
+                                     WHERE id='" . $autovalueX['groupe_id'] . "' 
+                                     AND date >= " . (time() - (60 * 3)) . "");
+
                 $numofchatters = sql_num_rows($result);
 
                 if ($numofchatters) {
@@ -1244,11 +1344,17 @@ function instant_members_message()
                 $and = '';
             }
 
-            $result = sql_query("SELECT uid FROM " . sql_table('users') . " WHERE uname='" . $ibid[$i]['username'] . "' $and");
+            $result = sql_query("SELECT uid 
+                                 FROM " . sql_table('users') . " 
+                                 WHERE uname='" . $ibid[$i]['username'] . "' $and");
+
             list($userid) = sql_fetch_row($result);
 
             if ($userid) {
-                $rowQ1 = Q_Select("SELECT rang FROM " . sql_table('users_status') . " WHERE uid='$userid'", 3600);
+                $rowQ1 = Q_Select("SELECT rang 
+                                   FROM " . sql_table('users_status') . " 
+                                   WHERE uid='$userid'", 3600);
+
                 $myrow = $rowQ1[0];
 
                 $rank = $myrow['rang'];
@@ -1256,7 +1362,9 @@ function instant_members_message()
 
                 if ($rank) {
                     if ($rank1 == '') {
-                        if ($rowQ2 = Q_Select("SELECT rank1, rank2, rank3, rank4, rank5 FROM " . sql_table('config'), 86400)) {
+                        if ($rowQ2 = Q_Select("SELECT rank1, rank2, rank3, rank4, rank5 
+                                               FROM " . sql_table('config'), 86400)) 
+                        {
                             $myrow = $rowQ2[0];
                             $rank1 = $myrow['rank1'];
                             $rank2 = $myrow['rank2'];
@@ -1278,7 +1386,11 @@ function instant_members_message()
                     $tmpR = '&nbsp;';
                 }
 
-                $new_messages = sql_num_rows(sql_query("SELECT msg_id FROM " . sql_table('priv_msgs') . " WHERE to_userid = '$userid' AND read_msg='0' AND type_msg='0'"));
+                $new_messages = sql_num_rows(sql_query("SELECT msg_id 
+                                                        FROM " . sql_table('priv_msgs') . " 
+                                                        WHERE to_userid = '$userid' 
+                                                        AND read_msg='0' 
+                                                        AND type_msg='0'"));
                 
                 if ($new_messages > 0) {
                     $PopUp = JavaPopUp("readpmsg_imm.php?op=new_msg", "IMM", 600, 500);
@@ -1291,7 +1403,12 @@ function instant_members_message()
                         $icon .= '</a>';
                     }
                 } else {
-                    $messages = sql_num_rows(sql_query("SELECT msg_id FROM " . sql_table('priv_msgs') . " WHERE to_userid = '$userid' AND type_msg='0' AND dossier='...'"));
+                    $messages = sql_num_rows(sql_query("SELECT msg_id 
+                                                        FROM " . sql_table('priv_msgs') . " 
+                                                        WHERE to_userid = '$userid' 
+                                                        AND type_msg='0' 
+                                                        AND dossier='...'"));
+
                     if ($messages > 0) {
                         $PopUp = JavaPopUp("readpmsg_imm.php?op=msg", "IMM", 600, 500);
                         $PopUp = '<a href="javascript:void(0);" onclick="window.open(' . $PopUp . ');">';
@@ -1318,6 +1435,8 @@ function instant_members_message()
         if ($admin) {
             $ibid = Online::online_members();
 
+            $boxstuff = '';
+            
             if ($ibid[0]) {
                 for ($i = 1; $i <= $ibid[0]; $i++) {
                     $N = $ibid[$i]['username'];

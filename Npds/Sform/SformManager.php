@@ -1278,6 +1278,8 @@ class SformManager implements SformManagerInterface
 
             if (array_key_exists('type', $this->form_fields[$i])) {
 
+                $str = '';
+
                 switch ($this->form_fields[$i]['type']) {
                     case 'text':
                     case 'email':
@@ -1579,13 +1581,20 @@ class SformManager implements SformManagerInterface
         if ($clef != '') {
             $clef = urldecode($clef);
 
-            $result = sql_query("SELECT content FROM " . sql_table('sform') . " WHERE id_form='" . $this->form_title . "' AND id_key='" . $this->form_key . "' AND key_value='" . addslashes($clef) . "' AND passwd='" . $this->form_password_access . "' ORDER BY key_value ASC");
+            $result = sql_query("SELECT content 
+                                 FROM " . sql_table('sform') . " 
+                                 WHERE id_form='" . $this->form_title . "' 
+                                 AND id_key='" . $this->form_key . "' 
+                                 AND key_value='" . addslashes($clef) . "' 
+                                 AND passwd='" . $this->form_password_access . "' 
+                                 ORDER BY key_value ASC");
+
             $tmp = sql_fetch_assoc($result);
 
             if ($tmp) {
                 $ibid = explode("\n", $tmp['content']);
 
-                // settype($op, 'string');
+                // settype($op, 'string'); // $op ???????
 
                 foreach ($ibid as $num => $line) {
                     $op = $this->read_load_sform_data(stripslashes($line), $op);
@@ -1623,7 +1632,11 @@ class SformManager implements SformManagerInterface
      */
     function sform_delete_mysql()
     {
-        $sql = "DELETE FROM " . sql_table('sform') . " WHERE id_form='" . $this->form_title . "' AND id_key='" . $this->form_key . "' AND key_value='" . $this->form_key_value . "'";
+        $sql = "DELETE 
+                FROM " . sql_table('sform') . " 
+                WHERE id_form='" . $this->form_title . "' 
+                AND id_key='" . $this->form_key . "' 
+                AND key_value='" . $this->form_key_value . "'";
         
         if (!$result = sql_query($sql)) {
             return 'Error Sform : Delete DB';
@@ -1641,7 +1654,9 @@ class SformManager implements SformManagerInterface
     {
         $content = $this->write_sform_data($response);
 
-        $sql = "UPDATE " . sql_table('sform') . " SET passwd='" . $this->form_password_access . "', content='$content' WHERE (id_form='" . $this->form_title . "' AND id_key='" . $this->form_key . "' AND key_value='" . $this->form_key_value . "')";
+        $sql = "UPDATE " . sql_table('sform') . " 
+                SET passwd='" . $this->form_password_access . "', content='$content' 
+                WHERE (id_form='" . $this->form_title . "' AND id_key='" . $this->form_key . "' AND key_value='" . $this->form_key_value . "')";
         
         if (!$result = sql_query($sql)) {
             return 'Error Sform : Update DB';
@@ -1660,7 +1675,14 @@ class SformManager implements SformManagerInterface
         if ($clef != "") {
             $clef = urldecode($clef);
 
-            $result = sql_query("SELECT content FROM " . sql_table('sform') . " WHERE id_form='" . $this->form_title . "' AND id_key='" . $this->form_key . "' AND key_value='$clef' AND passwd='" . $this->form_password_access . "' ORDER BY key_value ASC");
+            $result = sql_query("SELECT content 
+                                 FROM " . sql_table('sform') . " 
+                                 WHERE id_form='" . $this->form_title . "' 
+                                 AND id_key='" . $this->form_key . "' 
+                                 AND key_value='$clef' 
+                                 AND passwd='" . $this->form_password_access . "' 
+                                 ORDER BY key_value ASC");
+
             $tmp = sql_fetch_assoc($result);
 
             $analyseur_xml = xml_parser_create();

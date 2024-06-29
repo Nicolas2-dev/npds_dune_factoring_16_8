@@ -68,7 +68,9 @@ class Session implements SessionInterface
         $gulty_robots = array('facebookexternalhit', 'Amazonbot', 'ClaudeBot', 'bingbot', 'Applebot', 'AhrefsBot'); 
         foreach ($gulty_robots as $robot) {
             if (!empty($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], $robot) !== false) {
-                $result = sql_query("SELECT agent FROM " . sql_table('session') . " WHERE agent REGEXP '" . $robot . "'");
+                $result = sql_query("SELECT agent 
+                                     FROM " . sql_table('session') . " 
+                                     WHERE agent REGEXP '" . $robot . "'");
 
                 if (sql_num_rows($result) > 3) {
                     header($_SERVER["SERVER_PROTOCOL"] . ' 429 Too Many Requests');
@@ -79,19 +81,27 @@ class Session implements SessionInterface
         }
         // proto
 
-        $result = sql_query("SELECT time FROM " . sql_table('session') . " WHERE username='$username'");
+        $result = sql_query("SELECT time 
+                             FROM " . sql_table('session') . " 
+                             WHERE username='$username'");
 
         if ($row = sql_fetch_assoc($result)) {
             if ($row['time'] < (time() - 30)) {
-                sql_query("UPDATE " . sql_table('session') . " SET username='$username', time='" . time() . "', host_addr='$ip', guest='$guest', uri='$REQUEST_URI', agent='" . getenv("HTTP_USER_AGENT") . "' WHERE username='$username'");
+                sql_query("UPDATE " . sql_table('session') . " 
+                           SET username='$username', time='" . time() . "', host_addr='$ip', guest='$guest', uri='$REQUEST_URI', agent='" . getenv("HTTP_USER_AGENT") . "' 
+                           WHERE username='$username'");
                 
                 if ($guest == 0) {
                     global $gmt;
-                    sql_query("UPDATE " . sql_table('users') . " SET user_lastvisit='" . (time() + (int)$gmt * 3600) . "' WHERE uname='$username'");
+                    sql_query("UPDATE " . sql_table('users') . " 
+                               SET user_lastvisit='" . (time() + (int)$gmt * 3600) . "' 
+                               WHERE uname='$username'");
                 }
             }
         } else {
-            sql_query("INSERT INTO " . sql_table('session') . " (username, time, host_addr, guest, uri, agent) VALUES ('$username', '" . time() . "', '$ip', '$guest', '$REQUEST_URI', '" . getenv("HTTP_USER_AGENT") . "')");
+            sql_query("INSERT 
+                       INTO " . sql_table('session') . " (username, time, host_addr, guest, uri, agent) 
+                       VALUES ('$username', '" . time() . "', '$ip', '$guest', '$REQUEST_URI', '" . getenv("HTTP_USER_AGENT") . "')");
         }
     }
 

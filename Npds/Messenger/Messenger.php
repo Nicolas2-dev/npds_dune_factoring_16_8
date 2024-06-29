@@ -49,7 +49,10 @@ class Messenger implements MessengerInterface
      */
     public static function writeDB_private_message($to_userid, $image, $subject, $from_userid, $message, $copie)
     {
-        $res = sql_query("SELECT uid, user_langue FROM " . sql_table('users') . " WHERE uname='$to_userid'");
+        $res = sql_query("SELECT uid, user_langue 
+                          FROM " . sql_table('users') . " 
+                          WHERE uname='$to_userid'");
+
         list($to_useridx, $user_languex) = sql_fetch_row($res);
 
         if ($to_useridx == '') {

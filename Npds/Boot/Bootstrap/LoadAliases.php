@@ -10,6 +10,11 @@ use Npds\Boot\AliasLoader;
 class LoadAliases
 {
 
+	/**
+	 * [bootstrap description]
+	 *
+	 * @return  [type]  [return description]
+	 */
 	public function bootstrap()
 	{
         // Initialize the Aliases Loader.

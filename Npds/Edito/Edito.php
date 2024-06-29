@@ -2,6 +2,7 @@
 
 namespace Npds\Edito;
 
+use Npds\Theme\Theme;
 use Npds\Support\Facades\Date;
 use Npds\Support\Facades\Language;
 use Npds\Support\Facades\Metalang;
@@ -54,7 +55,7 @@ class Edito implements EditoInterface
             $ret = false;
 
             if (function_exists("themedito")) {
-                $ret = themedito($Xcontents);
+                $ret = Theme::themedito($Xcontents);
             } else {
                 if (function_exists("theme_centre_box")) {
                     $title = (!$notitle) ? translate("EDITO") : '';

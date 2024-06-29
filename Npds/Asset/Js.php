@@ -51,7 +51,8 @@ class Js implements JsInterface
         $list_json = '';
         $list_json .= 'var ' . $nom_array_js . ' = [';
 
-        $res = Q_select("SELECT " . $nom_champ . " FROM " . sql_table($nom_tabl), $temps_cache);
+        $res = Q_select("SELECT " . $nom_champ . " 
+                         FROM " . sql_table($nom_tabl), $temps_cache);
 
         foreach ($res as $ar_data) {
             foreach ($ar_data as $val_champ) {
@@ -109,7 +110,8 @@ class Js implements JsInterface
         $list_json = '';
         $list_json .= $nom_array_js . ' = [';
 
-        $res = sql_query("SELECT " . $nom_champ . " FROM " . sql_table($nom_tabl) . " " . $req);
+        $res = sql_query("SELECT " . $nom_champ . " 
+                          FROM " . sql_table($nom_tabl) . " " . $req);
 
         while (list($nom_champ) = sql_fetch_row($res)) {
             $list_json .= '\'' . $nom_champ . '\',';

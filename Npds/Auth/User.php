@@ -95,7 +95,8 @@ class User implements UserInterface
         if (($cookie[2] == md5($pass)) and ($pass != '')) {
             
             $result = sql_query("SELECT uid, name, uname, email, femail, url, user_avatar, user_occ, user_from, user_intrest, user_sig, user_viewemail, user_theme, pass, storynum, umode, uorder, thold, noscore, bio, ublockon, ublock, theme, commentmax, user_journal, send_email, is_visible, mns, user_lnl 
-                                 FROM " . sql_table('users') . " WHERE uname='$cookie[1]'");
+                                 FROM " . sql_table('users') . " 
+                                 WHERE uname='$cookie[1]'");
             
             if (sql_num_rows($result) == 1) {
                 $userinfo = sql_fetch_assoc($result);
@@ -185,7 +186,9 @@ class User implements UserInterface
             return "None";
         }
 
-        $rowQ1 = Q_Select("SELECT uname FROM " . sql_table('users') . " WHERE uid='$user_id'", 3600);
+        $rowQ1 = Q_Select("SELECT uname 
+                           FROM " . sql_table('users') . " 
+                           WHERE uid='$user_id'", 3600);
         $modslist = '';
 
         foreach ($rowQ1 as $modnames) {
@@ -208,12 +211,18 @@ class User implements UserInterface
      */
     public static function userIsModerator($uidX, $passwordX, $forum_accessX)
     {
-        $result1 = sql_query("SELECT pass FROM " . sql_table('users') . " WHERE uid = '$uidX'");
+        $result1 = sql_query("SELECT pass 
+                              FROM " . sql_table('users') . " 
+                              WHERE uid = '$uidX'");
+
         $userX = sql_fetch_assoc($result1);
 
         $password = $userX['pass'];
 
-        $result2 = sql_query("SELECT level FROM " . sql_table('users_status') . " WHERE uid = '$uidX'");        
+        $result2 = sql_query("SELECT level 
+                              FROM " . sql_table('users_status') . " 
+                              WHERE uid = '$uidX'");      
+
         $userX = sql_fetch_assoc($result2);
 
         if ((md5($password) == $passwordX) and ($forum_accessX <= $userX['level']) and ($userX['level'] > 1)) {
@@ -232,8 +241,13 @@ class User implements UserInterface
      */
     public static function getUserDataFromId($userid)
     {
-        $sql1 = "SELECT * FROM " . sql_table('users') . " WHERE uid='$userid'";
-        $sql2 = "SELECT * FROM " . sql_table('users_status') . " WHERE uid='$userid'";
+        $sql1 = "SELECT * 
+                 FROM " . sql_table('users') . " 
+                 WHERE uid='$userid'";
+
+        $sql2 = "SELECT * 
+                 FROM " . sql_table('users_status') . " 
+                 WHERE uid='$userid'";
 
         if (!$result = sql_query($sql1)) {
             Error::code('0016');
@@ -257,9 +271,13 @@ class User implements UserInterface
      */
     public static function getUserDataExtendFromId($userid)
     {
-        $sql1 = "SELECT * FROM " . sql_table('users_extend') . " WHERE uid='$userid'";
+        $sql1 = "SELECT * 
+                 FROM " . sql_table('users_extend') . " 
+                 WHERE uid='$userid'";
         /*   
-        $sql2 = "SELECT * FROM ".sql_table('users_status')." WHERE uid='$userid'";
+        $sql2 = "SELECT * 
+                 FROM ".sql_table('users_status')." 
+                 WHERE uid='$userid'";
     
         if (!$result = sql_query($sql1)) {
             code('0016');
@@ -271,6 +289,7 @@ class User implements UserInterface
             $myrow = array_merge($myrow,(array) sql_fetch_assoc(sql_query($sql1)));
         }
         */
+
         $myrow = (array)sql_fetch_assoc(sql_query($sql1));
     
         return $myrow;
@@ -285,7 +304,9 @@ class User implements UserInterface
      */
     public static function getUserData($username)
     {
-        $sql = "SELECT * FROM " . sql_table('users') . " WHERE uname='$username'";
+        $sql = "SELECT * 
+                FROM " . sql_table('users') . " 
+                WHERE uname='$username'";
 
         if (!$result = sql_query($sql)) {
             Error::code('0016');

@@ -54,9 +54,10 @@ class Date implements DateInterface
             IntlDateFormatter::GREGORIAN,
         );
         
-        $date_au_format = ucfirst(htmlentities(datefmt_format($fmt, strtotime($time)), ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, cur_charset));
-
-        return ($date_au_format);
+        return ucfirst(
+            htmlentities(
+                datefmt_format($fmt, strtotime($time)), ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, cur_charset)
+        );
     }
 
     /**

@@ -11,13 +11,19 @@ use Npds\Execption\ExecptionHandler;
 class DebugMode
 {
 
+	/**
+	 * [bootstrap description]
+	 *
+	 * @return  [type]  [return description]
+	 */
 	public function bootstrap()
 	{
 		// changer la valeur a true pour activé le debugeur false pour désactivé.
 		if (Config::get('debug')) {
 
 			// Modify the report level of PHP
-			 Debug::error_reporting('all');
+			Debug::reporting('all');
+
 			error_reporting(-1);
 
 			ini_set('display_errors', 'Off');   

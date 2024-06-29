@@ -198,7 +198,10 @@ class Mailer implements MailerInterface
      */
     public static function copy_to_email($to_userid, $sujet, $message)
     {
-        $result = sql_query("SELECT email,send_email FROM " . sql_table('users') . " WHERE uid='$to_userid'");
+        $result = sql_query("SELECT email,send_email 
+                             FROM " . sql_table('users') . " 
+                             WHERE uid='$to_userid'");
+
         list($mail, $avertir_mail) = sql_fetch_row($result);
 
         if (($mail) and ($avertir_mail == 1)) {
@@ -270,8 +273,16 @@ class Mailer implements MailerInterface
         if ($username) {
             $userdata = explode(':', base64_decode($user));
 
-            $total_messages = sql_num_rows(sql_query("SELECT msg_id FROM " . sql_table('priv_msgs') . " WHERE to_userid = '$userdata[0]' AND type_msg='0'"));
-            $new_messages = sql_num_rows(sql_query("SELECT msg_id FROM " . sql_table('priv_msgs') . " WHERE to_userid = '$userdata[0]' AND read_msg='0' AND type_msg='0'"));
+            $total_messages = sql_num_rows(sql_query("SELECT msg_id 
+                                                      FROM " . sql_table('priv_msgs') . " 
+                                                      WHERE to_userid = '$userdata[0]' 
+                                                      AND type_msg='0'"));
+
+            $new_messages = sql_num_rows(sql_query("SELECT msg_id 
+                                                    FROM " . sql_table('priv_msgs') . " 
+                                                    WHERE to_userid = '$userdata[0]' 
+                                                    AND read_msg='0' 
+                                                    AND type_msg='0'"));
             
             if ($total_messages > 0) {
                 if ($new_messages > 0) {

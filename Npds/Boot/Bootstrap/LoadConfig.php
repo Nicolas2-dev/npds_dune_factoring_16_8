@@ -9,6 +9,11 @@ use Npds\Config\Config;
 class LoadConfig
 {
 
+    /**
+     * [bootstrap description]
+     *
+     * @return  [type]  [return description]
+     */
 	public function bootstrap()
 	{
         // Load the configuration files.

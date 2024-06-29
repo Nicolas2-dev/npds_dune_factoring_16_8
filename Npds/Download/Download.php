@@ -231,7 +231,9 @@ class Download implements DownloadInterface
         <div class="d-flex flex-column flex-sm-row flex-wrap justify-content-between my-3 border rounded">
             <p class="p-2 mb-0 ">';
 
-        $acounter = sql_query("SELECT COUNT(*) FROM " . sql_table('downloads'));
+        $acounter = sql_query("SELECT COUNT(*) 
+                               FROM " . sql_table('downloads'));
+
         list($acount) = sql_fetch_row($acounter);
 
         if (($cate == translate("Tous")) or ($cate == '')) {
@@ -248,7 +250,10 @@ class Download implements DownloadInterface
             <span class="badge bg-secondary ms-2 float-end my-2">' . $acount . '</span>';
         }
 
-        $result = sql_query("SELECT DISTINCT dcategory, COUNT(dcategory) FROM " . sql_table('downloads') . " GROUP BY dcategory ORDER BY dcategory");
+        $result = sql_query("SELECT DISTINCT dcategory, COUNT(dcategory) 
+                             FROM " . sql_table('downloads') . " 
+                             GROUP BY dcategory 
+                             ORDER BY dcategory");
 
         echo '</p>';
 
@@ -543,9 +548,12 @@ class Download implements DownloadInterface
         echo '<tbody>';
 
         if ($dcategory == translate("Tous")) {
-            $sql = "SELECT COUNT(*) FROM " . sql_table('downloads');
+            $sql = "SELECT COUNT(*) 
+                    FROM " . sql_table('downloads');
         } else {
-            $sql = "SELECT COUNT(*) FROM " . sql_table('downloads') . " WHERE dcategory='" . addslashes($dcategory) . "'";
+            $sql = "SELECT COUNT(*) 
+                    FROM " . sql_table('downloads') . " 
+                    WHERE dcategory='" . addslashes($dcategory) . "'";
         }
 
         $result = sql_query($sql);
@@ -585,9 +593,16 @@ class Download implements DownloadInterface
         // settype($perpage, 'integer');
 
         if ($dcategory == translate("Tous")) {
-            $sql = "SELECT * FROM " . sql_table('downloads') . " ORDER BY $sortby $sortorder LIMIT $offset, $perpage";
+            $sql = "SELECT * 
+                    FROM " . sql_table('downloads') . " 
+                    ORDER BY $sortby $sortorder 
+                    LIMIT $offset, $perpage";
         } else {
-            $sql = "SELECT * FROM " . sql_table('downloads') . " WHERE dcategory='" . addslashes($dcategory) . "' ORDER BY $sortby $sortorder LIMIT $offset, $perpage";
+            $sql = "SELECT * 
+                    FROM " . sql_table('downloads') . " 
+                    WHERE dcategory='" . addslashes($dcategory) . "' 
+                    ORDER BY $sortby $sortorder 
+                    LIMIT $offset, $perpage";
         }
 
         $result = sql_query($sql);

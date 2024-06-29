@@ -7,6 +7,11 @@ namespace Npds\Boot\Bootstrap;
 class CheckInstall
 {
 
+    /**
+     * [bootstrap description]
+     *
+     * @return  [type]  [return description]
+     */
 	public function bootstrap()
 	{
         // Modification pour IZ-Xinstall - EBH - JPB & PHR

@@ -227,7 +227,9 @@ function MM_membre_nom()
         $uname = Metalang::arg_filter($cookie[1]);
         $MT_name = "";
 
-        $rowQ = Q_select("SELECT name FROM " . sql_table('users') . " WHERE uname='$uname'", 3600);
+        $rowQ = Q_select("SELECT name 
+                          FROM " . sql_table('users') . " 
+                          WHERE uname='$uname'", 3600);
         $myrow = $rowQ[0];
 
         $MT_name = $myrow['name'];
@@ -319,7 +321,10 @@ function MM_articleID($arg)
 
     $arg = Metalang::arg_filter($arg);
 
-    $rowQ = Q_select("SELECT title FROM " . sql_table('stories') . " WHERE sid='$arg'", 3600);
+    $rowQ = Q_select("SELECT title 
+                      FROM " . sql_table('stories') . " 
+                      WHERE sid='$arg'", 3600);
+
     $myrow = $rowQ[0];
 
     return "<a href=\"$nuke_url/article.php?sid=$arg\">" . $myrow['title'] . "</a>";
@@ -423,7 +428,10 @@ function MM_headline($arg)
  */
 function MM_list_mns()
 {
-    $query = sql_query("SELECT uname FROM " . sql_table('users') . " WHERE mns='1'");
+    $query = sql_query("SELECT uname 
+                        FROM " . sql_table('users') . " 
+                        WHERE mns='1'");
+
     $MT_mns = "<ul class=\"list-group list-group-flush\">";
 
     while (list($uname) = sql_fetch_row($query)) {
@@ -442,7 +450,11 @@ function MM_list_mns()
  */
 function MM_LastMember()
 {
-    $query = sql_query("SELECT uname FROM " . sql_table('users') . " ORDER BY uid DESC LIMIT 0,1");
+    $query = sql_query("SELECT uname 
+                        FROM " . sql_table('users') . " 
+                        ORDER BY uid DESC 
+                        LIMIT 0,1");
+
     $result = sql_fetch_row($query);
 
     return $result[0];
@@ -599,7 +611,10 @@ function MM_debugOFF()
  */
 function MM_forum_all()
 {
-    $rowQ1 = Q_Select("SELECT * FROM " . sql_table('catagories') . " ORDER BY cat_id", 3600);
+    $rowQ1 = Q_Select("SELECT * 
+                       FROM " . sql_table('catagories') . " 
+                       ORDER BY cat_id", 3600);
+
     $Xcontent = @Forum::forum($rowQ1);
 
     return $Xcontent;
@@ -624,7 +639,10 @@ function MM_forum_categorie($arg)
 
     $sql = substr($sql, 0, -4);
 
-    $rowQ1 = Q_Select("SELECT * FROM " . sql_table('catagories') . " WHERE $sql", 3600);
+    $rowQ1 = Q_Select("SELECT * 
+                       FROM " . sql_table('catagories') . " 
+                       WHERE $sql", 3600);
+
     $Xcontent = @Forum::forum($rowQ1);
 
     return $Xcontent;
@@ -856,7 +874,10 @@ function MM_admin_infos($arg)
 {
     $arg = Metalang::arg_filter($arg);
 
-    $rowQ1 = Q_select("SELECT url, email FROM " . sql_table('authors') . " WHERE aid='$arg'", 86400);
+    $rowQ1 = Q_select("SELECT url, email 
+                       FROM " . sql_table('authors') . " 
+                       WHERE aid='$arg'", 86400);
+
     $myrow = $rowQ1[0];
 
     if ($myrow['url'] != '') {
@@ -891,7 +912,7 @@ function MM_theme_img($arg)
  */
 function MM_rotate_img($arg)
 {
-    mt_srand((float)microtime() * 1000000);
+    mt_srand((float) microtime() * 1000000);
 
     $arg = Metalang::arg_filter($arg);
     $tab_img = explode(",", $arg);
@@ -1018,7 +1039,10 @@ function MM_top_categories($arg)
     $content = '';
     $arg = Metalang::arg_filter($arg);
 
-    $result = sql_query("SELECT catid, title, counter FROM " . sql_table('stories_cat') . " order by counter DESC limit 0, $arg");
+    $result = sql_query("SELECT catid, title, counter 
+                         FROM " . sql_table('stories_cat') . " 
+                         ORDER BY counter DESC 
+                         LIMIT 0, $arg");
 
     while (list($catid, $title, $counter) = sql_fetch_row($result)) {
         if ($counter > 0) {
@@ -1044,7 +1068,10 @@ function MM_top_sections($arg)
 
     $arg = Metalang::arg_filter($arg);
 
-    $result = sql_query("SELECT artid, title, counter FROM " . sql_table('seccont') . " ORDER BY counter DESC LIMIT 0,$arg");
+    $result = sql_query("SELECT artid, title, counter 
+                         FROM " . sql_table('seccont') . " 
+                         ORDER BY counter DESC 
+                         LIMIT 0, $arg");
 
     while (list($artid, $title, $counter) = sql_fetch_row($result)) {
         $content .= '<li class="ms-4 my-1"><a href="sections.php?op=viewarticle&amp;artid=' . $artid . '" >' . Language::aff_langue($title) . '</a>&nbsp;<span class="badge bg-secondary float-end">' . Str::wrh($counter) . ' ' . translate("Fois") . '</span></li>';
@@ -1068,7 +1095,10 @@ function MM_top_reviews($arg)
 
     $arg = Metalang::arg_filter($arg);
 
-    $result = sql_query("SELECT id, title, hits FROM " . sql_table('reviews') . " ORDER BY hits DESC LIMIT 0,$arg");
+    $result = sql_query("SELECT id, title, hits 
+                         FROM " . sql_table('reviews') . " 
+                         ORDER BY hits DESC 
+                         LIMIT 0,$arg");
 
     while (list($id, $title, $hits) = sql_fetch_row($result)) {
         if ($hits > 0) {
@@ -1094,7 +1124,10 @@ function MM_top_authors($arg)
 
     $arg = Metalang::arg_filter($arg);
 
-    $result = sql_query("SELECT aid, counter FROM " . sql_table('authors') . " ORDER BY counter DESC LIMIT 0,$arg");
+    $result = sql_query("SELECT aid, counter 
+                         FROM " . sql_table('authors') . " 
+                         ORDER BY counter DESC 
+                         LIMIT 0,$arg");
 
     while (list($aid, $counter) = sql_fetch_row($result)) {
         if ($counter > 0) {
@@ -1120,7 +1153,10 @@ function MM_top_polls($arg)
 
     $arg = Metalang::arg_filter($arg);
 
-    $result = sql_query("SELECT pollID, pollTitle, voters FROM " . sql_table('poll_desc') . " ORDER BY voters DESC LIMIT 0,$arg");
+    $result = sql_query("SELECT pollID, pollTitle, voters 
+                         FROM " . sql_table('poll_desc') . " 
+                         ORDER BY voters DESC 
+                         LIMIT 0,$arg");
 
     while (list($pollID, $pollTitle, $voters) = sql_fetch_row($result)) {
         if ($voters > 0) {
@@ -1146,7 +1182,10 @@ function MM_top_storie_authors($arg)
 
     $arg = Metalang::arg_filter($arg);
 
-    $result = sql_query("SELECT uname, counter FROM " . sql_table('users') . " ORDER BY counter DESC LIMIT 0,$arg");
+    $result = sql_query("SELECT uname, counter 
+                         FROM " . sql_table('users') . " 
+                         ORDER BY counter DESC 
+                         LIMIT 0,$arg");
 
     while (list($uname, $counter) = sql_fetch_row($result)) {
         if ($counter > 0) {
@@ -1171,11 +1210,16 @@ function MM_topic_all()
     $aff = '';
     $aff = '<div class="">';
 
-    $result = sql_query("SELECT topicid, topicname, topicimage, topictext FROM " . sql_table('topics') . " ORDER BY topicname");
+    $result = sql_query("SELECT topicid, topicname, topicimage, topictext 
+                         FROM " . sql_table('topics') . " 
+                         ORDER BY topicname");
 
     while (list($topicid, $topicname, $topicimage, $topictext) = sql_fetch_row($result)) {
 
-        $resultn = sql_query("SELECT COUNT(*) AS total FROM " . sql_table('stories') . " WHERE topic='$topicid'");
+        $resultn = sql_query("SELECT COUNT(*) AS total 
+                              FROM " . sql_table('stories') . " 
+                              WHERE topic='$topicid'");
+
         $total_news = sql_fetch_assoc($resultn);
 
         $aff .= '
@@ -1260,10 +1304,15 @@ function MM_topic_subscribe($arg)
         if ($user) {
             $aff = '<div class="mb-3 row">';
 
-            $result = sql_query("SELECT topicid, topictext, topicname FROM " . sql_table('topics') . " ORDER BY topicname");
+            $result = sql_query("SELECT topicid, topictext, topicname 
+                                 FROM " . sql_table('topics') . " 
+                                 ORDER BY topicname");
 
             while (list($topicid, $topictext, $topicname) = sql_fetch_row($result)) {
-                $resultX = sql_query("SELECT topicid FROM " . sql_table('subscribe') . " WHERE uid='$cookie[0]' AND topicid='$topicid'");
+                $resultX = sql_query("SELECT topicid 
+                                      FROM " . sql_table('subscribe') . " 
+                                      WHERE uid='$cookie[0]' 
+                                      AND topicid='$topicid'");
 
                 if (sql_num_rows($resultX) == "1") {
                     $checked = 'checked';
@@ -1398,7 +1447,12 @@ function MM_forumP()
 	.'</tr>';
 
 	/*Requete liste dernier post*/
-	$result = sql_query("SELECT MAX(post_id) FROM ". sql_table('posts') ." WHERE forum_id > 0 GROUP BY topic_id ORDER BY MAX(post_id) DESC LIMIT 0,$maxcount");
+	$result = sql_query("SELECT MAX(post_id) 
+                         FROM ". sql_table('posts') ." 
+                         WHERE forum_id > 0 
+                         GROUP BY topic_id 
+                         ORDER BY MAX(post_id) DESC 
+                         LIMIT 0,$maxcount");
 
 	while (list($post_id) = sql_fetch_row($result))
 	{
@@ -1435,11 +1489,19 @@ function MM_forumP()
 		if ($ok_affich)
 		{
 			/*Nbre de postes par sujet*/
-			$TableRep = sql_query("SELECT * FROM ". sql_table('posts') ." WHERE forum_id > 0 AND topic_id = '$topic_id'");
+			$TableRep = sql_query("SELECT * 
+                                   FROM ". sql_table('posts') ."
+                                   WHERE forum_id > 0 
+                                   AND topic_id = '$topic_id'");
+
 			$replys = sql_num_rows($TableRep)-1;
 
 			/*Gestion lu / non lu*/
-			$sqlR = "SELECT rid FROM ". sql_table('forum_read') ." WHERE topicid = '$topic_id' AND uid = '$cookie[0]' AND status != '0'";
+			$sqlR = "SELECT rid 
+                     FROM ". sql_table('forum_read') ." 
+                     WHERE topicid = '$topic_id' 
+                     AND uid = '$cookie[0]' 
+                     AND status != '0'";
 
 			if ($ibid = Theme::theme_image("forum/icons/hot_red_folder.gif")) {
                 $imgtmpHR = $ibid;
@@ -1532,7 +1594,12 @@ function MM_forumL()
 	.'</tr>';
 
 	/*Requete liste dernier post*/
-	$result = sql_query("SELECT MAX(post_id) FROM ". sql_table('posts') ." WHERE forum_id > 0 GROUP BY topic_id ORDER BY MAX(post_id) DESC LIMIT 0,$maxcount");
+	$result = sql_query("SELECT MAX(post_id) 
+                         FROM ". sql_table('posts') ." 
+                         WHERE forum_id > 0 
+                         GROUP BY topic_id 
+                         ORDER BY MAX(post_id) DESC 
+                         LIMIT 0,$maxcount");
 
 	while (list($post_id) = sql_fetch_row($result))
 	{
@@ -1566,11 +1633,19 @@ function MM_forumL()
 		if ($ok_affich)
 		{
 			/*Nbre de postes par sujet*/
-			$TableRep = sql_query("SELECT * FROM ". sql_table('posts') ." WHERE forum_id > 0 AND topic_id = '$topic_id'");
+			$TableRep = sql_query("SELECT * 
+                                   FROM ". sql_table('posts') ." 
+                                   WHERE forum_id > 0 
+                                   AND topic_id = '$topic_id'");
+
 			$replys = sql_num_rows($TableRep)-1;
 
 			/*Gestion lu / non lu*/
-			$sqlR = "SELECT rid FROM ". sql_table('forum_read') ." WHERE topicid = '$topic_id' AND uid = '$cookie[0]' AND status != '0'";
+			$sqlR = "SELECT rid 
+                     FROM ". sql_table('forum_read') ." 
+                     WHERE topicid = '$topic_id' 
+                     AND uid = '$cookie[0]' 
+                     AND status != '0'";
 
 			if ($ibid = Theme::theme_image("forum/icons/hot_red_folder.gif")) {
                 $imgtmpHR = $ibid;

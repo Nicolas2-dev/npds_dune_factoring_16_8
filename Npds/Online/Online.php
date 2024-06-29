@@ -80,7 +80,9 @@ class Online implements OnlineInterface
         $guest_online_num = 0;
         $member_online_num = 0;
 
-        $result = sql_query("SELECT COUNT(username) AS TheCount, guest FROM " . sql_table('session') . " GROUP BY guest");
+        $result = sql_query("SELECT COUNT(username) AS TheCount, guest 
+                             FROM " . sql_table('session') . " 
+                             GROUP BY guest");
 
         while ($TheResult = sql_fetch_assoc($result)) {
             if ($TheResult['guest'] == 0) {
@@ -109,7 +111,10 @@ class Online implements OnlineInterface
      */    
     public static function online_members()
     {
-        $result = sql_query("SELECT username, guest, time FROM " . sql_table('session') . " WHERE guest='0' ORDER BY username ASC");
+        $result = sql_query("SELECT username, guest, time 
+                             FROM " . sql_table('session') . " 
+                             WHERE guest='0' 
+                             ORDER BY username ASC");
 
         $i = 0;
         $members_online[$i] = sql_num_rows($result);

@@ -50,8 +50,9 @@ function SQL_escape_string($arr)
 {
     global $dblink;
 
-    if (function_exists("mysqli_real_escape_string"))
+    if (function_exists("mysqli_real_escape_string")) {
         @mysqli_real_escape_string($dblink, $arr);
+    }
     
     return $arr;
 }
@@ -67,18 +68,20 @@ function sql_connect()
 
     $config = Config::get('database');
 
-    if (($config['mysql_p']) or (!isset($config['mysql_p'])))
+    if (($config['mysql_p']) or (!isset($config['mysql_p']))) {
         $dblink = @mysqli_connect('p:' . $config['dbhost'], $config['dbuname'], $config['dbpass']);
-    else
+    } else {
         $dblink = @mysqli_connect($config['dbhost'], $config['dbuname'], $config['dbpass']);
+    }
 
-    if (!$dblink)
+    if (!$dblink) {
         return false;
-    else {
-        if (!@mysqli_select_db($dblink, $config['dbname']))
+    } else {
+        if (!@mysqli_select_db($dblink, $config['dbname'])) {
             return false;
-        else
+        } else {
             return $dblink;
+        }
     }
 }
  
@@ -120,10 +123,11 @@ function sql_query($sql)
     global $sql_nbREQ, $dblink;
 
     $sql_nbREQ++;
-    if (!$query_id = @mysqli_query($dblink, SQL_escape_string($sql)))
+    if (!$query_id = @mysqli_query($dblink, SQL_escape_string($sql))) {
         return false;
-    else
+    } else {
         return $query_id;
+    }
 }
  
 /**
@@ -279,10 +283,11 @@ function sql_select_db()
 {
     global $dbname, $dblink;
 
-    if (!@mysqli_select_db($dblink, $dbname))
+    if (!@mysqli_select_db($dblink, $dbname)) {
         return false;
-    else
+    } else {
         return true;
+    }
 }
 
 /**
@@ -294,8 +299,9 @@ function sql_select_db()
  */
 function sql_free_result($q_id)
 {
-    if ($q_id instanceof mysqli_result)
+    if ($q_id instanceof mysqli_result) {
         return @mysqli_free_result($q_id);
+    }
 }
 
 /**
@@ -307,7 +313,7 @@ function sql_close()
 {
     global $dblink, $mysql_p;  
 
-    if (!$mysql_p)
+    if (!$mysql_p) {
         return @mysqli_close($dblink);
+    }
 }
-

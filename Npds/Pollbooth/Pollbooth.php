@@ -53,7 +53,11 @@ class Pollbooth implements PollboothInterface
                 pollMain($ibid, $pollClose);
             }
 
-        } elseif ($result = sql_query("SELECT pollID FROM " . sql_table('poll_data') . " ORDER BY pollID DESC LIMIT 1")) {
+        } elseif ($result = sql_query("SELECT pollID 
+                                       FROM " . sql_table('poll_data') . " 
+                                       ORDER BY pollID DESC 
+                                       LIMIT 1")) 
+        {
             list($pollID) = sql_fetch_row($result);
             list($ibid, $pollClose) = static::pollSecur($pollID);
             
@@ -77,7 +81,9 @@ class Pollbooth implements PollboothInterface
         //$pollIDX = false;
 
         $pollClose = '';
-        $result = sql_query("SELECT pollType FROM " . sql_table('poll_data') . " WHERE pollID='$pollID'");
+        $result = sql_query("SELECT pollType 
+                             FROM " . sql_table('poll_data') . " 
+                             WHERE pollID='$pollID'");
 
         if (sql_num_rows($result)) {
             list($pollType) = sql_fetch_row($result);
