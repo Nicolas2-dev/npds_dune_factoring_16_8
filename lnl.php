@@ -1,0 +1,247 @@
+<?php
+
+use Npds\Support\Facades\Log;
+use Npds\Support\Facades\Url;
+use Npds\Support\Facades\Spam;
+use Npds\Support\Facades\Mailer;
+use Npds\Support\Facades\Request;
+
+
+if (!function_exists("Mysql_Connexion")) {
+    include("Bootstrap/Boot.php");
+}
+
+/**
+ * [SuserCheck description]
+ *
+ * @param   [type]  $email  [$email description]
+ *
+ * @return  [type]          [return description]
+ */
+function SuserCheck($email)
+{
+    global $stop;
+
+    $stop = '';
+
+    if ((!$email) || ($email == '') || (!preg_match('#^[_\.0-9a-z-]+@[0-9a-z-\.]+\.+[a-z]{2,4}$#i', $email))) {
+        $stop = translate("Erreur : Email invalide");
+    }
+
+    if (strrpos($email, ' ') > 0) {
+        $stop = translate("Erreur : une adresse Email ne peut pas contenir d'espaces");
+    }
+
+    if (Mailer::checkdnsmail($email) === false) {
+        $stop = translate("Erreur : DNS ou serveur de mail incorrect");
+    }
+
+    if (sql_num_rows(sql_query("SELECT email 
+                                FROM " . sql_table('users') . " 
+                                WHERE email='$email'")) > 0) 
+    {
+        $stop = translate("Erreur : adresse Email déjà utilisée");
+    }
+
+    if (sql_num_rows(sql_query("SELECT email 
+                                FROM " . sql_table('lnl_outside_users') . " 
+                                WHERE email='$email'")) > 0) 
+    {
+        if (sql_num_rows(sql_query("SELECT email 
+                                    FROM " . sql_table('lnl_outside_users') . " 
+                                    WHERE email='$email' 
+                                    AND status='NOK'")) > 0) 
+    {
+            sql_query("DELETE FROM " . sql_table('lnl_outside_users') . " 
+                       WHERE email='$email'");
+        } else {
+            $stop = translate("Erreur : adresse Email déjà utilisée");
+        }
+    }
+
+    return $stop;
+}
+
+/**
+ * [error_handler description]
+ *
+ * @param   [type]  $ibid  [$ibid description]
+ *
+ * @return  [type]         [return description]
+ */
+function error_handler($ibid)
+{
+    echo '
+    <h2>' . translate("La lettre") . '</h2>
+    <hr />
+    <p class="lead mb-2">' . translate("Merci d'entrer l'information en fonction des spécifications") . '</p>
+    <div class="alert alert-danger">' . $ibid . '</div>
+    <a href="index.php" class="btn btn-outline-secondary">' . translate("Retour en arrière") . '</a>';
+}
+
+/**
+ * [subscribe description]
+ *
+ * @param   [type]  $var  [$var description]
+ *
+ * @return  [type]        [return description]
+ */
+function subscribe($var)
+{
+    if ($var != '') {
+        include("header.php");
+
+        echo '
+        <h2>' . translate("La lettre") . '</h2>
+        <hr />
+        <p class="lead mb-2">' . translate("Gestion de vos abonnements") . ' : <strong>' . $var . '</strong></p>
+        <form action="lnl.php" method="POST">
+            ' . Spam::Q_spambot() . '
+            <input type="hidden" name="email" value="' . $var . '" />
+            <input type="hidden" name="op" value="subscribeOK" />
+            <input type="submit" class="btn btn-outline-primary me-2" value="' . translate("Valider") . '" />
+            <a href="index.php" class="btn btn-outline-secondary">' . translate("Retour en arrière") . '</a>
+        </form>';
+
+        include("footer.php");
+    } else
+        header("location: index.php");
+}
+
+/**
+ * [subscribe_ok description]
+ *
+ * @param   [type]  $xemail  [$xemail description]
+ *
+ * @return  [type]           [return description]
+ */
+function subscribe_ok($xemail)
+{
+    global $stop;
+
+    include("header.php");
+
+    if ($xemail != '') {
+        SuserCheck($xemail);
+
+        if ($stop == '') {
+            $host_name = Request::getip();
+            $timeX = date("Y-m-d H:m:s", time());
+
+            // Troll Control
+            list($troll) = sql_fetch_row(sql_query("SELECT COUNT(*) 
+                                                    FROM " . sql_table('lnl_outside_users') . " 
+                                                    WHERE (host_name='$host_name') 
+                                                    AND (to_days(now()) - to_days(date) < 3)"));
+            
+            if ($troll < 6) {
+                sql_query("INSERT INTO " . sql_table('lnl_outside_users') . " 
+                           VALUES ('$xemail', '$host_name', '$timeX', 'OK')");
+                
+                // Email validation + url to unsubscribe
+                global $sitename, $nuke_url;
+
+                $subject = html_entity_decode(translate("La lettre"), ENT_COMPAT | ENT_HTML401, cur_charset) . ' / ' . $sitename;
+                $message = translate("Merci d'avoir consacré du temps pour vous enregistrer.") . '<br /><br />' . translate("Pour supprimer votre abonnement à notre lettre, merci d'utiliser") . ' : <br />' . $nuke_url . '/lnl.php?op=unsubscribe&email=' . $xemail . '<br /><br />';
+                
+                include("signat.php");
+
+                Mailer::send_email($xemail, $subject, $message, '', true, 'html', '');
+                
+                echo '
+                <div class="alert alert-success">' . translate("Merci d'avoir consacré du temps pour vous enregistrer.") . '</div>
+                <a href="index.php">' . translate("Retour en arrière") . '</a>';
+            } else {
+                $stop = translate("Compte ou adresse IP désactivée. Cet émetteur a participé plus de x fois dans les dernières heures, merci de contacter le webmaster pour déblocage.") . "<br />";
+                error_handler($stop);
+            }
+        } else {
+            error_handler($stop);
+        }
+    } else {
+        error_handler(translate("Cette donnée ne doit pas être vide.") . "<br />");
+    }
+
+    include("footer.php");
+}
+
+/**
+ * [unsubscribe description]
+ *
+ * @param   [type]  $xemail  [$xemail description]
+ *
+ * @return  [type]           [return description]
+ */
+function unsubscribe($xemail)
+{
+    if ($xemail != '') {
+        if ((!$xemail) || ($xemail == '') || (!preg_match('#^[_\.0-9a-z-]+@[0-9a-z-\.]+\.+[a-z]{2,4}$#i', $xemail))) {
+            header("location: index.php");
+        }
+
+        if (strrpos($xemail, ' ') > 0) {
+            header("location: index.php");
+        }
+
+        if (sql_num_rows(sql_query("SELECT email 
+                                    FROM " . sql_table('lnl_outside_users') . " 
+                                    WHERE email='$xemail'")) > 0) 
+        {
+            $host_name = Request::getip();
+
+            // Troll Control
+            list($troll) = sql_fetch_row(sql_query("SELECT COUNT(*) 
+                                                    FROM " . sql_table('lnl_outside_users') . " 
+                                                    WHERE (host_name='$host_name') 
+                                                    AND (to_days(now()) - to_days(date) < 3)"));
+            
+            if ($troll < 6) {
+                sql_query("UPDATE " . sql_table('lnl_outside_users') . " 
+                           SET status='NOK' 
+                           WHERE email='$xemail'");
+
+                include("header.php");
+
+                echo '
+                <div class="alert alert-success">' . translate("Merci") . '</div>
+                <a href="index.php">' . translate("Retour en arrière") . '</a>';
+
+                include("footer.php");
+            } else {
+                include("header.php");
+
+                $stop = translate("Compte ou adresse IP désactivée. Cet émetteur a participé plus de x fois dans les dernières heures, merci de contacter le webmaster pour déblocage.") . "<br />";
+                error_handler($stop);
+
+                include("footer.php");
+            }
+        } else {
+            Url::redirect_url("index.php");
+        }
+    } else {
+        Url::redirect_url("index.php");
+    }
+}
+
+// settype($op, 'string');
+
+switch ($op) {
+    case 'subscribe':
+        subscribe($email);
+        break;
+
+    case 'subscribeOK':
+        //anti_spambot
+        if (!Spam::R_spambot($asb_question, $asb_reponse, "")) {
+            Log::Ecr_Log("security", "LNL Anti-Spam : email=" . $email, "");
+            
+            Url::redirect_url("index.php");
+            die();
+        }
+        subscribe_ok($email);
+        break;
+
+    case 'unsubscribe':
+        unsubscribe($email);
+        break;
+}

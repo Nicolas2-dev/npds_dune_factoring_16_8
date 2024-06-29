@@ -1,0 +1,23 @@
+{
+    "name": "nicol/revolution_16",
+    "autoload": {
+        "psr-4": {
+            "App\\": "./",
+            "Npds\\": "Npds/"
+        },
+        "files": [
+            "Npds/Support/helpers.php",
+            "Npds/Support/Boxe.php",
+            "Npds/Support/Metafunction.php"
+        ]
+    },
+    "authors": [
+        {
+            "name": "nicolas2",
+            "email": "nicolas.l.devoy@free.fr"
+        }
+    ],
+    "require": {
+        "phpmailer/phpmailer": "^6.9"
+    }
+}
