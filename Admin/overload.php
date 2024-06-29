@@ -4,8 +4,9 @@ use Npds\Support\Facades\Css;
 use Npds\Support\Facades\Log;
 
 
-if (!function_exists('admindroits'))
+if (!function_exists('admindroits')) {
     include('die.php');
+}
 
 $f_meta_nom = 'supercache';
 $f_titre = adm_translate("SuperCache");
@@ -17,6 +18,21 @@ admindroits($aid, $f_meta_nom);
 global $language;
 $hlpfile = "manuels/$language/overload.html";
 
+/**
+ * [save_supercache description]
+ *
+ * @param   [type]  $xsupercache    [$xsupercache description]
+ * @param   [type]  $xt_index       [$xt_index description]
+ * @param   [type]  $xt_article     [$xt_article description]
+ * @param   [type]  $xt_sections    [$xt_sections description]
+ * @param   [type]  $xt_faq         [$xt_faq description]
+ * @param   [type]  $xt_links       [$xt_links description]
+ * @param   [type]  $xt_forum       [$xt_forum description]
+ * @param   [type]  $xt_memberlist  [$xt_memberlist description]
+ * @param   [type]  $xt_modules     [$xt_modules description]
+ *
+ * @return  [type]                  [return description]
+ */
 function save_supercache($xsupercache, $xt_index, $xt_article, $xt_sections, $xt_faq, $xt_links, $xt_forum, $xt_memberlist, $xt_modules)
 {
     $line = "/************************************************************************/\n";
@@ -69,6 +85,11 @@ function save_supercache($xsupercache, $xt_index, $xt_article, $xt_sections, $xt
     fclose($file);
 }
 
+/**
+ * [main description]
+ *
+ * @return  [type]  [return description]
+ */
 function main()
 {
     global $hlpfile, $radminsuper, $f_meta_nom, $f_titre, $adminimg;
@@ -90,6 +111,7 @@ function main()
 
     $cky = '';
     $ckn = '';
+
     if ($SuperCache == 1) {
         $cky = 'checked="checked"';
         $ckn = '';
@@ -289,6 +311,7 @@ function main()
 }
 
 switch ($op) {
+    
     case 'supercache_save':
         save_supercache($xsupercache, $xt_index, $xt_article, $xt_sections, $xt_faq, $xt_links, $xt_forum, $xt_memberlist, $xt_modules);
 

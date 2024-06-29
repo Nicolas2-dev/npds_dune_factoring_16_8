@@ -5,7 +5,8 @@ if (!function_exists("Mysql_Connexion")) {
     header("location: index.php");
 }
 
-$rowQ1 = Q_Select("SELECT * FROM " . sql_table('config'), 3600);
+$rowQ1 = Q_Select("SELECT * 
+                   FROM " . sql_table('config'), 3600);
 if ($rowQ1) {
     foreach ($rowQ1[0] as $key => $value) {
         $$key = $value;
@@ -17,7 +18,9 @@ if ($rowQ1) {
 // settype($forum, 'integer');
 
 if ($allow_upload_forum) {
-    $rowQ1 = Q_Select("SELECT attachement FROM " . sql_table('forums') . " WHERE forum_id='$forum'", 3600);
+    $rowQ1 = Q_Select("SELECT attachement 
+                       FROM " . sql_table('forums') . " 
+                       WHERE forum_id='$forum'", 3600);
 
     if ($rowQ1) {
         foreach ($rowQ1[0] as $value) {
@@ -26,7 +29,10 @@ if ($allow_upload_forum) {
     }
 }
 
-$rowQ1 = Q_Select("SELECT forum_pass FROM " . sql_table('forums') . " WHERE forum_id='$forum' AND forum_type='1'", 3600);
+$rowQ1 = Q_Select("SELECT forum_pass 
+                   FROM " . sql_table('forums') . " 
+                   WHERE forum_id='$forum' 
+                   AND forum_type='1'", 3600);
 
 if ($rowQ1) {
     if (isset($Forum_Priv[$forum])) {

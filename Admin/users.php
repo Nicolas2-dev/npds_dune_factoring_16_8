@@ -5,10 +5,12 @@ use Npds\Support\Facades\Css;
 use Npds\Support\Facades\Log;
 use Npds\Support\Facades\Mailer;
 use Npds\Support\Facades\Password;
+use Npds\Support\Facades\Response;
 
 
-if (!function_exists('admindroits'))
+if (!function_exists('admindroits')) {
     include('die.php');
+}
 
 $f_meta_nom = 'mod_users';
 $f_titre = adm_translate("Edition des Utilisateurs");
@@ -20,6 +22,11 @@ admindroits($aid, $f_meta_nom);
 global $language;
 $hlpfile = "manuels/$language/users.html";
 
+/**
+ * [displayUsers description]
+ *
+ * @return  [type]  [return description]
+ */
 function displayUsers()
 {
     global $hlpfile, $admf_ext, $f_meta_nom, $f_titre, $adminimg;
@@ -73,10 +80,13 @@ function displayUsers()
     Css::adminfoot('', '', '', '');
 }
 
+/**
+ * [extractUserCSV description]
+ *
+ * @return  [type]  [return description]
+ */
 function extractUserCSV()
 {
-    include("lib/archive.php");
-
     $MSos = get_os();
 
     if ($MSos) {
@@ -88,7 +98,10 @@ function extractUserCSV()
     $deliminator = ';';
     $line = "UID;UNAME;NAME;URL;EMAIL;FEMAIL;C1;C2;C3;C4;C5;C6;C7;C8;M1;M2;T1;T2" . $crlf;
 
-    $result = sql_query("SELECT uid, uname, name, url, email, femail FROM " . sql_table('users') . " WHERE uid!='1' ORDER BY uid");
+    $result = sql_query("SELECT uid, uname, name, url, email, femail 
+                         FROM " . sql_table('users') . " 
+                         WHERE uid!='1' 
+                         ORDER BY uid");
 
     while ($temp_user = sql_fetch_row($result)) {
         foreach ($temp_user as $val) {
@@ -101,15 +114,19 @@ function extractUserCSV()
             $line .= $val . $deliminator;
         }
 
-        $result2 = sql_query("SELECT C1, C2, C3, C4, C5, C6, C7, C8, M1, M2, T1, T2 FROM " . sql_table('users_extend') . " WHERE uid='$temp_user[0]'");
+        $result2 = sql_query("SELECT C1, C2, C3, C4, C5, C6, C7, C8, M1, M2, T1, T2 
+                              FROM " . sql_table('users_extend') . " 
+                              WHERE uid='$temp_user[0]'");
+
         $temp_user2 = sql_fetch_row($result2);
 
         if ($temp_user2) {
             foreach ($temp_user2 as $val2) {
                 $val2 = str_replace("\r\n", "\n", $val2);
 
-                if (preg_match("#[$deliminator\"\n\r]#", $val2))
+                if (preg_match("#[$deliminator\"\n\r]#", $val2)) {
                     $val2 = '"' . str_replace('"', '""', $val2) . '"';
+                }
 
                 $line .= $val2 . $deliminator;
             }
@@ -119,12 +136,19 @@ function extractUserCSV()
         $line .= $crlf;
     }
 
-    send_file($line, "annuaire", "csv", $MSos);
+    Response::send_file($line, "annuaire", "csv", $MSos);
 
     global $aid;
     Log::Ecr_Log('security', "ExtractUserCSV() by AID : $aid", '');
 }
 
+/**
+ * [modifyUser description]
+ *
+ * @param   [type]  $chng_user  [$chng_user description]
+ *
+ * @return  [type]              [return description]
+ */
 function modifyUser($chng_user)
 {
     global $hlpfile, $admf_ext, $f_meta_nom, $f_titre, $adminimg;
@@ -134,7 +158,10 @@ function modifyUser($chng_user)
     GraphicAdmin($hlpfile);
     adminhead($f_meta_nom, $f_titre, $adminimg);
 
-    $result = sql_query("SELECT uid, uname, name, url, email, femail, user_from, user_occ, user_intrest, user_viewemail, user_avatar, user_sig, bio, pass, send_email, is_visible, mns, user_lnl FROM " . sql_table('') . "users WHERE uid='$chng_user' OR uname='$chng_user'");
+    $result = sql_query("SELECT uid, uname, name, url, email, femail, user_from, user_occ, user_intrest, user_viewemail, user_avatar, user_sig, bio, pass, send_email, is_visible, mns, user_lnl 
+                         FROM " . sql_table('users') . " 
+                         WHERE uid='$chng_user' 
+                         OR uname='$chng_user'");
     
     if (sql_num_rows($result) > 0) {
         list($chng_uid, $chng_uname, $chng_name, $chng_url, $chng_email, $chng_femail, $chng_user_from, $chng_user_occ, $chng_user_intrest, $chng_user_viewemail, $chng_avatar, $chng_user_sig, $chng_bio, $chng_pass, $chng_send_email, $chng_is_visible, $mns, $user_lnl) = sql_fetch_row($result);
@@ -144,19 +171,33 @@ function modifyUser($chng_user)
         <h3>' . adm_translate("Modifier un utilisateur") . ' : ' . $chng_uname . ' / ' . $chng_uid . '</h3>';
 
         $op = 'ModifyUser';
-        $result = sql_query("SELECT level, open, groupe, attachsig, rang FROM " . sql_table('users_status') . " WHERE uid='$chng_uid'");
+        $result = sql_query("SELECT level, open, groupe, attachsig, rang 
+                             FROM " . sql_table('users_status') . " 
+                             WHERE uid='$chng_uid'");
+
         list($chng_level, $open_user, $groupe, $attach, $chng_rank) = sql_fetch_row($result);
 
-        $result = sql_query("SELECT C1, C2, C3, C4, C5, C6, C7, C8, M1, M2, T1, T2, B1 FROM " . sql_table('users_extend') . " WHERE uid='$chng_uid'");
+        $result = sql_query("SELECT C1, C2, C3, C4, C5, C6, C7, C8, M1, M2, T1, T2, B1 
+                             FROM " . sql_table('users_extend') . " 
+                             WHERE uid='$chng_uid'");
+
         list($C1, $C2, $C3, $C4, $C5, $C6, $C7, $C8, $M1, $M2, $T1, $T2, $B1) = sql_fetch_row($result);
 
         include("modules/sform/extend-user/adm_extend-user.php");
-    } else
+    } else {
         error_handler("Utilisateur inexistant !" . "<br />");
+    }
 
     Css::adminfoot('', '', '', '');
 }
 
+/**
+ * [error_handler description]
+ *
+ * @param   [type]  $ibid  [$ibid description]
+ *
+ * @return  [type]         [return description]
+ */
 function error_handler($ibid)
 {
     echo '
@@ -165,6 +206,14 @@ function error_handler($ibid)
     </div>';
 }
 
+/**
+ * [Minisites description]
+ *
+ * @param   [type]  $chng_mns    [$chng_mns description]
+ * @param   [type]  $chng_uname  [$chng_uname description]
+ *
+ * @return  [type]               [return description]
+ */
 function Minisites($chng_mns, $chng_uname)
 {
     // Création de la structure pour les MiniSites dans users_private/$chng_uname
@@ -209,14 +258,16 @@ function Minisites($chng_mns, $chng_uname)
         $directory = $racine . '/modules/blog/matrice';
         $handle = opendir($DOCUMENTROOT . $directory);
 
-        while (false !== ($file = readdir($handle))) 
+        while (false !== ($file = readdir($handle))) {
             $filelist[] = $file;
+        }
 
         asort($filelist);
 
         foreach ($filelist as $key => $file) {
-            if ($file <> '.' and $file <> '..')
+            if ($file <> '.' and $file <> '..') {
                 @copy($DOCUMENTROOT . $directory . '/' . $file, $repertoire . '/' . $file);
+            }
         }
 
         closedir($handle);
@@ -227,10 +278,56 @@ function Minisites($chng_mns, $chng_uname)
     }
 }
 
+/**
+ * [updateUser description]
+ *
+ * @param   [type]  $chng_uid             [$chng_uid description]
+ * @param   [type]  $chng_uname           [$chng_uname description]
+ * @param   [type]  $chng_name            [$chng_name description]
+ * @param   [type]  $chng_url             [$chng_url description]
+ * @param   [type]  $chng_email           [$chng_email description]
+ * @param   [type]  $chng_femail          [$chng_femail description]
+ * @param   [type]  $chng_user_from       [$chng_user_from description]
+ * @param   [type]  $chng_user_occ        [$chng_user_occ description]
+ * @param   [type]  $chng_user_intrest    [$chng_user_intrest description]
+ * @param   [type]  $chng_user_viewemail  [$chng_user_viewemail description]
+ * @param   [type]  $chng_avatar          [$chng_avatar description]
+ * @param   [type]  $chng_user_sig        [$chng_user_sig description]
+ * @param   [type]  $chng_bio             [$chng_bio description]
+ * @param   [type]  $chng_pass            [$chng_pass description]
+ * @param   [type]  $chng_pass2           [$chng_pass2 description]
+ * @param   [type]  $level                [$level description]
+ * @param   [type]  $open_user            [$open_user description]
+ * @param   [type]  $chng_groupe          [$chng_groupe description]
+ * @param   [type]  $chng_send_email      [$chng_send_email description]
+ * @param   [type]  $chng_is_visible      [$chng_is_visible description]
+ * @param   [type]  $chng_mns             [$chng_mns description]
+ * @param   [type]  $C1                   [$C1 description]
+ * @param   [type]  $C2                   [$C2 description]
+ * @param   [type]  $C3                   [$C3 description]
+ * @param   [type]  $C4                   [$C4 description]
+ * @param   [type]  $C5                   [$C5 description]
+ * @param   [type]  $C6                   [$C6 description]
+ * @param   [type]  $C7                   [$C7 description]
+ * @param   [type]  $C8                   [$C8 description]
+ * @param   [type]  $M1                   [$M1 description]
+ * @param   [type]  $M2                   [$M2 description]
+ * @param   [type]  $T1                   [$T1 description]
+ * @param   [type]  $T2                   [$T2 description]
+ * @param   [type]  $B1                   [$B1 description]
+ * @param   [type]  $raz_avatar           [$raz_avatar description]
+ * @param   [type]  $chng_rank            [$chng_rank description]
+ * @param   [type]  $chng_lnl             [$chng_lnl description]
+ *
+ * @return  [type]                        [return description]
+ */
 function updateUser($chng_uid, $chng_uname, $chng_name, $chng_url, $chng_email, $chng_femail, $chng_user_from, $chng_user_occ, $chng_user_intrest, $chng_user_viewemail, $chng_avatar, $chng_user_sig, $chng_bio, $chng_pass, $chng_pass2, $level, $open_user, $chng_groupe, $chng_send_email, $chng_is_visible, $chng_mns, $C1, $C2, $C3, $C4, $C5, $C6, $C7, $C8, $M1, $M2, $T1, $T2, $B1, $raz_avatar, $chng_rank, $chng_lnl)
 {
-    if (sql_num_rows(sql_query("SELECT uname FROM " . sql_table('users') . " WHERE uid!='$chng_uid' AND uname='$chng_uname'")) > 0) {
-
+    if (sql_num_rows(sql_query("SELECT uname 
+                                FROM " . sql_table('users') . " 
+                                WHERE uid!='$chng_uid' 
+                                AND uname='$chng_uname'")) > 0) 
+    {
         global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
 
         include("header.php");
@@ -265,8 +362,6 @@ function updateUser($chng_uid, $chng_uname, $chng_name, $chng_url, $chng_email, 
         $tmp = 1;
     }
 
-    include_once('functions.php');
-
     if (Mailer::checkdnsmail($chng_email) === false) {
         global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
 
@@ -282,26 +377,51 @@ function updateUser($chng_uid, $chng_uname, $chng_name, $chng_url, $chng_email, 
         return;
     }
 
-    $result = sql_query("SELECT mns FROM " . sql_table('users') . " WHERE uid='$chng_uid'");
+    $result = sql_query("SELECT mns 
+                         FROM " . sql_table('users') . " 
+                         WHERE uid='$chng_uid'");
+
     list($tmp_mns) = sql_fetch_row($result);
 
-    if ($tmp_mns == 0 and $chng_mns == 1)
+    if ($tmp_mns == 0 and $chng_mns == 1) {
         Minisites($chng_mns, $chng_uname);
+    }
 
-    if ($chng_send_email == '') 
+    if ($chng_send_email == '') {
         $chng_send_email = '0';
+    }
 
-    if ($chng_is_visible == '')
+    if ($chng_is_visible == '') {
         $chng_is_visible = '1';
-    else
+    } else {
         $chng_is_visible = '0';
+    }
 
-    if ($raz_avatar) 
+    if ($raz_avatar) {
         $chng_avatar = "blank.gif";
+    }
 
-    if ($tmp == 0)
-        sql_query("UPDATE " . sql_table('users') . " SET uname='$chng_uname', name='$chng_name', email='$chng_email', femail='$chng_femail', url='$chng_url', user_from='$chng_user_from', user_occ='$chng_user_occ', user_intrest='$chng_user_intrest', user_viewemail='$chng_user_viewemail', user_avatar='$chng_avatar', user_sig='$chng_user_sig', bio='$chng_bio', send_email='$chng_send_email', is_visible='$chng_is_visible', mns='$chng_mns', user_lnl='$chng_lnl' WHERE uid='$chng_uid'");
-    
+    if ($tmp == 0) {
+        sql_query("UPDATE " . sql_table('users') . " 
+                   SET  uname='$chng_uname', 
+                        name='$chng_name', 
+                        email='$chng_email', 
+                        femail='$chng_femail', 
+                        url='$chng_url', 
+                        user_from='$chng_user_from', 
+                        user_occ='$chng_user_occ', 
+                        user_intrest='$chng_user_intrest', 
+                        user_viewemail='$chng_user_viewemail',
+                        user_avatar='$chng_avatar', 
+                        user_sig='$chng_user_sig', 
+                        bio='$chng_bio', 
+                        send_email='$chng_send_email', 
+                        is_visible='$chng_is_visible', 
+                        mns='$chng_mns', 
+                        user_lnl='$chng_lnl' 
+                   WHERE uid='$chng_uid'");
+    }
+
     if ($tmp == 1) {
         $AlgoCrypt = PASSWORD_BCRYPT;
         $min_ms = 100;
@@ -309,46 +429,77 @@ function updateUser($chng_uid, $chng_uname, $chng_name, $chng_url, $chng_email, 
         $hashpass = password_hash($chng_pass, $AlgoCrypt, $options);
         $cpass = crypt($chng_pass, $hashpass);
 
-        sql_query("UPDATE " . sql_table('users') . " SET uname='$chng_uname', name='$chng_name', email='$chng_email', femail='$chng_femail', url='$chng_url', user_from='$chng_user_from', user_occ='$chng_user_occ', user_intrest='$chng_user_intrest', user_viewemail='$chng_user_viewemail', user_avatar='$chng_avatar', user_sig='$chng_user_sig', bio='$chng_bio', send_email='$chng_send_email', is_visible='$chng_is_visible', mns='$chng_mns', pass='$cpass', hashkey='1', user_lnl='$chng_lnl' WHERE uid='$chng_uid'");
+        sql_query("UPDATE " . sql_table('users') . " 
+                   SET  uname='$chng_uname', 
+                        name='$chng_name', 
+                        email='$chng_email', 
+                        femail='$chng_femail', 
+                        url='$chng_url', 
+                        user_from='$chng_user_from', 
+                        user_occ='$chng_user_occ', 
+                        user_intrest='$chng_user_intrest', 
+                        user_viewemail='$chng_user_viewemail', 
+                        user_avatar='$chng_avatar', 
+                        user_sig='$chng_user_sig', 
+                        bio='$chng_bio', 
+                        send_email='$chng_send_email', 
+                        is_visible='$chng_is_visible', 
+                        mns='$chng_mns', 
+                        pass='$cpass', 
+                        hashkey='1', 
+                        user_lnl='$chng_lnl' 
+                    WHERE uid='$chng_uid'");
     }
 
-    if ($chng_user_viewemail)
+    if ($chng_user_viewemail) {
         $attach = 1;
-    else
+    } else {
         $attach = 0;
+    }
 
-    if ($open_user == '') 
+    if ($open_user == '') {
         $open_user = 0;
+    }
 
-    if (preg_match('#[a-zA-Z_]#', $chng_groupe)) 
+    if (preg_match('#[a-zA-Z_]#', $chng_groupe)) {
         $chng_groupe = '';
+    }
 
     if ($chng_groupe != '') {
         $tab_groupe = explode(',', $chng_groupe);
 
         if ($tab_groupe) {
             foreach ($tab_groupe as $groupevalue) {
-                if (($groupevalue == "0") and ($groupevalue != '')) 
+                if (($groupevalue == "0") and ($groupevalue != '')) {
                     $chng_groupe = '';
+                }
 
-                if ($groupevalue == "1") 
+                if ($groupevalue == "1") {
                     $chng_groupe = '';
+                }
 
-                if ($groupevalue > "127") 
+                if ($groupevalue > "127") {
                     $chng_groupe = '';
+                }
             }
         }
     }
 
-    sql_query("UPDATE " . sql_table('users_status') . " SET attachsig='$attach', level='$level', open='$open_user', groupe='$chng_groupe', rang='$chng_rank' WHERE uid='$chng_uid'");
-    sql_query("UPDATE " . sql_table('users_extend') . " SET C1='$C1', C2='$C2', C3='$C3', C4='$C4', C5='$C5', C6='$C6', C7='$C7', C8='$C8', M1='$M1', M2='$M2', T1='$T1', T2='$T2', B1='$B1' WHERE uid='$chng_uid'");
+    sql_query("UPDATE " . sql_table('users_status') . " 
+               SET attachsig='$attach', level='$level', open='$open_user', groupe='$chng_groupe', rang='$chng_rank' 
+               WHERE uid='$chng_uid'");
+
+    sql_query("UPDATE " . sql_table('users_extend') . " 
+               SET C1='$C1', C2='$C2', C3='$C3', C4='$C4', C5='$C5', C6='$C6', C7='$C7', C8='$C8', M1='$M1', M2='$M2', T1='$T1', T2='$T2', B1='$B1' 
+               WHERE uid='$chng_uid'");
 
     $contents = '';
     $filename = "users_private/usersbadmail.txt";
 
     $handle = fopen($filename, "r");
-    if (filesize($filename) > 0)
+    if (filesize($filename) > 0) {
         $contents = fread($handle, filesize($filename));
+    }
     fclose($handle);
 
     $re = '/#' . $chng_uid . '\|(\d+)/m';
@@ -362,12 +513,18 @@ function updateUser($chng_uid, $chng_uname, $chng_name, $chng_url, $chng_email, 
     Log::Ecr_Log('security', "UpdateUser($chng_uid, $chng_uname) by AID : $aid", '');
 
     global $referer;
-    if ($referer != "memberslist.php")
+    if ($referer != "memberslist.php") {
         Header("Location: admin.php?op=mod_users");
-    else
+    } else {
         Header("Location: memberslist.php");
+    }
 }
 
+/**
+ * [nonallowedUsers description]
+ *
+ * @return  [type]  [return description]
+ */
 function nonallowedUsers()
 {
     global $hlpfile, $admf_ext, $f_meta_nom, $f_titre, $adminimg;
@@ -377,7 +534,12 @@ function nonallowedUsers()
     GraphicAdmin($hlpfile);
     adminhead($f_meta_nom, $f_titre, $adminimg);
 
-    $newsuti = sql_query("SELECT u.uid, u.uname, u.name, u.user_regdate FROM " . sql_table('users') . " AS u LEFT JOIN " . sql_table('users_status') . " AS us ON u.uid = us.uid WHERE us.open='0' ORDER BY u.user_regdate DESC");
+    $newsuti = sql_query("SELECT u.uid, u.uname, u.name, u.user_regdate 
+                          FROM " . sql_table('users') . " AS u 
+                          LEFT JOIN " . sql_table('users_status') . " AS us 
+                          ON u.uid = us.uid 
+                          WHERE us.open='0' 
+                          ORDER BY u.user_regdate DESC");
     
     echo '
     <hr />
@@ -414,6 +576,11 @@ function nonallowedUsers()
     Css::adminfoot('', '', '', '');
 }
 
+/**
+ * [checkdnsmailusers description]
+ *
+ * @return  [type]  [return description]
+ */
 function checkdnsmailusers()
 {
     global $hlpfile, $admf_ext, $f_meta_nom, $f_titre, $adminimg, $gmt, $adminmail, $page, $end, $autocont;
@@ -423,11 +590,13 @@ function checkdnsmailusers()
     GraphicAdmin($hlpfile);
     adminhead($f_meta_nom, $f_titre, $adminimg);
 
-    if (!isset($page)) 
+    if (!isset($page)) {
         $page = 1;
+    }
 
-    if (!isset($end)) 
+    if (!isset($end)) { 
         $end = 0;
+    }
 
     // settype($end, 'integer');
 
@@ -436,15 +605,24 @@ function checkdnsmailusers()
     $max = $pagesize;
     $next_page = $page + 1;
 
-    $resource = sql_query("SELECT COUNT(uid) FROM " . sql_table('users') . " WHERE uid>1;");
+    $resource = sql_query("SELECT COUNT(uid) 
+                           FROM " . sql_table('users') . " 
+                           WHERE uid>1;");
+
     list($total) = sql_fetch_row($resource);
 
     // settype($total, 'integer');
 
-    if (($page * $pagesize) > $total) 
+    if (($page * $pagesize) > $total) {
         $end = 1;
+    }
 
-    $result = sql_query("SELECT uid, uname, email FROM " . sql_table('users') . " WHERE uid>1 ORDER BY uid LIMIT $min,$max;");
+    $result = sql_query("SELECT uid, uname, email 
+                         FROM " . sql_table('users') . " 
+                         WHERE uid>1 
+                         ORDER BY uid 
+                         LIMIT $min, $max;");
+
     $userchecked = sql_num_rows($result);
 
     $wrongdnsmail = 0;
@@ -461,8 +639,9 @@ function checkdnsmailusers()
     $filename = "storage/users_private/usersbadmail.txt";
 
     $handle = fopen($filename, "r");
-    if (filesize($filename) > 0)
+    if (filesize($filename) > 0) {
         $contents = fread($handle, filesize($filename));
+    }
     fclose($handle);
 
     $datenvoi = '';
@@ -482,16 +661,22 @@ function checkdnsmailusers()
             if (Mailer::isbadmailuser($uid) === false) {
                 $arrayusers[] = '#' . $uid . '|' . time();
                 //suspension des souscriptions
-                sql_query("DELETE FROM " . sql_table('subscribe') . " WHERE uid='$uid'");
+                sql_query("DELETE 
+                           FROM " . sql_table('subscribe') . " 
+                           WHERE uid='$uid'");
 
                 global $aid;
                 Log::Ecr_Log("security", "UnsubUser($uid) by AID : $aid", "");
 
                 //suspension de l'envoi des mails pour PM suspension lnl
-                sql_query("UPDATE " . sql_table('users') . " SET send_email='0', user_lnl='0' WHERE uid='$uid'");
+                sql_query("UPDATE " . sql_table('users') . " 
+                           SET send_email='0', user_lnl='0' 
+                           WHERE uid='$uid'");
 
                 //envoi private message
-                $sql = "INSERT INTO " . sql_table('priv_msgs') . " (msg_image, subject, from_userid, to_userid, msg_time, msg_text) VALUES ('$image', '$subject', '1', '$uid', '$time', '<br /><code>$email</code><br /><br />$message');";
+                $sql = "INSERT 
+                        INTO " . sql_table('priv_msgs') . " (msg_image, subject, from_userid, to_userid, msg_time, msg_text) 
+                        VALUES ('$image', '$subject', '1', '$uid', '$time', '<br /><code>$email</code><br /><br />$message');";
                 sql_query($sql);
 
                 $datenvoi = date('d/m/Y');
@@ -523,8 +708,9 @@ function checkdnsmailusers()
     <div class="alert alert-success lead">';
 
     if ($end != 1) {
-        if (!isset($autocont)) 
+        if (!isset($autocont)) {
             $autocont = 0;
+        }
 
         // settype($autocont, 'integer');
 
@@ -555,8 +741,9 @@ function checkdnsmailusers()
             });
         //]]>
         </script>';
-    } else
+    } else {
         echo adm_translate("Serveurs de mails contrôlés") . '<span class="badge bg-success float-end">' . $total . '</span>';
+    }
 
     echo
     '</div>';
@@ -571,8 +758,9 @@ function checkdnsmailusers()
                 ' . adm_translate("Un message privé leur a été envoyé sans réponse à ce message sous 60 jours ces utilisateurs ne pourront plus se connecter au site.") . '<br /><br />
                 <ul>' . $output . '</ul>
             </div>';
-        } else
+        } else {
             echo '<div class="alert alert-success">OK</div>';
+        }
     }
 
     if ($end == 1) {
@@ -584,7 +772,9 @@ function checkdnsmailusers()
         $unames = array();
         $whereInParameters  = implode(',', $u); //
 
-        $result = sql_query("SELECT uid, uname FROM " . sql_table('users') . " WHERE uid IN ($whereInParameters)");
+        $result = sql_query("SELECT uid, uname 
+                             FROM " . sql_table('users') . " 
+                             WHERE uid IN ($whereInParameters)");
 
         while ($names = sql_fetch_array($result)) {
             $unames[] = $names['uname'];
@@ -595,7 +785,7 @@ function checkdnsmailusers()
         <div class="alert alert-danger">
             <div class="lead">' . adm_translate("DNS ou serveur de mail incorrect") . ' <span class="badge bg-danger float-end">' . $nbu . '</span></div>';
         
-      if ($nbu > 0) {
+        if ($nbu > 0) {
             echo '
                 <hr />' . adm_translate("Toutes les souscriptions de ces utilisateurs ont été suspendues.") . '<br />
             ' . adm_translate("Un message privé leur a été envoyé sans réponse à ce message sous 60 jours ces utilisateurs ne pourront plus se connecter au site.") . '<br /><br />
@@ -619,6 +809,7 @@ function checkdnsmailusers()
 }
 
 switch ($op) {
+
     case 'extractUserCSV':
         extractUserCSV();
         break;
@@ -635,10 +826,11 @@ switch ($op) {
         // settype($raz_avatar, 'integer');
         // settype($add_send_email, 'integer');
 
-        if (isset($add_group)) 
+        if (isset($add_group)) {
             $add_group = implode(',', $add_group);
-        else 
+        } else {
             $add_group = '';
+        }
 
         updateUser($chng_uid, $add_uname, $add_name, $add_url, $add_email, $add_femail, $add_user_from, $add_user_occ, $add_user_intrest, $add_user_viewemail, $add_avatar, $add_user_sig, $add_bio, $add_pass, $add_pass2, $add_level, $add_open_user, $add_group, $add_send_email, $add_is_visible, $add_mns, $C1, $C2, $C3, $C4, $C5, $C6, $C7, $C8, $M1, $M2, $T1, $T2, $B1, $raz_avatar, $chng_rank, $user_lnl);
         break;
@@ -655,10 +847,11 @@ switch ($op) {
         <div class="alert alert-danger lead">' . adm_translate("Etes-vous sûr de vouloir effacer") . ' ' . adm_translate("Utilisateur") . ' <strong>' . $chng_uid . '</strong> ? <br />
             <a class="btn btn-danger mt-3" href="admin.php?op=delUserConf&amp;del_uid=' . $chng_uid . '&amp;referer=' . basename($referer) . '">' . adm_translate("Oui") . '</a>';
         
-        if (basename($referer) != "memberslist.php")
+        if (basename($referer) != "memberslist.php") {
             echo '<a class="btn btn-secondary mt-3" href="admin.php?op=mod_users">' . adm_translate("Non") . '</a>';
-        else
+        } else{
             echo '<a class="btn btn-secondary mt-3" href="memberslist.php">' . adm_translate("Non") . '</a>';
+        }
 
         echo '</div>';
 
@@ -666,31 +859,48 @@ switch ($op) {
         break;
 
     case 'delUserConf':
-        $result = sql_query("SELECT uid, uname FROM " . sql_table('users') . " WHERE uid='$del_uid' or uname='$del_uid'");
+        $result = sql_query("SELECT uid, uname 
+                             FROM " . sql_table('users') . " 
+                             WHERE uid='$del_uid' 
+                             OR uname='$del_uid'");
+
         list($del_uid, $del_uname) = sql_fetch_row($result);
 
         if ($del_uid != 1) {
-            sql_query("DELETE FROM " . sql_table('users') . " WHERE uid='$del_uid'");
+            sql_query("DELETE 
+                       FROM " . sql_table('users') . " 
+                       WHERE uid='$del_uid'");
 
-            sql_query("DELETE FROM " . sql_table('users_status') . " WHERE uid='$del_uid'");
+            sql_query("DELETE 
+                       FROM " . sql_table('users_status') . " 
+                       WHERE uid='$del_uid'");
 
-            sql_query("DELETE FROM " . sql_table('users_extend') . " WHERE uid='$del_uid'");
+            sql_query("DELETE 
+                       FROM " . sql_table('users_extend') . " 
+                       WHERE uid='$del_uid'");
 
-            sql_query("DELETE FROM " . sql_table('subscribe') . " WHERE uid='$del_uid'");
+            sql_query("DELETE 
+                       FROM " . sql_table('subscribe') . " 
+                       WHERE uid='$del_uid'");
 
             //  Changer les articles et reviews pour les affecter à un pseudo utilisateurs  ( 0 comme uid et ' ' comme uname )
-            sql_query("UPDATE " . sql_table('stories') . " SET informant=' ' WHERE informant='$del_uname'");
+            sql_query("UPDATE " . sql_table('stories') . " 
+                       SET informant=' ' 
+                       WHERE informant='$del_uname'");
 
-            sql_query("UPDATE " . sql_table('reviews') . " SET reviewer=' ' WHERE reviewer='$del_uname'");
+            sql_query("UPDATE " . sql_table('reviews') . " 
+                       SET reviewer=' ' 
+                       WHERE reviewer='$del_uname'");
 
             include("modules/upload/upload.conf.php");
 
             if ($DOCUMENTROOT == '') {
                 global $DOCUMENT_ROOT;
-                if ($DOCUMENT_ROOT)
+                if ($DOCUMENT_ROOT) {
                     $DOCUMENTROOT = $DOCUMENT_ROOT;
-                else
+                } else {
                     $DOCUMENTROOT = $_SERVER['DOCUMENT_ROOT'];
+                }
             }
 
             $user_dir = $DOCUMENTROOT . $racine . '/storage/users_private/' . $del_uname;
@@ -701,8 +911,9 @@ switch ($op) {
                 $dir = opendir($user_dir . '/mns');
 
                 while (false !== ($nom = readdir($dir))) {
-                    if ($nom != '.' && $nom != '..' && $nom != '')
+                    if ($nom != '.' && $nom != '..' && $nom != '') {
                         @unlink($user_dir . '/mns/' . $nom);
+                    }
                 }
                 closedir($dir);
                 @rmdir($user_dir . '/mns');
@@ -715,12 +926,15 @@ switch ($op) {
             }
 
             // Changer les posts, les commentaires, ... pour les affecter à un pseudo utilisateurs  ( 0 comme uid et ' ' comme uname)
-            sql_query("UPDATE " . sql_table('posts') . " SET poster_id='0' WHERE poster_id='$del_uid'");
+            sql_query("UPDATE " . sql_table('posts') . " 
+                       SET poster_id='0' 
+                       WHERE poster_id='$del_uid'");
 
             // Met à jour les modérateurs des forums
             $pat = '#\b' . $del_uid . '\b#';
 
-            $res = sql_query("SELECT forum_id, forum_moderator FROM " . sql_table('forums'));
+            $res = sql_query("SELECT forum_id, forum_moderator 
+                              FROM " . sql_table('forums'));
 
             while ($row = sql_fetch_row($res)) {
                 $tmp_moder = explode(',', $row[1]);
@@ -728,7 +942,9 @@ switch ($op) {
                 if (preg_match($pat, $row[1])) {
                     unset($tmp_moder[array_search($del_uid, $tmp_moder)]);
 
-                    sql_query("UPDATE " . sql_table('forums') . " SET forum_moderator='" . implode(',', $tmp_moder) . "' WHERE forum_id='$row[0]'");
+                    sql_query("UPDATE " . sql_table('forums') . " 
+                               SET forum_moderator='" . implode(',', $tmp_moder) . "' 
+                               WHERE forum_id='$row[0]'");
                 }
             }
 
@@ -737,8 +953,9 @@ switch ($op) {
             $filename = "storage/users_private/usersbadmail.txt";
 
             $handle = fopen($filename, "r");
-            if (filesize($filename) > 0)
+            if (filesize($filename) > 0) {
                 $contents = fread($handle, filesize($filename));
+            }
             fclose($handle);
 
             $re = '/#' . $del_uid . '\|(\d+)/m';
@@ -751,10 +968,11 @@ switch ($op) {
             Log::Ecr_Log('security', "DeleteUser($del_uid) by AID : $aid", '');
         }
 
-        if ($referer != "memberslist.php")
+        if ($referer != "memberslist.php") {
             Header("Location: admin.php?op=mod_users");
-        else
+        } else {
             Header("Location: memberslist.php");
+        }
         break;
 
     case 'addUser':
@@ -765,7 +983,10 @@ switch ($op) {
         // settype($raz_avatar, 'integer');
         // settype($add_send_email, 'integer');
 
-        if (sql_num_rows(sql_query("SELECT uname FROM " . sql_table('users') . " WHERE uname='$add_uname'")) > 0) {
+        if (sql_num_rows(sql_query("SELECT uname 
+                                    FROM " . sql_table('users') . " 
+                                    WHERE uname='$add_uname'")) > 0) 
+        {
             global $hlpfile;
 
             include("header.php");
@@ -795,8 +1016,6 @@ switch ($op) {
             return;
         }
 
-        include_once('functions.php');
-
         if (Mailer::checkdnsmail($add_email) === false) {
             global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
 
@@ -818,32 +1037,42 @@ switch ($op) {
         $hashpass = password_hash($add_pass, $AlgoCrypt, $options);
         $add_pass = crypt($add_pass, $hashpass);
 
-        if ($add_is_visible == '')
+        if ($add_is_visible == '') {
             $add_is_visible = '1';
-        else
+        } else {
             $add_is_visible = '0';
+        }
 
-        $user_regdate = time() + ((int)$gmt * 3600);
+        $user_regdate = time() + ((int) $gmt * 3600);
 
         $sql = 'INSERT INTO ' . sql_table('users') . ' ';
         $sql .= "(uid,name,uname,email,femail,url,user_regdate,user_from,user_occ,user_intrest,user_viewemail,user_avatar,user_sig,bio,pass,hashkey,send_email,is_visible,mns,theme) ";
         $sql .= "VALUES (NULL,'$add_name','$add_uname','$add_email','$add_femail','$add_url','$user_regdate','$add_user_from','$add_user_occ','$add_user_intrest','$add_user_viewemail','$add_avatar','$add_user_sig','$add_bio','$add_pass','1','$add_send_email','$add_is_visible','$add_mns','$Default_Theme+$Default_Skin')";
         $result = sql_query($sql);
         
-        list($usr_id) = sql_fetch_row(sql_query("SELECT uid FROM " . sql_table('users') . " WHERE uname='$add_uname'"));
-        $result = sql_query("INSERT INTO " . sql_table('users_extend') . " VALUES ('$usr_id','$C1','$C2','$C3','$C4','$C5','$C6','$C7','$C8','$M1','$M2','$T1','$T2', '$B1')");
+        list($usr_id) = sql_fetch_row(sql_query("SELECT uid 
+                                                 FROM " . sql_table('users') . " 
+                                                 WHERE uname='$add_uname'"));
+
+        $result = sql_query("INSERT 
+                             INTO " . sql_table('users_extend') . " 
+                             VALUES ('$usr_id','$C1','$C2','$C3','$C4','$C5','$C6','$C7','$C8','$M1','$M2','$T1','$T2', '$B1')");
         
-        if ($add_user_viewemail)
+        if ($add_user_viewemail) {
             $attach = 1;
-        else
+        } else {
             $attach = 0;
+        }
 
-        if (isset($add_group)) 
+        if (isset($add_group)) {
             $add_group = implode(',', $add_group);
-        else 
+        } else {
             $add_group = '';
+        }
 
-        $result = sql_query("INSERT INTO " . sql_table('users_status') . " VALUES ('$usr_id','0','$attach','$chng_rank','$add_level','1','$add_group')");
+        $result = sql_query("INSERT 
+                             INTO " . sql_table('users_status') . " 
+                             VALUES ('$usr_id','0','$attach','$chng_rank','$add_level','1','$add_group')");
 
         Minisites($add_mns, $add_uname);
 
@@ -854,15 +1083,22 @@ switch ($op) {
         break;
 
     case 'unsubUser':
-        $result = sql_query("SELECT uid FROM " . sql_table('users') . " WHERE uid='$chng_uid' OR uname='$chng_uid'");
+        $result = sql_query("SELECT uid 
+                             FROM " . sql_table('users') . " 
+                             WHERE uid='$chng_uid' 
+                             OR uname='$chng_uid'");
+
         list($chng_uid) = sql_fetch_row($result);
 
         if ($chng_uid != 1) {
-            sql_query("DELETE FROM " . sql_table('subscribe') . " WHERE uid='$chng_uid'");
+            sql_query("DELETE 
+                       FROM " . sql_table('subscribe') . " 
+                       WHERE uid='$chng_uid'");
 
             global $aid;
             Log::Ecr_Log("security", "UnsubUser($chng_uid) by AID : $aid", "");
         }
+        
         Header("Location: admin.php?op=mod_users");
         break;
 

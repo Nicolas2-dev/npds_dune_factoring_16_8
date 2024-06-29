@@ -4,6 +4,113 @@ use Npds\Support\Facades\Log;
 use Npds\Support\Facades\Str;
 
 
+// Deprecated fichier !!!!
+
+
+/**
+ * [ConfigSave description]
+ *
+ * @param   [type]  $xparse                  [$xparse description]
+ * @param   [type]  $xsitename               [$xsitename description]
+ * @param   [type]  $xnuke_url               [$xnuke_url description]
+ * @param   [type]  $xsite_logo              [$xsite_logo description]
+ * @param   [type]  $xslogan                 [$xslogan description]
+ * @param   [type]  $xstartdate              [$xstartdate description]
+ * @param   [type]  $xadminmail              [$xadminmail description]
+ * @param   [type]  $xtop                    [$xtop description]
+ * @param   [type]  $xstoryhome              [$xstoryhome description]
+ * @param   [type]  $xoldnum                 [$xoldnum description]
+ * @param   [type]  $xultramode              [$xultramode description]
+ * @param   [type]  $xanonpost               [$xanonpost description]
+ * @param   [type]  $xDefault_Theme          [$xDefault_Theme description]
+ * @param   [type]  $xbanners                [$xbanners description]
+ * @param   [type]  $xmyIP                   [$xmyIP description]
+ * @param   [type]  $xfoot1                  [$xfoot1 description]
+ * @param   [type]  $xfoot2                  [$xfoot2 description]
+ * @param   [type]  $xfoot3                  [$xfoot3 description]
+ * @param   [type]  $xfoot4                  [$xfoot4 description]
+ * @param   [type]  $xbackend_title          [$xbackend_title description]
+ * @param   [type]  $xbackend_language       [$xbackend_language description]
+ * @param   [type]  $xbackend_image          [$xbackend_image description]
+ * @param   [type]  $xbackend_width          [$xbackend_width description]
+ * @param   [type]  $xbackend_height         [$xbackend_height description]
+ * @param   [type]  $xlanguage               [$xlanguage description]
+ * @param   [type]  $xlocale                 [$xlocale description]
+ * @param   [type]  $xperpage                [$xperpage description]
+ * @param   [type]  $xpopular                [$xpopular description]
+ * @param   [type]  $xnewlinks               [$xnewlinks description]
+ * @param   [type]  $xtoplinks               [$xtoplinks description]
+ * @param   [type]  $xlinksresults           [$xlinksresults description]
+ * @param   [type]  $xlinks_anonaddlinklock  [$xlinks_anonaddlinklock description]
+ * @param   [type]  $xnotify                 [$xnotify description]
+ * @param   [type]  $xnotify_email           [$xnotify_email description]
+ * @param   [type]  $xnotify_subject         [$xnotify_subject description]
+ * @param   [type]  $xnotify_message         [$xnotify_message description]
+ * @param   [type]  $xnotify_from            [$xnotify_from description]
+ * @param   [type]  $xmoderate               [$xmoderate description]
+ * @param   [type]  $xanonymous              [$xanonymous description]
+ * @param   [type]  $xmaxOptions             [$xmaxOptions description]
+ * @param   [type]  $xsetCookies             [$xsetCookies description]
+ * @param   [type]  $xtipath                 [$xtipath description]
+ * @param   [type]  $xuserimg                [$xuserimg description]
+ * @param   [type]  $xadminimg               [$xadminimg description]
+ * @param   [type]  $xadmingraphic           [$xadmingraphic description]
+ * @param   [type]  $xadmart                 [$xadmart description]
+ * @param   [type]  $xminpass                [$xminpass description]
+ * @param   [type]  $xhttpref                [$xhttpref description]
+ * @param   [type]  $xhttprefmax             [$xhttprefmax description]
+ * @param   [type]  $xpollcomm               [$xpollcomm description]
+ * @param   [type]  $xlinkmainlogo           [$xlinkmainlogo description]
+ * @param   [type]  $xstart_page             [$xstart_page description]
+ * @param   [type]  $xsmilies                [$xsmilies description]
+ * @param   [type]  $xOnCatNewLink           [$xOnCatNewLink description]
+ * @param   [type]  $xEmailFooter            [$xEmailFooter description]
+ * @param   [type]  $xshort_user             [$xshort_user description]
+ * @param   [type]  $xgzhandler              [$xgzhandler description]
+ * @param   [type]  $xrss_host_verif         [$xrss_host_verif description]
+ * @param   [type]  $xcache_verif            [$xcache_verif description]
+ * @param   [type]  $xmember_list            [$xmember_list description]
+ * @param   [type]  $xdownload_cat           [$xdownload_cat description]
+ * @param   [type]  $xmod_admin_news         [$xmod_admin_news description]
+ * @param   [type]  $xgmt                    [$xgmt description]
+ * @param   [type]  $xAutoRegUser            [$xAutoRegUser description]
+ * @param   [type]  $xTitlesitename          [$xTitlesitename description]
+ * @param   [type]  $xfilemanager            [$xfilemanager description]
+ * @param   [type]  $xshort_review           [$xshort_review description]
+ * @param   [type]  $xnot_admin_count        [$xnot_admin_count description]
+ * @param   [type]  $xadmin_cook_duration    [$xadmin_cook_duration description]
+ * @param   [type]  $xuser_cook_duration     [$xuser_cook_duration description]
+ * @param   [type]  $xtroll_limit            [$xtroll_limit description]
+ * @param   [type]  $xsubscribe              [$xsubscribe description]
+ * @param   [type]  $xCloseRegUser           [$xCloseRegUser description]
+ * @param   [type]  $xshort_menu_admin       [$xshort_menu_admin description]
+ * @param   [type]  $xmail_fonction          [$xmail_fonction description]
+ * @param   [type]  $xmemberpass             [$xmemberpass description]
+ * @param   [type]  $xshow_user              [$xshow_user description]
+ * @param   [type]  $xdns_verif              [$xdns_verif description]
+ * @param   [type]  $xmember_invisible       [$xmember_invisible description]
+ * @param   [type]  $xavatar_size            [$xavatar_size description]
+ * @param   [type]  $xlever                  [$xlever description]
+ * @param   [type]  $xcoucher                [$xcoucher description]
+ * @param   [type]  $xmulti_langue           [$xmulti_langue description]
+ * @param   [type]  $xadmf_ext               [$xadmf_ext description]
+ * @param   [type]  $xsavemysql_size         [$xsavemysql_size description]
+ * @param   [type]  $xsavemysql_mode         [$xsavemysql_mode description]
+ * @param   [type]  $xtiny_mce               [$xtiny_mce description]
+ * @param   [type]  $xnpds_twi               [$xnpds_twi description]
+ * @param   [type]  $xnpds_fcb               [$xnpds_fcb description]
+ * @param   [type]  $xDefault_Skin           [$xDefault_Skin description]
+ * @param   [type]  $xsmtp_host              [$xsmtp_host description]
+ * @param   [type]  $xsmtp_auth              [$xsmtp_auth description]
+ * @param   [type]  $xsmtp_username          [$xsmtp_username description]
+ * @param   [type]  $xsmtp_password          [$xsmtp_password description]
+ * @param   [type]  $xsmtp_secure            [$xsmtp_secure description]
+ * @param   [type]  $xsmtp_crypt             [$xsmtp_crypt description]
+ * @param   [type]  $xsmtp_port              [$xsmtp_port description]
+ * @param   [type]  $xdkim_auto              [$xdkim_auto description]
+ *
+ * @return  [type]                           [return description]
+ */
 function ConfigSave($xparse, $xsitename, $xnuke_url, $xsite_logo, $xslogan, $xstartdate, $xadminmail, $xtop, $xstoryhome, $xoldnum, $xultramode, $xanonpost, $xDefault_Theme, $xbanners, $xmyIP, $xfoot1, $xfoot2, $xfoot3, $xfoot4, $xbackend_title, $xbackend_language, $xbackend_image, $xbackend_width, $xbackend_height, $xlanguage, $xlocale, $xperpage, $xpopular, $xnewlinks, $xtoplinks, $xlinksresults, $xlinks_anonaddlinklock, $xnotify, $xnotify_email, $xnotify_subject, $xnotify_message, $xnotify_from, $xmoderate, $xanonymous, $xmaxOptions, $xsetCookies, $xtipath, $xuserimg, $xadminimg, $xadmingraphic, $xadmart, $xminpass, $xhttpref, $xhttprefmax, $xpollcomm, $xlinkmainlogo, $xstart_page, $xsmilies, $xOnCatNewLink, $xEmailFooter, $xshort_user, $xgzhandler, $xrss_host_verif, $xcache_verif, $xmember_list, $xdownload_cat, $xmod_admin_news, $xgmt, $xAutoRegUser, $xTitlesitename, $xfilemanager, $xshort_review, $xnot_admin_count, $xadmin_cook_duration, $xuser_cook_duration, $xtroll_limit, $xsubscribe, $xCloseRegUser, $xshort_menu_admin, $xmail_fonction, $xmemberpass, $xshow_user, $xdns_verif, $xmember_invisible, $xavatar_size, $xlever, $xcoucher, $xmulti_langue, $xadmf_ext, $xsavemysql_size, $xsavemysql_mode, $xtiny_mce, $xnpds_twi, $xnpds_fcb, $xDefault_Skin, $xsmtp_host, $xsmtp_auth, $xsmtp_username, $xsmtp_password, $xsmtp_secure, $xsmtp_crypt, $xsmtp_port, $xdkim_auto)
 {
 
@@ -36,7 +143,9 @@ function ConfigSave($xparse, $xsitename, $xnuke_url, $xsite_logo, $xslogan, $xst
 
         $dh = opendir($CACHE_CONFIG['data_dir']);
         while (false !== ($filename = readdir($dh))) {
-            if ($filename === '.' or $filename === '..' or $filename === 'ultramode.txt' or $filename === 'net2zone.txt' or $filename === 'sql') continue;
+            if ($filename === '.' or $filename === '..' or $filename === 'ultramode.txt' or $filename === 'net2zone.txt' or $filename === 'sql') {
+                continue;
+            }
             unlink($CACHE_CONFIG['data_dir'] . $filename);
         }
     }

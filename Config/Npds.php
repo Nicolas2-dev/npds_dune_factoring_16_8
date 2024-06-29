@@ -39,7 +39,7 @@ return array(
      * The default Timezone for your website.
      * http://www.php.net/manual/en/timezones.php
      */
-    'timezone' => 'Europe/Paris', // voir config/App
+    'timezone' => 'Europe/Paris', 
 
     /**
      * Select the parse function you want to use for preference

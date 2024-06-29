@@ -3,8 +3,9 @@
 use Npds\Support\Facades\Css;
 
 
-if (!function_exists('admindroits'))
+if (!function_exists('admindroits')) {
     include('die.php');
+}
 
 $f_meta_nom = 'hreferer';
 $f_titre = adm_translate("Sites Référents");
@@ -16,6 +17,13 @@ admindroits($aid, $f_meta_nom);
 global $language;
 $hlpfile = "manuels/$language/referer.html";
 
+/**
+ * [hreferer description]
+ *
+ * @param   [type]  $filter  [$filter description]
+ *
+ * @return  [type]           [return description]
+ */
 function hreferer($filter)
 {
     global $hlpfile, $f_meta_nom, $adminimg, $admf_ext, $f_titre;
@@ -27,8 +35,9 @@ function hreferer($filter)
 
     // settype($filter, 'integer');
 
-    if (!$filter) 
+    if (!$filter) {
         $filter = 2048;
+    }
 
     echo '
     <hr />
@@ -53,23 +62,29 @@ function hreferer($filter)
     </thead>
     <tbody>';
 
-    $hresult = sql_query("SELECT url, COUNT(url) AS TheCount, substring(url,1,$filter) AS filter FROM " . sql_table('referer') . " GROUP BY filter ORDER BY TheCount DESC");
+    $hresult = sql_query("SELECT url, COUNT(url) AS TheCount, substring(url,1,$filter) AS filter 
+                          FROM " . sql_table('referer') . " 
+                          GROUP BY filter 
+                          ORDER BY TheCount DESC");
    
     while (list($url, $TheCount) = sql_fetch_row($hresult)) {
         echo '
         <tr>
             <td>';
 
-        if ($TheCount == 1) 
+        if ($TheCount == 1) {
             echo '<a href="' . $url . '" target="_blank">';
+        }
 
-        if ($filter != 2048)
+        if ($filter != 2048) {
             echo '<span>' . substr($url, 0, $filter) . '</span><span class="text-body-secondary">' . substr($url, $filter) . '</span>';
-        else
+        } else {
             echo $url;
+        }
 
-        if ($TheCount == 1) 
+        if ($TheCount == 1) {
             echo '</a>';
+        }
 
         echo '</a></td>
             <td>' . $TheCount . '</td>
@@ -88,13 +103,26 @@ function hreferer($filter)
     Css::adminfoot('', '', '', '');
 }
 
+/**
+ * [delreferer description]
+ *
+ * @return  [type]  [return description]
+ */
 function delreferer()
 {
-    sql_query("DELETE FROM " . sql_table('referer'));
+    sql_query("DELETE 
+               FROM " . sql_table('referer'));
 
     Header("Location: admin.php?op=AdminMain");
 }
 
+/**
+ * [archreferer description]
+ *
+ * @param   [type]  $filter  [$filter description]
+ *
+ * @return  [type]           [return description]
+ */
 function archreferer($filter)
 {
 
@@ -102,7 +130,9 @@ function archreferer($filter)
     $content = "===================================================\n";
     $content .= "Date : " . date("d-m-Y") . "-/- NPDS - HTTP Referers\n";
     $content .= "===================================================\n";
-    $result = sql_query("SELECT url FROM " . sql_table('referer'));
+
+    $result = sql_query("SELECT url 
+                         FROM " . sql_table('referer'));
 
     while (list($url) = sql_fetch_row($result)) {
         $content .= "$url\n";
@@ -117,6 +147,7 @@ function archreferer($filter)
 // settype($filter, 'integer');
 
 switch ($op) {
+    
     case 'hreferer':
         hreferer($filter);
         break;

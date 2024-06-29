@@ -9,7 +9,9 @@ if ((isset($aid)) and (isset($pwd)) and ($op == 'login')) {
 
     if ($aid != '' and $pwd != '') {
 
-        $result = sql_query("SELECT pwd, hashkey FROM " . sql_table('authors') . " WHERE aid='$aid'");
+        $result = sql_query("SELECT pwd, hashkey 
+                             FROM " . sql_table('authors') . " 
+                             WHERE aid='$aid'");
 
         if (sql_num_rows($result) == 1) {
 
@@ -26,8 +28,13 @@ if ((isset($aid)) and (isset($pwd)) and ($op == 'login')) {
 
                     $pwd = Password::password_crypt($pwd);
 
-                    sql_query("UPDATE " . sql_table('authors') . " SET pwd='$pwd', hashkey='1' WHERE aid='$aid'");
-                    $result = sql_query("SELECT pwd, hashkey FROM " . sql_table('authors') . " WHERE aid = '$aid'");
+                    sql_query("UPDATE " . sql_table('authors') . " 
+                               SET pwd='$pwd', hashkey='1' 
+                               WHERE aid='$aid'");
+
+                    $result = sql_query("SELECT pwd, hashkey 
+                                         FROM " . sql_table('authors') . " 
+                                         WHERE aid = '$aid'");
 
                     if (sql_num_rows($result) == 1) {
                         $setinfo = sql_fetch_assoc($result);
@@ -80,7 +87,9 @@ if (isset($admin) and ($admin != '')) {
         Admin_Alert('Null Aid or Passwd');
     }
 
-    $result = sql_query("SELECT pwd, radminsuper FROM " . sql_table('authors') . " WHERE aid = '$aid'");
+    $result = sql_query("SELECT pwd, radminsuper 
+                         FROM " . sql_table('authors') . " 
+                         WHERE aid = '$aid'");
 
     if (!$result) {
         Admin_Alert("DB not ready #2 : $aid / $AIpwd");

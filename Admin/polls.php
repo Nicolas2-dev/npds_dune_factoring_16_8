@@ -5,8 +5,9 @@ use Npds\Support\Facades\Str;
 use Npds\Support\Facades\Language;
 
 
-if (!function_exists('admindroits'))
+if (!function_exists('admindroits')) {
     include('die.php');
+}
 
 $f_meta_nom = 'create';
 $f_titre = adm_translate("Les sondages");
@@ -18,6 +19,11 @@ admindroits($aid, $f_meta_nom);
 global $language;
 $hlpfile = "manuels/$language/surveys.html";
 
+/**
+ * [poll_createPoll description]
+ *
+ * @return  [type]  [return description]
+ */
 function poll_createPoll()
 {
     global $hlpfile, $maxOptions, $f_meta_nom, $f_titre, $adminimg;
@@ -43,7 +49,9 @@ function poll_createPoll()
             </thead>
             <tbody>';
 
-    $result = sql_query("SELECT pollID, pollTitle, voters FROM " . sql_table('poll_desc') . " ORDER BY timeStamp");
+    $result = sql_query("SELECT pollID, pollTitle, voters 
+                         FROM " . sql_table('poll_desc') . " 
+                         ORDER BY timeStamp");
 
     while ($object = sql_fetch_assoc($result)) {
         echo '
@@ -57,7 +65,10 @@ function poll_createPoll()
                </td>
             </tr>';
 
-        $result2 = sql_query("SELECT SUM(optionCount) AS SUM FROM " . sql_table('poll_data') . " WHERE pollID='" . $object["pollID"] . "'");
+        $result2 = sql_query("SELECT SUM(optionCount) AS SUM 
+                              FROM " . sql_table('poll_data') . " 
+                              WHERE pollID='" . $object["pollID"] . "'");
+
         list($sum) = sql_fetch_row($result2);
     }
 
@@ -110,6 +121,11 @@ function poll_createPoll()
     Css::adminfoot('fv', '', $arg1, '');
 }
 
+/**
+ * [poll_createPosted description]
+ *
+ * @return  [type]  [return description]
+ */
 function poll_createPosted()
 {
     global $maxOptions, $pollTitle, $optionText, $poll_type;
@@ -117,19 +133,29 @@ function poll_createPosted()
     $timeStamp = time();
     $pollTitle = Str::FixQuotes($pollTitle);
 
-    $result = sql_query("INSERT INTO " . sql_table('poll_desc') . " VALUES (0, '$pollTitle', '$timeStamp', 0)");
+    $result = sql_query("INSERT 
+                         INTO " . sql_table('poll_desc') . " 
+                         VALUES (0, '$pollTitle', '$timeStamp', 0)");
+
     $id = sql_last_id();
 
     for ($i = 1; $i <= sizeof($optionText); $i++) {
         if ($optionText[$i] != '')
             $optionText[$i] = Str::FixQuotes($optionText[$i]);
 
-        $result = sql_query("INSERT INTO " . sql_table('poll_data') . " (pollID, optionText, optionCount, voteID, pollType) VALUES ('$id', '$optionText[$i]', 0, '$i', '$poll_type')");
+        $result = sql_query("INSERT 
+                             INTO " . sql_table('poll_data') . " (pollID, optionText, optionCount, voteID, pollType) 
+                             VALUES ('$id', '$optionText[$i]', 0, '$i', '$poll_type')");
     }
 
     Header("Location: admin.php?op=adminMain");
 }
 
+/**
+ * [poll_removePoll description]
+ *
+ * @return  [type]  [return description]
+ */
 function poll_removePoll()
 {
     global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
@@ -159,7 +185,9 @@ function poll_removePoll()
             </thead>
             <tbody>';
 
-    $result = sql_query("SELECT pollID, pollTitle FROM " . sql_table('poll_desc') . " ORDER BY timeStamp");
+    $result = sql_query("SELECT pollID, pollTitle 
+                         FROM " . sql_table('poll_desc') . " 
+                         ORDER BY timeStamp");
 
     while ($object = sql_fetch_assoc($result)) {
         echo '
@@ -182,6 +210,11 @@ function poll_removePoll()
     include('footer.php');
 }
 
+/**
+ * [poll_removePosted description]
+ *
+ * @return  [type]  [return description]
+ */
 function poll_removePosted()
 {
     global $id, $setCookies;
@@ -193,28 +226,46 @@ function poll_removePosted()
 
     // ----------------------------------------------------------------------------
     if ($setCookies == '1') {
-        $sql = "DELETE FROM " . sql_table('appli_log') . " WHERE al_id='$al_id' AND al_subid='$id'";
+        $sql = "DELETE 
+                FROM " . sql_table('appli_log') . " 
+                WHERE al_id='$al_id' 
+                AND al_subid='$id'";
+
         sql_query($sql);
     }
 
-    sql_query("DELETE FROM " . sql_table('poll_desc') . " WHERE pollID='$id'");
+    sql_query("DELETE 
+               FROM " . sql_table('poll_desc') . " 
+               WHERE pollID='$id'");
 
-    sql_query("DELETE FROM " . sql_table('poll_data') . " WHERE pollID='$id'");
+    sql_query("DELETE 
+               FROM " . sql_table('poll_data') . " 
+               WHERE pollID='$id'");
 
     include('modules/comments/pollBoth.conf.php');
 
-    sql_query("DELETE FROM " . sql_table('posts') . " WHERE topic_id='$id' AND forum_id='$forum'");
+    sql_query("DELETE 
+               FROM " . sql_table('posts') . " 
+               WHERE topic_id='$id' 
+               AND forum_id='$forum'");
 
     Header("Location: admin.php?op=create");
 }
 
+/**
+ * [poll_editPoll description]
+ *
+ * @return  [type]  [return description]
+ */
 function poll_editPoll()
 {
     global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
 
     include('header.php');
 
-    $result = sql_query("SELECT pollID, pollTitle, timeStamp FROM " . sql_table('poll_desc') . " ORDER BY timeStamp");
+    $result = sql_query("SELECT pollID, pollTitle, timeStamp 
+                         FROM " . sql_table('poll_desc') . " 
+                         ORDER BY timeStamp");
 
     GraphicAdmin($hlpfile);
     adminhead($f_meta_nom, $f_titre, $adminimg);
@@ -257,6 +308,11 @@ function poll_editPoll()
     include('footer.php');
 }
 
+/**
+ * [poll_editPollPosted description]
+ *
+ * @return  [type]  [return description]
+ */
 function poll_editPollPosted()
 {
     global $id, $maxOptions, $f_meta_nom, $f_titre, $adminimg;
@@ -269,10 +325,16 @@ function poll_editPollPosted()
         GraphicAdmin($hlpfile);
         adminhead($f_meta_nom, $f_titre, $adminimg);
 
-        $result = sql_query("SELECT pollID, pollTitle, timeStamp FROM " . sql_table('poll_desc') . " WHERE pollID='$id'");
+        $result = sql_query("SELECT pollID, pollTitle, timeStamp 
+                             FROM " . sql_table('poll_desc') . " 
+                             WHERE pollID='$id'");
+
         $holdtitle = sql_fetch_row($result);
 
-        $result = sql_query("SELECT optionText, voteID, pollType FROM " . sql_table('poll_data') . " WHERE pollID='$id' ORDER BY voteID ASC");
+        $result = sql_query("SELECT optionText, voteID, pollType 
+                             FROM " . sql_table('poll_data') . " 
+                             WHERE pollID='$id' 
+                             ORDER BY voteID ASC");
 
         echo '
         <hr />
@@ -290,10 +352,11 @@ function poll_editPollPosted()
         $requi = '';
 
         for ($i = 1; $i <= $maxOptions; $i++) {
-            if ($i < 3) 
+            if ($i < 3) {
                 $requi = ' required="required" ';
-            else 
+            } else {
                 $requi = '';
+            }
 
             list($optionText, $voteID, $pollType) = sql_fetch_row($result);
 
@@ -313,8 +376,9 @@ function poll_editPollPosted()
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="poll_type" name="poll_type" value="1"';
 
-        if ($pollType == "1") 
+        if ($pollType == "1") {
             echo ' checked="checked"';
+        }
 
         echo ' />
                 <label class="form-check-label" for="poll_type">' . adm_translate("Seulement aux membres") . '</label>
@@ -324,8 +388,9 @@ function poll_editPollPosted()
             <div class="form-check text-danger">
                 <input class="form-check-input" type="checkbox" id="poll_close" name="poll_close" value="1"';
 
-        if ($pollClose == 1) 
+        if ($pollClose == 1) {
             echo ' checked="checked"';
+        }
 
         echo ' />
                     <label class="form-check-label" for="poll_close">' . adm_translate("Vote fermé") . '</label>
@@ -346,29 +411,42 @@ function poll_editPollPosted()
         }
 
         Css::adminfoot('fv', '', $arg1, '');
-    } else
+    } else {
         header("location: admin.php?op=editpoll");
+    }
 }
 
+/**
+ * [poll_SendEditPoll description]
+ *
+ * @return  [type]  [return description]
+ */
 function poll_SendEditPoll()
 {
     global $maxOptions, $pollTitle, $optionText, $poll_type, $pollID, $poll_close;
 
-    $result = sql_query("UPDATE " . sql_table('poll_desc') . " SET pollTitle='$pollTitle' WHERE pollID='$pollID'");
+    $result = sql_query("UPDATE " . sql_table('poll_desc') . " 
+                         SET pollTitle='$pollTitle' 
+                         WHERE pollID='$pollID'");
 
     $poll_type = $poll_type + 128 * $poll_close;
 
     for ($i = 1; $i <= sizeof($optionText); $i++) {
-        if ($optionText[$i] != '')
+        if ($optionText[$i] != '') {
             $optionText[$i] = Str::FixQuotes($optionText[$i]);
+        }
 
-        $result = sql_query("UPDATE " . sql_table('poll_data') . " SET optionText='$optionText[$i]', pollType='$poll_type' WHERE pollID='$pollID' and voteID='$i'");
+        $result = sql_query("UPDATE " . sql_table('poll_data') . " 
+                             SET optionText='$optionText[$i]', pollType='$poll_type' 
+                             WHERE pollID='$pollID' 
+                             AND voteID='$i'");
     }
 
     Header("Location: admin.php?op=create");
 }
 
 switch ($op) {
+    
     case 'create':
         poll_createPoll();
         break;

@@ -3,9 +3,11 @@
 use Npds\Support\Facades\Css;
 use Npds\Support\Facades\Language;
 
+// Deprecated fichier !!!!
 
-if (!function_exists('admindroits'))
+if (!function_exists('admindroits')) {
     include('die.php');
+}
 
 $f_meta_nom = 'Configure';
 $f_titre = adm_translate("Préférences");

@@ -21,7 +21,10 @@ function viewbanner()
 {
     $okprint = false;
 
-    $bresult = sql_query("SELECT bid FROM " . sql_table('banner') . " WHERE userlevel!='9'");
+    $bresult = sql_query("SELECT bid 
+                          FROM " . sql_table('banner') . " 
+                          WHERE userlevel!='9'");
+
     $numrows = sql_num_rows($bresult);
 
     $while_limit = 3;
@@ -37,7 +40,11 @@ function viewbanner()
             break;
         }
 
-        $bresult2 = sql_query("SELECT bid, userlevel FROM " . sql_table('banner') . " WHERE userlevel!='9' LIMIT $bannum, 1");
+        $bresult2 = sql_query("SELECT bid, userlevel 
+                               FROM " . sql_table('banner') . " 
+                               WHERE userlevel!='9' 
+                               LIMIT $bannum, 1");
+
         list($bid, $userlevel) = sql_fetch_row($bresult2);
 
         if ($userlevel == 0) {
@@ -61,7 +68,10 @@ function viewbanner()
 
     // Le risque est de sortir sans un BID valide
     if (!isset($bid)) {
-        $rowQ1 = Q_Select("SELECT bid FROM " . sql_table('banner') . " WHERE userlevel='0' LIMIT 0,1", 86400);
+        $rowQ1 = Q_Select("SELECT bid 
+                           FROM " . sql_table('banner') . " 
+                           WHERE userlevel='0' 
+                           LIMIT 0,1", 86400);
 
         if ($rowQ1) {
 
@@ -75,16 +85,26 @@ function viewbanner()
     if ($okprint) {
 
         if (Config::get('banner.my_ip') != Request::getip()) {
-            sql_query("UPDATE " . sql_table('banner') . " SET impmade=impmade+1 WHERE bid='$bid'");
+            sql_query("UPDATE " . sql_table('banner') . " 
+                       SET impmade=impmade+1 
+                       WHERE bid='$bid'");
         }
 
         if (($numrows > 0) and ($bid)) {
-            $aborrar = sql_query("SELECT cid, imptotal, impmade, clicks, imageurl, clickurl, date FROM " . sql_table('banner') . " WHERE bid='$bid'");
+            $aborrar = sql_query("SELECT cid, imptotal, impmade, clicks, imageurl, clickurl, date 
+                                  FROM " . sql_table('banner') . " 
+                                  WHERE bid='$bid'");
+
             list($cid, $imptotal, $impmade, $clicks, $imageurl, $clickurl, $date) = sql_fetch_row($aborrar);
 
             if ($imptotal == $impmade) {
-                sql_query("INSERT INTO " . sql_table('bannerfinish') . " VALUES (NULL, '$cid', '$impmade', '$clicks', '$date', now())");
-                sql_query("DELETE FROM " . sql_table('banner') . " WHERE bid='$bid'");
+                sql_query("INSERT 
+                           INTO " . sql_table('bannerfinish') . " 
+                           VALUES (NULL, '$cid', '$impmade', '$clicks', '$date', now())");
+
+                sql_query("DELETE 
+                           FROM " . sql_table('banner') . " 
+                           WHERE bid='$bid'");
             }
 
             if ($imageurl != '') {
@@ -116,10 +136,16 @@ function clickbanner()
 {
     $bid = Request::query('bid');
 
-    $bresult = sql_query("SELECT clickurl FROM " . sql_table('banner') . " WHERE bid='$bid'");
+    $bresult = sql_query("SELECT clickurl 
+                          FROM " . sql_table('banner') . " 
+                          WHERE bid='$bid'");
+
     list($clickurl) = sql_fetch_row($bresult);
 
-    sql_query("UPDATE " . sql_table('banner') . " SET clicks=clicks+1 WHERE bid='$bid'");
+    sql_query("UPDATE " . sql_table('banner') . " 
+               SET clicks=clicks+1 
+               WHERE bid='$bid'");
+
     sql_free_result($bresult);
 
     if ($clickurl == '') {
@@ -265,7 +291,10 @@ function bannerstats()
     $login  = Request::input('login');
     $pass   = Request::input('pass');
 
-    $result = sql_query("SELECT cid, name, passwd FROM " . sql_table('bannerclient') . " WHERE login='$login'");
+    $result = sql_query("SELECT cid, name, passwd 
+                         FROM " . sql_table('bannerclient') . " 
+                         WHERE login='$login'");
+
     list($cid, $name, $passwd) = sql_fetch_row($result);
 
     if ($login == '' and $pass == '' or $pass == '') {
@@ -304,7 +333,9 @@ function bannerstats()
             </thead>
             <tbody>';
 
-            $result = sql_query("SELECT bid, imptotal, impmade, clicks, date FROM " . sql_table('banner') . " WHERE cid='$cid'");
+            $result = sql_query("SELECT bid, imptotal, impmade, clicks, date 
+                                 FROM " . sql_table('banner') . " 
+                                 WHERE cid='$cid'");
 
             while (list($bid, $imptotal, $impmade, $clicks, $date) = sql_fetch_row($result)) {
 
@@ -346,7 +377,9 @@ function bannerstats()
                 <a href="' . site_url() . '" target="_blank">' . Config::get('npds.sitename') . '</a>
             </div>';
 
-            $result = sql_query("SELECT bid, imageurl, clickurl FROM " . sql_table('banner') . " WHERE cid='$cid'");
+            $result = sql_query("SELECT bid, imageurl, clickurl 
+                                 FROM " . sql_table('banner') . " 
+                                 WHERE cid='$cid'");
 
             while (list($bid, $imageurl, $clickurl) = sql_fetch_row($result)) {
 
@@ -436,7 +469,9 @@ function bannerstats()
                 </thead>
                 <tbody>';
 
-            $result = sql_query("SELECT bid, impressions, clicks, datestart, dateend FROM " . sql_table('bannerfinish') . " WHERE cid='$cid'");
+            $result = sql_query("SELECT bid, impressions, clicks, datestart, dateend 
+                                 FROM " . sql_table('bannerfinish') . " 
+                                 WHERE cid='$cid'");
 
             while (list($bid, $impressions, $clicks, $datestart, $dateend) = sql_fetch_row($result)) {
                 $percent = substr(100 * $clicks / $impressions, 0, 5);
@@ -491,11 +526,17 @@ function EmailStats()
     $cid    = Request::input('cid');
     $bid    = Request::input('bid');
 
-    $result = sql_query("SELECT login FROM " . sql_table('bannerclient') . " WHERE cid='$cid'");
+    $result = sql_query("SELECT login 
+                         FROM " . sql_table('bannerclient') . " 
+                         WHERE cid='$cid'");
+
     list($loginBD) = sql_fetch_row($result);
 
     if ($login == $loginBD) {
-        $result2 = sql_query("SELECT name, email FROM " . sql_table('bannerclient') . " WHERE cid='$cid'");
+        $result2 = sql_query("SELECT name, email 
+                              FROM " . sql_table('bannerclient') . " 
+                              WHERE cid='$cid'");
+
         list($name, $email) = sql_fetch_row($result2);
 
         if ($email == '') {
@@ -513,7 +554,11 @@ function EmailStats()
             
             footer_page();
         } else {
-            $result = sql_query("SELECT bid, imptotal, impmade, clicks, imageurl, clickurl, date FROM " . sql_table('banner') . " WHERE bid='$bid' AND cid='$cid'");
+            $result = sql_query("SELECT bid, imptotal, impmade, clicks, imageurl, clickurl, date 
+                                 FROM " . sql_table('banner') . " 
+                                 WHERE bid='$bid' 
+                                 AND cid='$cid'");
+
             list($bid, $imptotal, $impmade, $clicks, $imageurl, $clickurl, $date) = sql_fetch_row($result);
             
             $percent = $impmade == 0 ? '0' : substr(100 * $clicks / $impmade, 0, 5);
@@ -595,11 +640,16 @@ function change_banner_url_by_client()
     $bid    = Request::input('bid');
     $url    = Request::input('url');
 
-    $result = sql_query("SELECT passwd FROM " . sql_table('bannerclient') . " WHERE cid='$cid'");
+    $result = sql_query("SELECT passwd 
+                         FROM " . sql_table('bannerclient') . " 
+                         WHERE cid='$cid'");
+
     list($passwd) = sql_fetch_row($result);
 
     if (!empty($pass) and $pass == $passwd) {
-        sql_query("UPDATE " . sql_table('banner') . " SET clickurl='$url' WHERE bid='$bid'");
+        sql_query("UPDATE " . sql_table('banner') . " 
+                   SET clickurl='$url' 
+                   WHERE bid='$bid'");
 
         echo '<div class="alert alert-success">
                 ' . translate("Vous avez changé l'url de la bannière") . '

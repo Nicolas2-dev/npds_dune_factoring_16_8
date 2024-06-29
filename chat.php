@@ -95,7 +95,11 @@ function chatrafraich()
         $tmp_theme = $theme;
     }
 
-    $result = sql_query("SELECT username, message, dbname, date FROM " . sql_table('chatbox') . " WHERE id='$id' AND date>'$repere' ORDER BY date ASC");
+    $result = sql_query("SELECT username, message, dbname, date 
+                         FROM " . sql_table('chatbox') . " 
+                         WHERE id='$id' 
+                         AND date>'$repere' 
+                         ORDER BY date ASC");
 
     $thing = '';
 
@@ -158,7 +162,11 @@ function chatrafraich()
         $Xthing = "\"" . str_replace("'", "\'", $Xthing) . "\"";
     }
 
-    $result = sql_query("SELECT DISTINCT ip FROM " . sql_table('chatbox') . " WHERE id='$id' and date >= " . (time() - (60 * 2)) . "");
+    $result = sql_query("SELECT DISTINCT ip 
+                         FROM " . sql_table('chatbox') . " 
+                         WHERE id='$id' AND 
+                         date >= " . (time() - (60 * 2)) . "");
+                         
     $numofchatters = sql_num_rows($result);
 
     $rafraich_connectes = 0;

@@ -6,8 +6,9 @@ use Npds\Support\Facades\Str;
 use Npds\Support\Facades\Language;
 
 
-if (!function_exists('admindroits'))
+if (!function_exists('admindroits')) {
     include('die.php');
+}
 
 $f_meta_nom = 'mblock';
 $f_titre = adm_translate("Bloc Principal");
@@ -19,6 +20,11 @@ admindroits($aid, $f_meta_nom);
 global $language;
 $hlpfile = "manuels/$language/mainblock.html";
 
+/**
+ * [mblock description]
+ *
+ * @return  [type]  [return description]
+ */
 function mblock()
 {
     global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
@@ -32,7 +38,8 @@ function mblock()
     <hr />
     <h3>' . adm_translate("Edition du Bloc Principal") . '</h3>';
 
-    $result = sql_query("SELECT title, content FROM " . sql_table('block') . " WHERE id=1");
+    $result = sql_query("SELECT title, content 
+                         FROM " . sql_table('block') . " WHERE id=1");
 
     if (sql_num_rows($result) > 0) {
         while (list($title, $content) = sql_fetch_row($result)) {
@@ -63,12 +70,22 @@ function mblock()
     Css::adminfoot('fv', '', '', '');
 }
 
+/**
+ * [changemblock description]
+ *
+ * @param   [type]  $title    [$title description]
+ * @param   [type]  $content  [$content description]
+ *
+ * @return  [type]            [return description]
+ */
 function changemblock($title, $content)
 {
     $title = stripslashes(Str::FixQuotes($title));
     $content = stripslashes(Str::FixQuotes($content));
 
-    sql_query("UPDATE " . sql_table('block') . " SET title='$title', content='$content' WHERE id='1'");
+    sql_query("UPDATE " . sql_table('block') . " 
+               SET title='$title', content='$content' 
+               WHERE id='1'");
 
     global $aid;
     Log::Ecr_Log('security', "ChangeMainBlock(" . Language::aff_langue($title) . ") by AID : $aid", '');
@@ -77,6 +94,7 @@ function changemblock($title, $content)
 }
 
 switch ($op) {
+    
     case 'mblock':
         mblock();
         break;

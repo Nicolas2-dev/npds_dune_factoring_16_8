@@ -7,8 +7,9 @@ use Npds\Support\Facades\Editeur;
 use Npds\Support\Facades\Metalang;
 
 
-if (!function_exists('admindroits'))
+if (!function_exists('admindroits')) {
     include('die.php');
+}
 
 $f_meta_nom = 'lnl';
 $f_titre = adm_translate("Petite Lettre D'information");
@@ -20,15 +21,30 @@ admindroits($aid, $f_meta_nom);
 global $language;
 $hlpfile = "manuels/$language/lnl.html";
 
+/**
+ * [error_handler description]
+ *
+ * @param   [type]  $ibid  [$ibid description]
+ *
+ * @return  [type]         [return description]
+ */
 function error_handler($ibid)
 {
     echo "<p align=\"center\"><span class=\"rouge\">" . adm_translate("Merci d'entrer l'information en fonction des spécifications") . "<br /><br />";
     echo "$ibid</span><br /><a href=\"index.php\" class=\"noir\">" . adm_translate("Retour en arrière") . "</a></p>";
 }
 
+/**
+ * [ShowHeader description]
+ *
+ * @return  [type]  [return description]
+ */
 function ShowHeader()
 {
-    $result = sql_query("SELECT ref, text, html FROM " . sql_table('lnl_head_foot') . " WHERE type='HED' ORDER BY ref ");
+    $result = sql_query("SELECT ref, text, html 
+                         FROM " . sql_table('lnl_head_foot') . " 
+                         WHERE type='HED' 
+                         ORDER BY ref ");
 
     echo '
     <table data-toggle="table" class="table-no-bordered">
@@ -45,13 +61,15 @@ function ShowHeader()
     while (list($ref, $text, $html) = sql_fetch_row($result)) {
         $text = nl2br(htmlspecialchars($text, ENT_COMPAT | ENT_HTML401, cur_charset));
 
-        if (strlen($text) > 100)
+        if (strlen($text) > 100) {
             $text = substr($text, 0, 100) . '<span class="text-danger"> .....</span>';
+        }
 
-        if ($html == 1) 
+        if ($html == 1) {
             $html = 'html';
-        else 
+        } else {
             $html = 'txt';
+        }
 
         echo '
             <tr>
@@ -67,6 +85,14 @@ function ShowHeader()
     </table>';
 }
 
+/**
+ * [Detail_Header_Footer description]
+ *
+ * @param   [type]  $ibid  [$ibid description]
+ * @param   [type]  $type  [$type description]
+ *
+ * @return  [type]         [return description]
+ */
 function Detail_Header_Footer($ibid, $type)
 {
     global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
@@ -77,26 +103,32 @@ function Detail_Header_Footer($ibid, $type)
     adminhead($f_meta_nom, $f_titre, $adminimg);
 
     // $type = HED or FOT
-    $result = sql_query("SELECT text, html FROM " . sql_table('lnl_head_foot') . " WHERE type='$type' AND ref='$ibid'");
+    $result = sql_query("SELECT text, html 
+                         FROM " . sql_table('lnl_head_foot') . " 
+                         WHERE type='$type' 
+                         AND ref='$ibid'");
+
     $tmp = sql_fetch_row($result);
 
     echo '
     <hr />
     <h3 class="mb-2">';
 
-    if ($type == "HED")
+    if ($type == "HED") {
         echo adm_translate("Message d'entête");
-    else
+    } else {
         echo adm_translate("Message de pied de page");
+    }
 
     echo ' - ' . adm_translate("Prévisualiser");
 
-    if ($tmp[1] == 1)
+    if ($tmp[1] == 1) {
         echo '<code> HTML</code></h3>
         <div class="card card-body">' . $tmp[0] . '</div>';
-    else
+    } else {
         echo '<code>' . adm_translate("TEXTE") . '</code></h3>
         <div class="card card-body">' . nl2br($tmp[0]) . '</div>';
+    }
 
     echo '
     <hr />
@@ -115,10 +147,11 @@ function Detail_Header_Footer($ibid, $type)
         echo Editeur::fetch('xtext', '');
     }
 
-    if ($type == 'HED')
+    if ($type == 'HED') {
         echo '<input type="hidden" name="op" value="lnl_Add_Header_Mod" />';
-    else
+    } else { 
         echo '<input type="hidden" name="op" value="lnl_Add_Footer_Mod" />';
+    }
 
     echo '
         <input type="hidden" name="ref" value="' . $ibid . '" />
@@ -133,9 +166,16 @@ function Detail_Header_Footer($ibid, $type)
     Css::adminfoot('', '', '', '');
 }
 
+/**
+ * [ShowBody description]
+ *
+ * @return  [type]  [return description]
+ */
 function ShowBody()
 {
-    $result = sql_query("SELECT ref, text, html FROM " . sql_table('lnl_body') . " ORDER BY ref ");
+    $result = sql_query("SELECT ref, text, html 
+                         FROM " . sql_table('lnl_body') . " 
+                         ORDER BY ref ");
 
     echo '
     <table data-toggle="table" class="table-no-bordered">
@@ -152,13 +192,15 @@ function ShowBody()
     while (list($ref, $text, $html) = sql_fetch_row($result)) {
         $text = nl2br(htmlspecialchars($text, ENT_COMPAT | ENT_HTML401, cur_charset));
 
-        if (strlen($text) > 200)
+        if (strlen($text) > 200) {
             $text = substr($text, 0, 200) . '<span class="text-danger"> .....</span>';
+        }
 
-        if ($html == 1) 
+        if ($html == 1) {
             $html = 'html';
-        else 
+        } else {
             $html = 'txt';
+        }
 
         echo '
         <tr>
@@ -174,6 +216,13 @@ function ShowBody()
     </table>';
 }
 
+/**
+ * [Detail_Body description]
+ *
+ * @param   [type]  $ibid  [$ibid description]
+ *
+ * @return  [type]         [return description]
+ */
 function Detail_Body($ibid)
 {
     global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
@@ -187,15 +236,19 @@ function Detail_Body($ibid)
     <hr />
     <h3 class="mb-2">' . adm_translate("Corps de message") . ' - ';
 
-    $result = sql_query("SELECT text, html FROM " . sql_table('lnl_body') . " WHERE ref='$ibid'");
+    $result = sql_query("SELECT text, html 
+                         FROM " . sql_table('lnl_body') . " 
+                         WHERE ref='$ibid'");
+
     $tmp = sql_fetch_row($result);
 
-    if ($tmp[1] == 1)
+    if ($tmp[1] == 1) {
         echo adm_translate("Prévisualiser") . ' <code>HTML</code></h3>
         <div class="card card-body">' . $tmp[0] . '</div>';
-    else
+    } else {
         echo adm_translate("Prévisualiser") . ' <code>' . adm_translate("TEXTE") . '</code></h3>
         <div class="card card-body">' . nl2br($tmp[0]) . '</div>';
+    }
 
     echo '
     <form action="admin.php" method="post" name="adminForm">
@@ -227,6 +280,11 @@ function Detail_Body($ibid)
     Css::adminfoot('', '', '', '');
 }
 
+/**
+ * [Add_Body description]
+ *
+ * @return  [type]  [return description]
+ */
 function Add_Body()
 {
     global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
@@ -287,14 +345,32 @@ function Add_Body()
     Css::adminfoot('fv', $fv_parametres, $arg1, '');
 }
 
+/**
+ * [Add_Body_Submit description]
+ *
+ * @param   [type]  $Ytext  [$Ytext description]
+ * @param   [type]  $Yhtml  [$Yhtml description]
+ *
+ * @return  [type]          [return description]
+ */
 function Add_Body_Submit($Ytext, $Yhtml)
 {
-    sql_query("INSERT INTO " . sql_table('lnl_body') . " VALUES ('0', '$Yhtml', '$Ytext', 'OK')");
+    sql_query("INSERT 
+               INTO " . sql_table('lnl_body') . " 
+               VALUES ('0', '$Yhtml', '$Ytext', 'OK')");
 }
 
+/**
+ * [ShowFooter description]
+ *
+ * @return  [type]  [return description]
+ */
 function ShowFooter()
 {
-    $result = sql_query("SELECT ref, text, html FROM " . sql_table('lnl_head_foot') . " WHERE type='FOT' ORDER BY ref ");
+    $result = sql_query("SELECT ref, text, html 
+                         FROM " . sql_table('lnl_head_foot') . " 
+                         WHERE type='FOT' 
+                         ORDER BY ref ");
 
     echo '
     <table data-toggle="table" class="table-no-bordered">
@@ -311,13 +387,15 @@ function ShowFooter()
     while (list($ref, $text, $html) = sql_fetch_row($result)) {
         $text = nl2br(htmlspecialchars($text, ENT_COMPAT | ENT_HTML401, cur_charset));
 
-        if (strlen($text) > 100)
+        if (strlen($text) > 100) {
             $text = substr($text, 0, 100) . '<span class="text-danger"> .....</span>';
+        }
 
-        if ($html == 1) 
+        if ($html == 1) {
             $html = 'html';
-        else 
+        } else {
             $html = 'txt';
+        }
 
         echo '
             <tr>
@@ -333,6 +411,13 @@ function ShowFooter()
     </table>';
 }
 
+/**
+ * [Add_Header_Footer description]
+ *
+ * @param   [type]  $ibid  [$ibid description]
+ *
+ * @return  [type]         [return description]
+ */
 function Add_Header_Footer($ibid)
 {
     global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
@@ -403,14 +488,32 @@ function Add_Header_Footer($ibid)
     Css::adminfoot('fv', $fv_parametres, $arg1, '');
 }
 
+/**
+ * [Add_Header_Footer_Submit description]
+ *
+ * @param   [type]  $ibid   [$ibid description]
+ * @param   [type]  $xtext  [$xtext description]
+ * @param   [type]  $xhtml  [$xhtml description]
+ *
+ * @return  [type]          [return description]
+ */
 function Add_Header_Footer_Submit($ibid, $xtext, $xhtml)
 {
     if ($ibid == "HED")
-        sql_query("INSERT INTO " . sql_table('lnl_head_foot') . " VALUES ('0', 'HED','$xhtml', '$xtext', 'OK')");
+        sql_query("INSERT 
+                   INTO " . sql_table('lnl_head_foot') . " 
+                   VALUES ('0', 'HED','$xhtml', '$xtext', 'OK')");
     else
-        sql_query("INSERT INTO " . sql_table('lnl_head_foot') . " VALUES ('0', 'FOT', '$xhtml', '$xtext', 'OK')");
+        sql_query("INSERT 
+                   INTO " . sql_table('lnl_head_foot') . " 
+                   VALUES ('0', 'FOT', '$xhtml', '$xtext', 'OK')");
 }
 
+/**
+ * [main description]
+ *
+ * @return  [type]  [return description]
+ */
 function main()
 {
     global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
@@ -521,8 +624,9 @@ function main()
 
     $tmp_groupe = '';
     foreach ($mX as $groupe_id => $groupe_name) {
-        if ($groupe_id == '0') 
+        if ($groupe_id == '0') {
             $groupe_id = '';
+        }
 
         $tmp_groupe .= '<option value="' . $groupe_id . '">' . $groupe_name . '</option>';
     }
@@ -557,6 +661,14 @@ function main()
     Css::adminfoot('fv', $fv_parametres, $arg1, '');
 }
 
+/**
+ * [Del_Question description]
+ *
+ * @param   [type]  $retour  [$retour description]
+ * @param   [type]  $param   [$param description]
+ *
+ * @return  [type]           [return description]
+ */
 function Del_Question($retour, $param)
 {
     global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
@@ -575,6 +687,15 @@ function Del_Question($retour, $param)
     Css::adminfoot('', '', '', '');
 }
 
+/**
+ * [Test description]
+ *
+ * @param   [type]  $Yheader  [$Yheader description]
+ * @param   [type]  $Ybody    [$Ybody description]
+ * @param   [type]  $Yfooter  [$Yfooter description]
+ *
+ * @return  [type]            [return description]
+ */
 function Test($Yheader, $Ybody, $Yfooter)
 {
     global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
@@ -584,18 +705,31 @@ function Test($Yheader, $Ybody, $Yfooter)
     GraphicAdmin($hlpfile);
     adminhead($f_meta_nom, $f_titre, $adminimg);
 
-    $result = sql_query("SELECT text, html FROM " . sql_table('lnl_head_foot') . " WHERE type='HED' AND ref='$Yheader'");
+    $result = sql_query("SELECT text, html 
+                         FROM " . sql_table('lnl_head_foot') . " 
+                         WHERE type='HED' 
+                         AND ref='$Yheader'");
+
     $Xheader = sql_fetch_row($result);
 
-    $result = sql_query("SELECT text, html FROM " . sql_table('lnl_body') . " WHERE html='$Xheader[1]' AND ref='$Ybody'");
+    $result = sql_query("SELECT text, html 
+                         FROM " . sql_table('lnl_body') . " 
+                         WHERE html='$Xheader[1]' 
+                         AND ref='$Ybody'");
+
     $Xbody = sql_fetch_row($result);
 
-    $result = sql_query("SELECT text, html FROM " . sql_table('lnl_head_foot') . " WHERE type='FOT' AND html='$Xheader[1]' AND ref='$Yfooter'");
+    $result = sql_query("SELECT text, html 
+                         FROM " . sql_table('lnl_head_foot') . " 
+                         WHERE type='FOT' 
+                         AND html='$Xheader[1]' 
+                         AND ref='$Yfooter'");
+
     $Xfooter = sql_fetch_row($result);
 
-    // For Meta-Lang
-    //   global $cookie; // a quoi ca sert
-    //   $uid=$cookie[0]; // a quoi ca sert
+    // For Meta-Lang // ??
+    // global $cookie; // ??
+    // $uid=$cookie[0]; // ??
     if ($Xheader[1] == 1) {
         echo '
         <hr />
@@ -625,6 +759,11 @@ function Test($Yheader, $Ybody, $Yfooter)
     Css::adminfoot('', '', '', '');
 }
 
+/**
+ * [lnl_list description]
+ *
+ * @return  [type]  [return description]
+ */
 function lnl_list()
 {
     global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
@@ -634,7 +773,9 @@ function lnl_list()
     GraphicAdmin($hlpfile);
     adminhead($f_meta_nom, $f_titre, $adminimg);
 
-    $result = sql_query("SELECT ref, header , body, footer, number_send, type_send, date, status FROM " . sql_table('lnl_send') . " ORDER BY date");
+    $result = sql_query("SELECT ref, header , body, footer, number_send, type_send, date, status 
+                         FROM " . sql_table('lnl_send') . " 
+                         ORDER BY date");
 
     echo '
     <hr />
@@ -681,6 +822,11 @@ function lnl_list()
     Css::adminfoot('', '', '', '');
 }
 
+/**
+ * [lnl_user_list description]
+ *
+ * @return  [type]  [return description]
+ */
 function lnl_user_list()
 {
     global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
@@ -690,7 +836,9 @@ function lnl_user_list()
     GraphicAdmin($hlpfile);
     adminhead($f_meta_nom, $f_titre, $adminimg);
 
-    $result = sql_query("SELECT email, date, status FROM " . sql_table('lnl_outside_users') . " ORDER BY date");
+    $result = sql_query("SELECT email, date, status 
+                         FROM " . sql_table('lnl_outside_users') . " 
+                         ORDER BY date");
 
     echo '
     <hr />
@@ -712,10 +860,11 @@ function lnl_user_list()
                 <td>' . $email . '</td>
                 <td>' . $date . '</td>';
 
-        if ($status == "NOK")
+        if ($status == "NOK") {
             echo '<td class="text-danger">' . $status . '</td>';
-        else
+        } else {
             echo '<td class="text-success">' . $status . '</td>';
+        }
 
         echo '
                 <td><a href="admin.php?op=lnl_Sup_User&amp;lnl_user_email=' . $email . '" class="text-danger"><i class="fas fa-trash fa-lg text-danger" data-bs-toggle="tooltip" title="' . adm_translate("Effacer") . '"></i></a></td>
@@ -731,6 +880,7 @@ function lnl_user_list()
 }
 
 switch ($op) {
+
     case "Sup_Header":
         Del_Question("lnl_Sup_HeaderOK", "Headerid=$Headerid");
         break;
@@ -744,17 +894,26 @@ switch ($op) {
         break;
 
     case "Sup_HeaderOK":
-        sql_query("DELETE FROM " . sql_table('lnl_head_foot') . " WHERE ref='$Headerid'");
+        sql_query("DELETE 
+                   FROM " . sql_table('lnl_head_foot') . " 
+                   WHERE ref='$Headerid'");
+
         header("location: admin.php?op=lnl");
         break;
 
     case "Sup_BodyOK":
-        sql_query("DELETE FROM " . sql_table('lnl_body') . " WHERE ref='$Bodyid'");
+        sql_query("DELETE 
+                   FROM " . sql_table('lnl_body') . " 
+                   WHERE ref='$Bodyid'");
+
         header("location: admin.php?op=lnl");
         break;
 
     case "Sup_FooterOK":
-        sql_query("DELETE FROM " . sql_table('lnl_head_foot') . " WHERE ref='$Footerid'");
+        sql_query("DELETE 
+                   FROM " . sql_table('lnl_head_foot') . " 
+                   WHERE ref='$Footerid'");
+
         header("location: admin.php?op=lnl");
         break;
 
@@ -780,7 +939,10 @@ switch ($op) {
         break;
 
     case "Add_Header_Mod":
-        sql_query("UPDATE " . sql_table('lnl_head_foot') . " SET text='$xtext' WHERE ref='$ref'");
+        sql_query("UPDATE " . sql_table('lnl_head_foot') . " 
+                   SET text='$xtext' 
+                   WHERE ref='$ref'");
+
         header("location: admin.php?op=lnl_Shw_Header&Headerid=$ref");
         break;
 
@@ -794,7 +956,10 @@ switch ($op) {
         break;
 
     case "Add_Body_Mod":
-        sql_query("UPDATE " . sql_table('lnl_body') . " SET text='$xtext' WHERE ref='$ref'");
+        sql_query("UPDATE " . sql_table('lnl_body') . " 
+                   SET text='$xtext' 
+                   WHERE ref='$ref'");
+
         header("location: admin.php?op=lnl_Shw_Body&Bodyid=$ref");
         break;
 
@@ -808,7 +973,10 @@ switch ($op) {
         break;
 
     case "Add_Footer_Mod":
-        sql_query("UPDATE " . sql_table('lnl_head_foot') . " SET text='$xtext' WHERE ref='$ref'");
+        sql_query("UPDATE " . sql_table('lnl_head_foot') . " 
+                   SET text='$xtext' 
+                   WHERE ref='$ref'");
+
         header("location: admin.php?op=lnl_Shw_Footer&Footerid=$ref");
         break;
 
@@ -825,7 +993,9 @@ switch ($op) {
         break;
 
     case "Sup_User":
-        sql_query("DELETE FROM " . sql_table('lnl_outside_users') . " WHERE email='$lnl_user_email'");
+        sql_query("DELETE 
+                   FROM " . sql_table('lnl_outside_users') . " 
+                   WHERE email='$lnl_user_email'");
 
         header("location: admin.php?op=lnl_User_List");
         break;
@@ -833,21 +1003,36 @@ switch ($op) {
     case "Send":
         $deb = 0;
         $limit = 50; // nombre de messages envoyé par boucle.
-        if (!isset($debut)) 
+        if (!isset($debut)) {
             $debut = 0;
+        }
 
-        if (!isset($number_send)) 
+        if (!isset($number_send)) {
             $number_send = 0;
+        }
 
         global $nuke_url;
 
-        $result = sql_query("SELECT text, html FROM " . sql_table('lnl_head_foot') . " WHERE type='HED' AND ref='$Xheader'");
+        $result = sql_query("SELECT text, html 
+                             FROM " . sql_table('lnl_head_foot') . " 
+                             WHERE type='HED' 
+                             AND ref='$Xheader'");
+
         $Yheader = sql_fetch_row($result);
 
-        $result = sql_query("SELECT text, html FROM " . sql_table('lnl_body') . " WHERE html='$Yheader[1]' AND ref='$Xbody'");
+        $result = sql_query("SELECT text, html 
+                             FROM " . sql_table('lnl_body') . " 
+                             WHERE html='$Yheader[1]' 
+                             AND ref='$Xbody'");
+
         $Ybody = sql_fetch_row($result);
 
-        $result = sql_query("SELECT text, html FROM " . sql_table('lnl_head_foot') . " WHERE type='FOT' AND html='$Yheader[1]' AND ref='$Xfooter'");
+        $result = sql_query("SELECT text, html 
+                             FROM " . sql_table('lnl_head_foot') . " 
+                             WHERE type='FOT' 
+                             AND html='$Yheader[1]' 
+                             AND ref='$Xfooter'");
+
         $Yfooter = sql_fetch_row($result);
 
         $subject = stripslashes($Xsubject);
@@ -863,10 +1048,17 @@ switch ($op) {
 
         // Outside Users
         if ($Xtype == "Out") {
-            $mysql_result = sql_query("SELECT email FROM " . sql_table('lnl_outside_users') . " WHERE status='OK'");
+            $mysql_result = sql_query("SELECT email 
+                                       FROM " . sql_table('lnl_outside_users') . " 
+                                       WHERE status='OK'");
+
             $nrows = sql_num_rows($mysql_result);
 
-            $result = sql_query("SELECT email FROM " . sql_table('lnl_outside_users') . " WHERE status='OK' ORDER BY email limit $debut,$limit");
+            $result = sql_query("SELECT email 
+                                 FROM " . sql_table('lnl_outside_users') . " 
+                                 WHERE status='OK' 
+                                 ORDER BY email 
+                                 LIMIT $debut,$limit");
 
             while (list($email) = sql_fetch_row($result)) {
                 if (($email != "Anonyme") or ($email != "Anonymous")) {
@@ -894,33 +1086,62 @@ switch ($op) {
             if ($Xgroupe != '') {
                 $result = '';
 
-                $mysql_result = sql_query("SELECT u.uid FROM " . sql_table('users') . " u, " . sql_table('users_status') . " s WHERE s.open='1' AND u.uid=s.uid AND u.email!='' AND (s.groupe LIKE '%$Xgroupe,%' OR s.groupe LIKE '%,$Xgroupe' OR s.groupe='$Xgroupe') AND u.user_lnl='1'");
+                $mysql_result = sql_query("SELECT u.uid 
+                                           FROM " . sql_table('users') . " u, " . sql_table('users_status') . " s 
+                                           WHERE s.open='1' 
+                                           AND u.uid=s.uid 
+                                           AND u.email!='' 
+                                           AND (s.groupe LIKE '%$Xgroupe,%' OR s.groupe LIKE '%,$Xgroupe' OR s.groupe='$Xgroupe') 
+                                           AND u.user_lnl='1'");
+
                 $nrows = sql_num_rows($mysql_result);
 
-                $resultGP = sql_query("SELECT u.email, u.uid, s.groupe FROM " . sql_table('users') . " u, " . sql_table('users_status') . " s WHERE s.open='1' AND u.uid=s.uid AND u.email!='' AND (s.groupe LIKE '%$Xgroupe,%' OR s.groupe LIKE '%,$Xgroupe' OR s.groupe='$Xgroupe') AND u.user_lnl='1' ORDER BY u.email LIMIT $debut,$limit");
+                $resultGP = sql_query("SELECT u.email, u.uid, s.groupe 
+                                       FROM " . sql_table('users') . " u, " . sql_table('users_status') . " s 
+                                       WHERE s.open='1' 
+                                       AND u.uid=s.uid 
+                                       AND u.email!='' 
+                                       AND (s.groupe LIKE '%$Xgroupe,%' OR s.groupe LIKE '%,$Xgroupe' OR s.groupe='$Xgroupe') AND u.user_lnl='1' 
+                                       ORDER BY u.email 
+                                       LIMIT $debut, $limit");
                 
                 while (list($email, $uid, $groupe) = sql_fetch_row($resultGP)) {
                     $tab_groupe = explode(',', $groupe);
 
                     if ($tab_groupe)
                         foreach ($tab_groupe as $groupevalue) {
-                            if ($groupevalue == $Xgroupe)
+                            if ($groupevalue == $Xgroupe) {
                                 $result[] = $email;
+                            }
                         }
                 }
 
                 $fonction = "each"; ///???gloups
 
-                if (is_array($result)) 
+                if (is_array($result)) {
                     $boucle = true;
-                else 
+                } else {
                     $boucle = false;
+                }
 
             } else {
-                $mysql_result = sql_query("SELECT u.uid FROM " . sql_table('users') . " u, " . sql_table('users_status') . " s WHERE s.open='1' AND u.uid=s.uid AND u.email!='' AND u.user_lnl='1'");
+                $mysql_result = sql_query("SELECT u.uid 
+                                           FROM " . sql_table('users') . " u, " . sql_table('users_status') . " s 
+                                           WHERE s.open='1' 
+                                           AND u.uid=s.uid 
+                                           AND u.email!='' 
+                                           AND u.user_lnl='1'");
+
                 $nrows = sql_num_rows($mysql_result);
 
-                $result = sql_query("SELECT u.uid, u.email FROM " . sql_table('users') . " u, " . sql_table('users_status') . " s WHERE s.open='1' AND u.uid=s.uid AND u.user_lnl='1' ORDER BY email LIMIT $debut,$limit");
+                $result = sql_query("SELECT u.uid, u.email 
+                                     FROM " . sql_table('users') . " u, " . sql_table('users_status') . " s 
+                                     WHERE s.open='1' 
+                                     AND u.uid=s.uid 
+                                     AND u.user_lnl='1' 
+                                     ORDER BY email 
+                                     LIMIT $debut, $limit");
+
                 $fonction = "sql_fetch_row";
 
                 $boucle = true;
@@ -959,7 +1180,9 @@ switch ($op) {
                         $Xtype = $Xgroupe;
                     }
 
-                    sql_query("INSERT INTO " . sql_table('lnl_send') . " VALUES ('0', '$Xheader', '$Xbody', '$Xfooter', '$number_send', '$Xtype', '$timeX', 'OK')");
+                    sql_query("INSERT 
+                               INTO " . sql_table('lnl_send') . " 
+                               VALUES ('0', '$Xheader', '$Xbody', '$Xfooter', '$number_send', '$Xtype', '$timeX', 'OK')");
                 }
 
                 header("location: admin.php?op=lnl");
@@ -970,14 +1193,21 @@ switch ($op) {
                     $deb = 0;
                     $Xtype = "Mbr";
 
-                    $mysql_result = sql_query("SELECT u.uid FROM " . sql_table('users') . " u, " . sql_table('users_status') . " s WHERE s.open='1' and u.uid=s.uid and u.email!='' and u.user_lnl='1'");
+                    $mysql_result = sql_query("SELECT u.uid 
+                                               FROM " . sql_table('users') . " u, " . sql_table('users_status') . " s 
+                                               WHERE s.open='1' 
+                                               AND u.uid=s.uid 
+                                               AND u.email!='' 
+                                               AND u.user_lnl='1'");
+
                     $nrows = sql_num_rows($mysql_result);
                 }
             }
         }
 
-        if ($chartmp == '') 
+        if ($chartmp == '') {
             $chartmp = "$Xtype : $deb / $nrows";
+        }
         
         include("meta/meta.php");
 

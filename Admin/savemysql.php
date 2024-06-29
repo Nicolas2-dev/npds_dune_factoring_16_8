@@ -1,10 +1,12 @@
 <?php
 
+use Npds\Http\Response;
 use Npds\Support\Facades\Url;
 
 
-if (!function_exists('admindroits'))
+if (!function_exists('admindroits')) {
     include('die.php');
+}
 
 $f_meta_nom = 'SavemySQL';
 
@@ -18,6 +20,13 @@ include("lib/archive.php");
 
 mysqli_set_charset($dblink, "utf8mb4");
 
+/**
+ * [PrepareString description]
+ *
+ * @param   [type]  $a_string  [$a_string description]
+ *
+ * @return  [type]             [return description]
+ */
 function PrepareString($a_string = '')
 {
     $search       = array('\\', '\'', "\x00", "\x0a", "\x0d", "\x1a"); //\x08\\x09, not required
@@ -26,6 +35,13 @@ function PrepareString($a_string = '')
     return str_replace($search, $replace, $a_string);
 }
 
+/**
+ * [get_table_def description]
+ *
+ * @param   [type]  $table  [$table description]
+ *
+ * @return  [type]          [return description]
+ */
 function get_table_def($table)
 {
     global $dbname, $crlf, $crlf2, $dblink;
@@ -34,6 +50,7 @@ function get_table_def($table)
 
     $k = 0;
     $result = sql_query("SELECT * FROM $table LIMIT 1");
+
     $count = sql_num_fields($result);
 
     $schema_create = '';
@@ -45,17 +62,21 @@ function get_table_def($table)
 
         $schema_create .= " " . $row['Field'] . " " . $row['Type'];
 
-        if (isset($row['Default']) && (!empty($row['Default']) || $row['Default'] == "0"))
+        if (isset($row['Default']) && (!empty($row['Default']) || $row['Default'] == "0")) {
             $schema_create .= " DEFAULT '" . $row['Default'] . "'";
+        }
 
-        if ($row["Null"] != "YES")
+        if ($row["Null"] != "YES") {
             $schema_create .= " NOT NULL";
+        }
 
-        if ($row["Extra"] != "")
+        if ($row["Extra"] != "") {
             $schema_create .= " " . $row['Extra'];
+        }
 
-        if ($k < ($count - 1)) 
+        if ($k < ($count - 1)) {
             $schema_create .= ",$crlf";
+        }
 
         $k++;
     }
@@ -65,11 +86,13 @@ function get_table_def($table)
     while ($row = sql_fetch_assoc($result)) {
         $kname = $row['Key_name'];
 
-        if (($kname != "PRIMARY") && ($row['Non_unique'] == 0))
+        if (($kname != "PRIMARY") && ($row['Non_unique'] == 0)) {
             $kname = "UNIQUE|$kname";
+        }
 
-        if (!isset($index[$kname]))
+        if (!isset($index[$kname])) {
             $index[$kname] = array();
+        }
 
         $index[$kname][] = $row['Column_name'];
     }
@@ -77,12 +100,13 @@ function get_table_def($table)
     foreach ($index as $x => $columns) {
         $schema_create .= ",$crlf";
 
-        if ($x == "PRIMARY")
+        if ($x == "PRIMARY") {
             $schema_create .= " PRIMARY KEY (" . implode(", ", $columns) . ")";
-        elseif (substr($x, 0, 6) == "UNIQUE")
+        } elseif (substr($x, 0, 6) == "UNIQUE") {
             $schema_create .= " UNIQUE " . substr($x, 7) . " (" . implode(", ", $columns) . ")";
-        else
+        } else {
             $schema_create .= " KEY $x (" . implode(", ", $columns) . ")";
+        }
     }
 
     $schema_create .= "$crlf)";
@@ -94,7 +118,13 @@ function get_table_def($table)
     return ($schema_create);
 }
 
-
+/**
+ * [get_table_content description]
+ *
+ * @param   [type]  $table  [$table description]
+ *
+ * @return  [type]          [return description]
+ */
 function get_table_content($table)
 {
     global $dbname, $crlf, $crlf2;
@@ -109,9 +139,9 @@ function get_table_content($table)
         $schema_insert .= "INSERT INTO $table VALUES (";
 
         for ($j = 0; $j < $count; $j++) {
-            if (!isset($row[$j]))
+            if (!isset($row[$j])) {
                 $schema_insert .= " NULL";
-            else
+            } else {
                 if ($row[$j] != "") {
                     $schema_insert .= " '" . PrepareString($row[$j]) . "'";
                 } else {
@@ -121,6 +151,7 @@ function get_table_content($table)
                 if ($j < ($count - 1)) {
                     $schema_insert .= ",";
                 }
+            }
         }
 
         $schema_insert .= ");$crlf"; //
@@ -133,6 +164,11 @@ function get_table_content($table)
     }
 }
 
+/**
+ * [dbSave description]
+ *
+ * @return  [type]  [return description]
+ */
 function dbSave()
 {
     global $dbname, $name, $MSos, $crlf;
@@ -145,9 +181,9 @@ function dbSave()
     $tables = sql_list_tables($dbname);
     $num_tables = sql_num_rows($tables);
 
-    if ($num_tables == 0)
+    if ($num_tables == 0) { 
         echo "&nbsp;" . adm_translate("Aucune table n'a été trouvée") . "\n";
-    else {
+    } else {
         $heure_jour = date("H:i");
         $data = "# ========================================================$crlf"
             . "# $crlf"
@@ -174,9 +210,18 @@ function dbSave()
         }
     }
 
-    send_file($data, $filename, "sql", $MSos);
+    Response::send_file($data, $filename, "sql", $MSos);
 }
 
+/**
+ * [dbSave_tofile description]
+ *
+ * @param   [type]  $repertoire      [$repertoire description]
+ * @param   [type]  $linebyline      [$linebyline description]
+ * @param   [type]  $savemysql_size  [$savemysql_size description]
+ *
+ * @return  [type]                   [return description]
+ */
 function dbSave_tofile($repertoire, $linebyline = 0, $savemysql_size = 256)
 {
     global $dbname, $name, $MSos, $crlf, $crlf2;
@@ -189,11 +234,12 @@ function dbSave_tofile($repertoire, $linebyline = 0, $savemysql_size = 256)
     $tables = sql_list_tables($dbname);
     $num_tables = sql_num_rows($tables);
 
-    if ($num_tables == 0)
+    if ($num_tables == 0) {
         echo "&nbsp;" . adm_translate("Aucune table n'a été trouvée") . "\n";
-    else {
-        if ((!isset($repertoire)) or ($repertoire == "")) 
+    } else {
+        if ((!isset($repertoire)) or ($repertoire == "")) {
             $repertoire = ".";
+        }
 
         if (!is_dir($repertoire)) {
             @umask("0000");
@@ -232,16 +278,19 @@ function dbSave_tofile($repertoire, $linebyline = 0, $savemysql_size = 256)
                 $schema_insert = "INSERT INTO $table VALUES (";
 
                 for ($j = 0; $j < $count_line; $j++) {
-                    if (!isset($row[$j]))
+                    if (!isset($row[$j])) {
                         $schema_insert .= " NULL";
-                    else
-                        if ($row[$j] != '')
+                    } else {
+                        if ($row[$j] != '') {
                             $schema_insert .= " '" . PrepareString($row[$j]) . "'";
-                        else
+                        } else {
                             $schema_insert .= " ''";
+                        }
 
-                        if ($j < ($count_line - 1))
+                        if ($j < ($count_line - 1)) {
                             $schema_insert .= ",";
+                        }
+                    }
                 }
 
                 $schema_insert .= ");$crlf";
@@ -250,7 +299,7 @@ function dbSave_tofile($repertoire, $linebyline = 0, $savemysql_size = 256)
 
                 if ($linebyline == 1) {
                     if (strlen($data1) > ($savemysql_size * 1024)) {
-                        send_tofile($data0 . $data1, $repertoire, $filename . "-" . sprintf("%03d", $ifile), "sql", $MSos);
+                        Response::send_tofile($data0 . $data1, $repertoire, $filename . "-" . sprintf("%03d", $ifile), "sql", $MSos);
                         $data1 = "";
                         $ifile++;
                     }
@@ -262,7 +311,7 @@ function dbSave_tofile($repertoire, $linebyline = 0, $savemysql_size = 256)
 
             if ($linebyline == 0) {
                 if (strlen($data1) > ($savemysql_size * 1024)) {
-                    send_tofile($data0 . $data1, $repertoire, $filename . "-" . sprintf("%03d", $ifile), "sql", $MSos);
+                    Response::send_tofile($data0 . $data1, $repertoire, $filename . "-" . sprintf("%03d", $ifile), "sql", $MSos);
                     $data1 = "";
                     $ifile++;
                 }
@@ -270,7 +319,7 @@ function dbSave_tofile($repertoire, $linebyline = 0, $savemysql_size = 256)
         }
 
         if (strlen($data1) > 0) {
-            send_tofile($data0 . $data1, $repertoire, $filename . "-" . sprintf("%03d", $ifile), "sql", $MSos);
+            Response::send_tofile($data0 . $data1, $repertoire, $filename . "-" . sprintf("%03d", $ifile), "sql", $MSos);
             $data1 = "";
             $ifile++;
         }
@@ -278,6 +327,7 @@ function dbSave_tofile($repertoire, $linebyline = 0, $savemysql_size = 256)
 }
 
 switch ($op) {
+
     case "SavemySQL":
         $MSos = get_os();
 

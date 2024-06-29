@@ -52,7 +52,10 @@ function main()
  */
 function transferfile($did)
 {
-    $result = sql_query("SELECT dcounter, durl, perms FROM " . sql_table('downloads') . " WHERE did='$did'");
+    $result = sql_query("SELECT dcounter, durl, perms 
+                         FROM " . sql_table('downloads') . " 
+                         WHERE did='$did'");
+
     list($dcounter, $durl, $dperm) = sql_fetch_row($result);
 
     if (!$durl) {
@@ -73,7 +76,9 @@ function transferfile($did)
 
                 if (Groupe::autorisation($v) == true) {
                     $dcounter++;
-                    sql_query("UPDATE " . sql_table('downloads') . " SET dcounter='$dcounter' WHERE did='$did'");
+                    sql_query("UPDATE " . sql_table('downloads') . " 
+                               SET dcounter='$dcounter' 
+                               WHERE did='$did'");
 
                     header("location: " . str_replace(basename($durl), rawurlencode(basename($durl)), $durl));
                     break;
@@ -88,7 +93,9 @@ function transferfile($did)
         } else {
             if (Groupe::autorisation($dperm)) {
                 $dcounter++;
-                sql_query("UPDATE " . sql_table('downloads') . " SET dcounter='$dcounter' WHERE did='$did'");
+                sql_query("UPDATE " . sql_table('downloads') . " 
+                           SET dcounter='$dcounter' 
+                           WHERE did='$did'");
 
                 header("location: " . str_replace(basename($durl), rawurlencode(basename($durl)), $durl));
             } else {

@@ -9,8 +9,9 @@ use Npds\Support\Facades\Forum;
 use Npds\Support\Facades\Language;
 
 
-if (!function_exists('admindroits'))
+if (!function_exists('admindroits')) {
     include('die.php');
+}
 
 $f_meta_nom = 'MaintForumAdmin';
 $f_titre = adm_translate('Maintenance des Forums');
@@ -25,6 +26,11 @@ $hlpfile = "manuels/$language/forummaint.html";
 include("auth.php");
 include("functions.php");
 
+/**
+ * [ForumMaintMarkTopics description]
+ *
+ * @return  [type]  [return description]
+ */
 function ForumMaintMarkTopics()
 {
     global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
@@ -46,11 +52,16 @@ function ForumMaintMarkTopics()
         </thead>
         <tbody>';
 
-    if (!$r = sql_query("DELETE FROM " . sql_table('forum_read')))
+    if (!$r = sql_query("DELETE 
+                         FROM " . sql_table('forum_read'))) 
+    {
         Error::code('0001');
-    else {
-        $resultF = sql_query("SELECT forum_id FROM " . sql_table('forums') . " ORDER BY forum_id ASC");
-        $time_actu = time() + ((int)$gmt * 3600);
+    } else {
+        $resultF = sql_query("SELECT forum_id 
+                              FROM " . sql_table('forums') . " 
+                              ORDER BY forum_id ASC");
+
+        $time_actu = time() + ((int) $gmt * 3600);
 
         while (list($forum_id) = sql_fetch_row($resultF)) {
             echo '
@@ -58,14 +69,22 @@ function ForumMaintMarkTopics()
                 <td align="center">' . $forum_id . '</td>
                 <td align="left">';
 
-            $resultT = sql_query("SELECT topic_id FROM " . sql_table('forumtopics') . " WHERE forum_id='$forum_id' ORDER BY topic_id ASC");
+            $resultT = sql_query("SELECT topic_id 
+                                  FROM " . sql_table('forumtopics') . " 
+                                  WHERE forum_id='$forum_id' 
+                                  ORDER BY topic_id ASC");
 
             while (list($topic_id) = sql_fetch_row($resultT)) {
-                $resultU = sql_query("SELECT uid FROM " . sql_table('users') . " ORDER BY uid DESC");
+                $resultU = sql_query("SELECT uid 
+                                      FROM " . sql_table('users') . " 
+                                      ORDER BY uid DESC");
 
                 while (list($uid) = sql_fetch_row($resultU)) {
-                    if ($uid > 1)
-                        $r = sql_query("INSERT INTO " . sql_table('forum_read') . " (forum_id, topicid, uid, last_read, status) VALUES ('$forum_id', '$topic_id', '$uid', '$time_actu', '1')");
+                    if ($uid > 1) {
+                        $r = sql_query("INSERT 
+                                        INTO " . sql_table('forum_read') . " (forum_id, topicid, uid, last_read, status) 
+                                        VALUES ('$forum_id', '$topic_id', '$uid', '$time_actu', '1')");
+                    }
                 }
 
                 sql_free_result($resultU);
@@ -89,6 +108,14 @@ function ForumMaintMarkTopics()
     Css::adminfoot('', '', '', '');
 }
 
+/**
+ * [ForumMaintTopics description]
+ *
+ * @param   [type]  $before      [$before description]
+ * @param   [type]  $forum_name  [$forum_name description]
+ *
+ * @return  [type]               [return description]
+ */
 function ForumMaintTopics($before, $forum_name)
 {
     global $hlpfile, $f_meta_nom, $f_titre, $adminimg, $parse;
@@ -115,18 +142,23 @@ function ForumMaintTopics($before, $forum_name)
 
     echo '<form action="admin.php" method="post">';
 
-    $resultF = sql_query("SELECT forum_id, forum_name FROM " . sql_table('forums') . " $add_sql2 ORDER BY forum_id ASC");
+    $resultF = sql_query("SELECT forum_id, forum_name 
+                          FROM " . sql_table('forums') . " $add_sql2 
+                          ORDER BY forum_id ASC");
 
     while (list($forum_id, $forum_name) = sql_fetch_row($resultF)) {
         echo '
         <h4>' . $forum_name . '</h4>
         <div class="mb-3 border p-4">';
 
-        $resultT = sql_query("SELECT topic_id, topic_title FROM " . sql_table('forumtopics') . " WHERE forum_id='$forum_id' $add_sql ORDER BY topic_id ASC");
+        $resultT = sql_query("SELECT topic_id, topic_title 
+                              FROM " . sql_table('forumtopics') . " 
+                              WHERE forum_id='$forum_id' $add_sql 
+                              ORDER BY topic_id ASC");
 
         while (list($topic_id, $topic_title) = sql_fetch_row($resultT)) {
             $tt = $parse == 0 ? Str::FixQuotes($topic_title) : stripslashes($topic_title);
-            $oo = urlencode($tt); /////
+            //$oo = urlencode($tt); // ????
 
             echo '
             <div class="form-check form-check-inline">
@@ -153,6 +185,14 @@ function ForumMaintTopics($before, $forum_name)
     Css::adminfoot('', '', '', '');
 }
 
+/**
+ * [ForumMaintTopicDetail description]
+ *
+ * @param   [type]  $topic        [$topic description]
+ * @param   [type]  $topic_title  [$topic_title description]
+ *
+ * @return  [type]                [return description]
+ */
 function ForumMaintTopicDetail($topic, $topic_title)
 {
     global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
@@ -162,7 +202,12 @@ function ForumMaintTopicDetail($topic, $topic_title)
     GraphicAdmin($hlpfile);
     adminhead($f_meta_nom, $f_titre, $adminimg);
 
-    $resultTT = sql_query("SELECT post_text, post_time FROM " . sql_table('posts') . " WHERE topic_id='$topic' ORDER BY post_time DESC LIMIT 0,1");
+    $resultTT = sql_query("SELECT post_text, post_time 
+                           FROM " . sql_table('posts') . " 
+                           WHERE topic_id='$topic' 
+                           ORDER BY post_time DESC 
+                           LIMIT 0,1");
+
     list($post_text, $post_time) = sql_fetch_row($resultTT);
 
     echo '
@@ -183,23 +228,42 @@ function ForumMaintTopicDetail($topic, $topic_title)
     Css::adminfoot('', '', '', '');
 }
 
+/**
+ * [ForumMaintTopicMassiveSup description]
+ *
+ * @param   [type]  $topics  [$topics description]
+ *
+ * @return  [type]           [return description]
+ */
 function ForumMaintTopicMassiveSup($topics)
 {
     if ($topics) {
         foreach ($topics as $topic_id => $value) {
             if ($value == 'on') {
 
-                $sql = "DELETE FROM " . sql_table('posts') . " WHERE topic_id = '$topic_id'";
-                if (!$result = sql_query($sql))
+                $sql = "DELETE 
+                        FROM " . sql_table('posts') . " 
+                        WHERE topic_id = '$topic_id'";
+
+                if (!$result = sql_query($sql)) {
                     Error::code('0009');
+                }
 
-                $sql = "DELETE FROM " . sql_table('forumtopics') . " WHERE topic_id = '$topic_id'";
-                if (!$result = sql_query($sql))
+                $sql = "DELETE 
+                        FROM " . sql_table('forumtopics') . " 
+                        WHERE topic_id = '$topic_id'";
+
+                if (!$result = sql_query($sql)) {
                     Error::code('0010');
+                }
 
-                $sql = "DELETE FROM " . sql_table('forum_read') . " WHERE topicid = '$topic_id'";
-                if (!$r = sql_query($sql))
+                $sql = "DELETE 
+                        FROM " . sql_table('forum_read') . " 
+                        WHERE topicid = '$topic_id'";
+
+                if (!$r = sql_query($sql)) {
                     Error::code('0001');
+                }
 
                 Forum::control_efface_post("forum_npds", "", $topic_id, "");
             }
@@ -211,19 +275,37 @@ function ForumMaintTopicMassiveSup($topics)
     header("location: admin.php?op=MaintForumAdmin");
 }
 
+/**
+ * [ForumMaintTopicSup description]
+ *
+ * @param   [type]  $topic  [$topic description]
+ *
+ * @return  [type]          [return description]
+ */
 function ForumMaintTopicSup($topic)
 {
-    $sql = "DELETE FROM " . sql_table('posts') . " WHERE topic_id = '$topic'";
-    if (!$result = sql_query($sql))
-        Error::code('0009');
+    $sql = "DELETE 
+            FROM " . sql_table('posts') . " 
+            WHERE topic_id = '$topic'";
 
-    $sql = "DELETE FROM " . sql_table('forumtopics') . " WHERE topic_id = '$topic'";
-    if (!$result = sql_query($sql))
+    if (!$result = sql_query($sql)){
+        Error::code('0009');}
+
+    $sql = "DELETE 
+            FROM " . sql_table('forumtopics') . " 
+            WHERE topic_id = '$topic'";
+
+    if (!$result = sql_query($sql)) { 
         Error::code('0010');
+    }
 
-    $sql = "DELETE FROM " . sql_table('forum_read') . " WHERE topicid = '$topic'";
-    if (!$r = sql_query($sql))
+    $sql = "DELETE 
+            FROM " . sql_table('forum_read') . " 
+            WHERE topicid = '$topic'";
+
+    if (!$r = sql_query($sql)) {
         Error::code('0001');
+    }
 
     Forum::control_efface_post("forum_npds", "", $topic, "");
 
@@ -232,32 +314,60 @@ function ForumMaintTopicSup($topic)
     header("location: admin.php?op=MaintForumTopics");
 }
 
+/**
+ * [SynchroForum description]
+ *
+ * @return  [type]  [return description]
+ */
 function SynchroForum()
 {
     // affectation d'un topic à un forum
-    if (!$result1 = sql_query("SELECT topic_id, forum_id FROM " . sql_table('forumtopics') . " ORDER BY topic_id ASC"))
+    if (!$result1 = sql_query("SELECT topic_id, forum_id 
+                               FROM " . sql_table('forumtopics') . " 
+                               ORDER BY topic_id ASC"))
+    {
         Error::code('0009');
+    }
+
     while (list($topi_cid, $foru_mid) = sql_fetch_row($result1)) {
-        sql_query("UPDATE " . sql_table('posts') . " SET forum_id='$foru_mid' WHERE topic_id='$topi_cid' and forum_id>0");
+        sql_query("UPDATE " . sql_table('posts') . " 
+                   SET forum_id='$foru_mid' 
+                   WHERE topic_id='$topi_cid' 
+                   AND forum_id>0");
     }
 
     sql_free_result($result1);
 
     // table forum_read et contenu des topic
-    if (!$result1 = sql_query("SELECT topicid, uid, rid FROM " . sql_table('forum_read') . " ORDER BY topicid ASC"))
+    if (!$result1 = sql_query("SELECT topicid, uid, rid 
+                               FROM " . sql_table('forum_read') . " 
+                               ORDER BY topicid ASC")) 
+    {
         Error::code('0009');
+    }
 
     while (list($topicid, $uid, $rid) = sql_fetch_row($result1)) {
-        if (($topicid . $uid) == $tmp)
-            $resultD = sql_query("DELETE FROM " . sql_table('forum_read') . " WHERE topicid='$topicid' and uid='$uid' and rid='$rid'");
+        // $tmp ?????
+        if (($topicid . $uid) == $tmp) {
+            $resultD = sql_query("DELETE 
+                                  FROM " . sql_table('forum_read') . " 
+                                  WHERE topicid='$topicid' 
+                                  AND uid='$uid' 
+                                  AND rid='$rid'");
+        }
 
         $tmp = $topicid . $uid;
 
-        if ($result2 = sql_query("SELECT topic_id FROM " . sql_table('forumtopics') . " WHERE topic_id = '$topicid'")) {
+        if ($result2 = sql_query("SELECT topic_id 
+                                  FROM " . sql_table('forumtopics') . " 
+                                  WHERE topic_id = '$topicid'")) 
+        {
             list($topic_id) = sql_fetch_row($result2);
 
             if (!$topic_id)
-                $result3 = sql_query("DELETE FROM " . sql_table('forum_read') . " WHERE topicid='$topicid'");
+                $result3 = sql_query("DELETE 
+                                      FROM " . sql_table('forum_read') . " 
+                                      WHERE topicid='$topicid'");
         }
 
         sql_free_result($result2);
@@ -268,6 +378,11 @@ function SynchroForum()
     header("location: admin.php?op=MaintForumAdmin");
 }
 
+/**
+ * [MergeForum description]
+ *
+ * @return  [type]  [return description]
+ */
 function MergeForum()
 {
     global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
@@ -287,19 +402,24 @@ function MergeForum()
                 <div class="col-sm-8">
                 <select class="form-select" id="oriforum" name="oriforum">';
 
-    $sql = "SELECT forum_id, forum_name FROM " . sql_table('forums') . " ORDER BY forum_index,forum_id";
+    $sql = "SELECT forum_id, forum_name 
+            FROM " . sql_table('forums') . " 
+            ORDER BY forum_index,forum_id";
 
     if ($result = sql_query($sql)) {
 
         if ($myrow = sql_fetch_assoc($result)) {
             do {
                 echo '<option value="' . $myrow['forum_id'] . '">' . $myrow['forum_name'] . '</option>';
+
             } while ($myrow = sql_fetch_assoc($result));
 
-        } else
+        } else {
             echo '<option value="-1">' . translate("No More Forums") . '</option>';
-    } else
+        }
+    } else {
         echo '<option value="-1">Database Error</option>';
+    }
 
     echo '
                 </select>
@@ -315,12 +435,15 @@ function MergeForum()
 
             do {
                 echo '<option value="' . $myrow['forum_id'] . '">' . $myrow['forum_name'] . '</option>';
+
             } while ($myrow = sql_fetch_assoc($result));
 
-        } else
+        } else {
             echo '<option value="-1">' . translate("No More Forums") . '</option>';
-    } else
+        }
+    } else {
         echo '<option value="-1">Database Error</option>';
+    }
 
     echo '
                 </select>
@@ -340,23 +463,47 @@ function MergeForum()
     Css::adminfoot('', '', '', '');
 }
 
+/**
+ * [MergeForumAction description]
+ *
+ * @param   [type]  $oriforum   [$oriforum description]
+ * @param   [type]  $destforum  [$destforum description]
+ *
+ * @return  [type]              [return description]
+ */
 function MergeForumAction($oriforum, $destforum)
 {
     global $upload_table;
 
-    $sql = "UPDATE " . sql_table('forumtopics') . " SET forum_id='$destforum' WHERE forum_id='$oriforum'";
-    if (!$r = sql_query($sql))
-        Error::code('0010');
+    $sql = "UPDATE " . sql_table('forumtopics') . " 
+            SET forum_id='$destforum' 
+            WHERE forum_id='$oriforum'";
 
-    $sql = "UPDATE " . sql_table('posts') . " SET forum_id='$destforum' WHERE forum_id='$oriforum'";
-    if (!$r = sql_query($sql))
+    if (!$r = sql_query($sql)) {
         Error::code('0010');
+    }
 
-    $sql = "UPDATE " . sql_table('forum_read') . " SET forum_id='$destforum' WHERE forum_id='$oriforum'";
-    if (!$r = sql_query($sql))
+    $sql = "UPDATE " . sql_table('posts') . " 
+            SET forum_id='$destforum' 
+            WHERE forum_id='$oriforum'";
+
+    if (!$r = sql_query($sql)) {
+        Error::code('0010');
+    }
+
+    $sql = "UPDATE " . sql_table('forum_read') . " 
+            SET forum_id='$destforum' 
+            WHERE forum_id='$oriforum'";
+
+    if (!$r = sql_query($sql)) {
         Error::code('0001');
+    }
 
-    $sql = "UPDATE $upload_table SET forum_id='$destforum' WHERE apli='forum_npds' and forum_id='$oriforum'";
+    $sql = "UPDATE $upload_table 
+            SET forum_id='$destforum' 
+            WHERE apli='forum_npds' 
+            AND forum_id='$oriforum'";
+
     sql_query($sql);
 
     Q_Clean();
@@ -364,6 +511,11 @@ function MergeForumAction($oriforum, $destforum)
     header("location: admin.php?op=MaintForumAdmin");
 }
 
+/**
+ * [ForumMaintAdmin description]
+ *
+ * @return  [type]  [return description]
+ */
 function ForumMaintAdmin()
 {
     global $hlpfile, $f_meta_nom, $f_titre, $adminimg, $language;

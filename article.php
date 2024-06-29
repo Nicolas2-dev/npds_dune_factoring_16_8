@@ -38,7 +38,9 @@ if (!$aid) {
     header("Location: index.php");
 }
 
-sql_query("UPDATE " . sql_table('stories') . " SET counter=counter+1 WHERE sid='$sid'");
+sql_query("UPDATE " . sql_table('stories') . " 
+           SET counter=counter+1 
+           WHERE sid='$sid'");
 
 include("header.php");
 
@@ -77,7 +79,10 @@ if (($cache_obj->genereting_output == 1) or ($cache_obj->genereting_output == -1
     News::getTopics($sid);
 
     if ($catid != 0) {
-        $resultx = sql_query("SELECT title FROM " . sql_table('stories_cat') . " WHERE catid='$catid'");
+        $resultx = sql_query("SELECT title 
+                              FROM " . sql_table('stories_cat') . " 
+                              WHERE catid='$catid'");
+
         list($title1) = sql_fetch_row($resultx);
 
         $title = '
@@ -89,7 +94,9 @@ if (($cache_obj->genereting_output == 1) or ($cache_obj->genereting_output == -1
     $boxtitle = translate("Liens relatifs");
     $boxstuff = '<ul>';
 
-    $result = sql_query("SELECT name, url FROM " . sql_table('related') . " WHERE tid='$topic'");
+    $result = sql_query("SELECT name, url 
+                         FROM " . sql_table('related') . " 
+                         WHERE tid='$topic'");
 
     while (list($name, $url) = sql_fetch_row($result)) {
         $boxstuff .= '

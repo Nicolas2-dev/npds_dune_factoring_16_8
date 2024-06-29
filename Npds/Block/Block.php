@@ -76,7 +76,7 @@ class Block implements BlockInterface
                     }
                 }
 
-                // En fonction du nombre de params de la fonction : limite actuelle : 8
+                // En fonction du nombre de params de la fonction 
                 if (function_exists($contentII)) {
                     //
                     call_user_func_array($contentII, $prm);

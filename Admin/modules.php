@@ -3,8 +3,9 @@
 use Npds\Support\Facades\Css;
 
 
-if (!function_exists('admindroits'))
+if (!function_exists('admindroits')) {
     include('die.php');
+}
 
 $f_meta_nom = 'modules';
 $f_titre = adm_translate("Gestion, Installation Modules");
@@ -26,27 +27,38 @@ $handle = opendir('modules');
 $modlist = '';
 while (false !== ($file = readdir($handle))) {
     if (!@file_exists("modules/$file/kernel")) {
-        if (is_dir("modules/$file") and ($file != '.') and ($file != '..'))
+        if (is_dir("modules/$file") and ($file != '.') and ($file != '..')) {
             $modlist .= "$file ";
+        }
     }
 }
 
 closedir($handle);
 $modlist = explode(' ', rtrim($modlist));
 
-$whatondb = sql_query("SELECT mnom FROM " . sql_table('modules'));
+$whatondb = sql_query("SELECT mnom 
+                       FROM " . sql_table('modules'));
 
 while ($row = sql_fetch_row($whatondb)) {
-    if (!in_array($row[0], $modlist)) 
-        sql_query("DELETE FROM " . sql_table('modules') . " WHERE mnom='" . $row[0] . "'");
+    if (!in_array($row[0], $modlist)) {
+        sql_query("DELETE 
+                   FROM " . sql_table('modules') . " 
+                   WHERE mnom='" . $row[0] . "'");
+    }
 }
 
 foreach ($modlist as $value) {
-    $queryexiste = sql_query("SELECT mnom FROM " . sql_table('modules') . " WHERE mnom='" . $value . "'");
+    $queryexiste = sql_query("SELECT mnom 
+                              FROM " . sql_table('modules') . " 
+                              WHERE mnom='" . $value . "'");
+
     $moexiste = sql_num_rows($queryexiste);
 
-    if ($moexiste !== 1)
-        sql_query("INSERT INTO " . sql_table('modules') . " VALUES (NULL, '" . $value . "', '0')");
+    if ($moexiste !== 1) {
+        sql_query("INSERT 
+                   INTO " . sql_table('modules') . " 
+                   VALUES (NULL, '" . $value . "', '0')");
+    }
 }
 
 adminhead($f_meta_nom, $f_titre, $adminimg);
@@ -64,7 +76,9 @@ echo '
         </thead>
         <tbody>';
 
-$result = sql_query("SELECT * FROM " . sql_table('modules') . " ORDER BY mid");
+$result = sql_query("SELECT * 
+                     FROM " . sql_table('modules') . " 
+                     ORDER BY mid");
 
 while ($row = sql_fetch_assoc($result)) {
     $icomod = '';

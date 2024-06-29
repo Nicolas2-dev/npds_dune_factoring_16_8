@@ -14,8 +14,9 @@ use Npds\Support\Facades\DataImage;
 use Npds\Support\Facades\Subscribe;
 
 
-if (!function_exists('admindroits'))
+if (!function_exists('admindroits')) {
     include('die.php');
+}
 
 $f_meta_nom = 'adminStory';
 
@@ -25,6 +26,13 @@ include("publication.php");
 admindroits($aid, $f_meta_nom);
 //<== controle droit
 
+/**
+ * [puthome description]
+ *
+ * @param   [type]  $ihome  [$ihome description]
+ *
+ * @return  [type]          [return description]
+ */
 function puthome($ihome)
 {
     echo '
@@ -33,6 +41,7 @@ function puthome($ihome)
 
     $sel1 = 'checked="checked"';
     $sel2 = '';
+
     if ($ihome == 1) {
         $sel1 = '';
         $sel2 = 'checked="checked"';
@@ -92,13 +101,15 @@ function puthome($ihome)
     // settype($Mmembers, 'integer');
 
     foreach ($mX as $groupe_id => $groupe_name) {
-        if ($groupe_id == '0') 
+        if ($groupe_id == '0') {
             $groupe_id = '';
+        }
 
-        if ($Mmembers == $groupe_id) 
+        if ($Mmembers == $groupe_id) {
             $sel3 = 'selected="selected"';
-        else 
+        } else {
             $sel3 = '';
+        }
 
         $tmp_groupe .= '<option value="' . $groupe_id . '" ' . $sel3 . '>' . $groupe_name . '</option>';
     }
@@ -112,9 +123,17 @@ function puthome($ihome)
         </div>';
 }
 
+/**
+ * [SelectCategory description]
+ *
+ * @param   [type]  $cat  [$cat description]
+ *
+ * @return  [type]        [return description]
+ */
 function SelectCategory($cat)
 {
-    $selcat = sql_query("SELECT catid, title FROM " . sql_table('stories_cat'));
+    $selcat = sql_query("SELECT catid, title 
+                         FROM " . sql_table('stories_cat'));
 
     echo ' 
         <div class="mb-3 row">
@@ -122,18 +141,20 @@ function SelectCategory($cat)
             <div class="col-sm-8">
                 <select class="form-select" id="catid" name="catid">';
 
-    if ($cat == 0) 
+    if ($cat == 0) {
         $sel = 'selected="selected"';
-    else 
+    } else {
         $sel = '';
+    }
 
     echo '<option name="catid" value="0" ' . $sel . '>' . adm_translate("Articles") . '</option>';
 
     while (list($catidX, $title) = sql_fetch_row($selcat)) {
-        if ($catidX == $cat) 
+        if ($catidX == $cat) {
             $sel = 'selected="selected"';
-        else 
+        } else {
             $sel = '';
+        }
 
         echo '<option name="catid" value="' . $catidX . '" ' . $sel . '>' . Language::aff_langue($title) . '</option>';
     }
@@ -146,6 +167,12 @@ function SelectCategory($cat)
 }
 
 // CATEGORIES
+
+/**
+ * [AddCategory description]
+ *
+ * @return  [type]  [return description]
+ */
 function AddCategory()
 {
     global $hlpfile, $language, $aid, $radminsuper, $adminimg;
@@ -188,6 +215,13 @@ function AddCategory()
     Css::adminfoot('fv', '', $arg1, '');
 }
 
+/**
+ * [SaveCategory description]
+ *
+ * @param   [type]  $title  [$title description]
+ *
+ * @return  [type]          [return description]
+ */
 function SaveCategory($title)
 {
     global $aid, $f_meta_nom, $adminimg;
@@ -200,13 +234,17 @@ function SaveCategory($title)
     //<== controle droit
 
     $title = preg_replace('#"#', '', $title);
-    $check = sql_num_rows(sql_query("SELECT catid FROM " . sql_table('stories_cat') . " WHERE title='$title'"));
+    $check = sql_num_rows(sql_query("SELECT catid 
+                                     FROM " . sql_table('stories_cat') . " 
+                                     WHERE title='$title'"));
 
-    if ($check)
+    if ($check) {
         $what1 = '<div class="alert alert-danger lead" role="alert">' . adm_translate("Cette Catégorie existe déjà !") . '<br /><a href="javascript:history.go(-1)" class="btn btn-secondary  mt-2">' . adm_translate("Retour en arrière, pour changer le Nom") . '</a></div>';
-    else {
+    } else {
         $what1 = '<div class="alert alert-success lead" role="alert">' . adm_translate("Nouvelle Catégorie ajoutée") . '</div>';
-        $result = sql_query("INSERT INTO " . sql_table('stories_cat') . " VALUES (NULL, '$title', '0')");
+        $result = sql_query("INSERT 
+                             INTO " . sql_table('stories_cat') . " 
+                             VALUES (NULL, '$title', '0')");
     }
 
     include("header.php");
@@ -222,6 +260,13 @@ function SaveCategory($title)
     Css::adminfoot('', '', '', '');
 }
 
+/**
+ * [EditCategory description]
+ *
+ * @param   [type]  $catid  [$catid description]
+ *
+ * @return  [type]          [return description]
+ */
 function EditCategory($catid)
 {
     global $hlpfile, $language, $aid, $radminsuper, $adminimg;
@@ -242,11 +287,15 @@ function EditCategory($catid)
     <hr />
     <h3 class="mb-3">' . adm_translate("Edition des Catégories") . '</h3>';
 
-    $result = sql_query("SELECT title FROM " . sql_table('stories_cat') . " WHERE catid='$catid'");
+    $result = sql_query("SELECT title 
+                         FROM " . sql_table('stories_cat') . " 
+                         WHERE catid='$catid'");
+
     list($title) = sql_fetch_row($result);
 
     if (!$catid) {
-        $selcat = sql_query("SELECT catid, title FROM " . sql_table('stories_cat'));
+        $selcat = sql_query("SELECT catid, title 
+                             FROM " . sql_table('stories_cat'));
 
         echo '
         <form action="admin.php" method="post">
@@ -300,6 +349,15 @@ function EditCategory($catid)
         Css::adminfoot('fv', '', $arg1, '');
     }
 }
+
+/**
+ * [SaveEditCategory description]
+ *
+ * @param   [type]  $catid  [$catid description]
+ * @param   [type]  $title  [$title description]
+ *
+ * @return  [type]          [return description]
+ */
 function SaveEditCategory($catid, $title)
 {
     global $aid, $f_meta_nom, $adminimg;
@@ -307,13 +365,17 @@ function SaveEditCategory($catid, $title)
     $f_titre = adm_translate("Articles");
     $title = preg_replace('#"#', '', $title);
 
-    $check = sql_num_rows(sql_query("SELECT catid FROM " . sql_table('stories_cat') . " WHERE title='$title'"));
+    $check = sql_num_rows(sql_query("SELECT catid 
+                                     FROM " . sql_table('stories_cat') . " 
+                                     WHERE title='$title'"));
 
     if ($check) {
         $what1 = '<div class="alert alert-danger lead" role="alert">' . adm_translate("Cette Catégorie existe déjà !") . '<br /><a href="javascript:history.go(-2)" class="btn btn-secondary  mt-2">' . adm_translate("Retour en arrière, pour changer le Nom") . '</a></div>';
     } else {
         $what1 = '<div class="alert alert-success lead" role="alert">' . adm_translate("Catégorie sauvegardée") . '</div>';
-        $result = sql_query("UPDATE " . sql_table('stories_cat') . " SET title='$title' WHERE catid='$catid'");
+        $result = sql_query("UPDATE " . sql_table('stories_cat') . " 
+                             SET title='$title'
+                             WHERE catid='$catid'");
         
         global $aid;
         Log::Ecr_Log("security", "SaveEditCategory($catid, $title) by AID : $aid", "");
@@ -332,6 +394,13 @@ function SaveEditCategory($catid, $title)
     Css::adminfoot('', '', '', '');
 }
 
+/**
+ * [DelCategory description]
+ *
+ * @param   [type]  $cat  [$cat description]
+ *
+ * @return  [type]        [return description]
+ */
 function DelCategory($cat)
 {
     global $hlpfile, $language, $aid, $radminsuper, $adminimg;
@@ -348,7 +417,10 @@ function DelCategory($cat)
     GraphicAdmin('');
     adminhead($f_meta_nom, $f_titre, $adminimg);
 
-    $result = sql_query("SELECT title FROM " . sql_table('stories_cat') . " WHERE catid='$cat'");
+    $result = sql_query("SELECT title 
+                         FROM " . sql_table('stories_cat') . " 
+                         WHERE catid='$cat'");
+
     list($title) = sql_fetch_row($result);
 
     echo '
@@ -356,7 +428,8 @@ function DelCategory($cat)
     <h3 class="mb-3 text-danger">' . adm_translate("Supprimer une Catégorie") . '</h3>';
 
     if (!$cat) {
-        $selcat = sql_query("SELECT catid, title FROM " . sql_table('stories_cat'));
+        $selcat = sql_query("SELECT catid, title 
+                             FROM " . sql_table('stories_cat'));
 
         echo '
         <form action="admin.php" method="post">
@@ -382,11 +455,16 @@ function DelCategory($cat)
             </div>
         </form>';
     } else {
-        $result2 = sql_query("SELECT * FROM " . sql_table('stories') . " WHERE catid='$cat'");
+        $result2 = sql_query("SELECT * 
+                              FROM " . sql_table('stories') . " 
+                              WHERE catid='$cat'");
+
         $numrows = sql_num_rows($result2);
 
         if ($numrows == 0) {
-            sql_query("DELETE FROM " . sql_table('stories_cat') . " WHERE catid='$cat'");
+            sql_query("DELETE 
+                       FROM " . sql_table('stories_cat') . " 
+                       WHERE catid='$cat'");
 
             global $aid;
             Log::Ecr_Log('security', "DelCategory($cat) by AID : $aid", '');
@@ -410,20 +488,36 @@ function DelCategory($cat)
     Css::adminfoot('', '', '', '');
 }
 
+/**
+ * [YesDelCategory description]
+ *
+ * @param   [type]  $catid  [$catid description]
+ *
+ * @return  [type]          [return description]
+ */
 function YesDelCategory($catid)
 {
-    sql_query("DELETE FROM " . sql_table('stories_cat') . " WHERE catid='$catid'");
+    sql_query("DELETE 
+               FROM " . sql_table('stories_cat') . " 
+               WHERE catid='$catid'");
 
-    $result = sql_query("SELECT sid FROM " . sql_table('stories') . " WHERE catid='$catid'");
+    $result = sql_query("SELECT sid 
+                         FROM " . sql_table('stories') . " 
+                         WHERE catid='$catid'");
 
     while (list($sid) = sql_fetch_row($result)) {
 
-        sql_query("DELETE FROM " . sql_table('stories') . " WHERE catid='$catid'");
+        sql_query("DELETE 
+                   FROM " . sql_table('stories') . " 
+                   WHERE catid='$catid'");
 
         // commentaires
         if (file_exists("modules/comments/article.conf.php")) {
             include("modules/comments/article.conf.php");
-            sql_query("DELETE FROM " . sql_table('posts') . " WHERE forum_id='$forum' AND topic_id='$topic'");
+            sql_query("DELETE 
+                       FROM " . sql_table('posts') . " 
+                       WHERE forum_id='$forum' 
+                       AND topic_id='$topic'");
         }
     }
 
@@ -433,6 +527,14 @@ function YesDelCategory($catid)
     Header("Location: admin.php");
 }
 
+/**
+ * [NoMoveCategory description]
+ *
+ * @param   [type]  $catid   [$catid description]
+ * @param   [type]  $newcat  [$newcat description]
+ *
+ * @return  [type]           [return description]
+ */
 function NoMoveCategory($catid, $newcat)
 {
     global $f_meta_nom, $f_titre, $adminimg, $aid;
@@ -449,7 +551,10 @@ function NoMoveCategory($catid, $newcat)
     GraphicAdmin('');
     adminhead($f_meta_nom, $f_titre, $adminimg);
 
-    $result = sql_query("SELECT title FROM " . sql_table('stories_cat') . " WHERE catid='$catid'");
+    $result = sql_query("SELECT title 
+                         FROM " . sql_table('stories_cat') . " 
+                         WHERE catid='$catid'");
+
     list($title) = sql_fetch_row($result);
 
     echo '
@@ -459,7 +564,8 @@ function NoMoveCategory($catid, $newcat)
     if (!$newcat) {
         echo '<label>' . adm_translate("Tous les Articles dans") . ' <strong>' . Language::aff_langue($title) . '</strong> ' . adm_translate("seront affectés à") . '</label>';
 
-        $selcat = sql_query("SELECT catid, title FROM " . sql_table('stories_cat'));
+        $selcat = sql_query("SELECT catid, title 
+                             FROM " . sql_table('stories_cat'));
 
         echo '
         <form action="admin.php" method="post">
@@ -487,13 +593,19 @@ function NoMoveCategory($catid, $newcat)
     </form>';
 
     } else {
-        $resultm = sql_query("SELECT sid FROM " . sql_table('stories') . " WHERE catid='$catid'");
+        $resultm = sql_query("SELECT sid 
+                              FROM " . sql_table('stories') . " 
+                              WHERE catid='$catid'");
 
         while (list($sid) = sql_fetch_row($resultm)) {
-            sql_query("UPDATE " . sql_table('stories') . " SET catid='$newcat' WHERE sid='$sid'");
+            sql_query("UPDATE " . sql_table('stories') . " 
+                       SET catid='$newcat' 
+                       WHERE sid='$sid'");
         }
 
-        sql_query("DELETE FROM " . sql_table('stories_cat') . " WHERE catid='$catid'");
+        sql_query("DELETE 
+                   FROM " . sql_table('stories_cat') . " 
+                   WHERE catid='$catid'");
 
         global $aid;
         Log::Ecr_Log("security", "NoMoveCategory($catid, $newcat) by AID : $aid", "");
@@ -505,6 +617,14 @@ function NoMoveCategory($catid, $newcat)
 }
 
 // NEWS
+
+/**
+ * [displayStory description]
+ *
+ * @param   [type]  $qid  [$qid description]
+ *
+ * @return  [type]        [return description]
+ */
 function displayStory($qid)
 {
     global $tipath, $hlpfile, $language, $aid, $radminsuper, $adminimg;
@@ -515,7 +635,10 @@ function displayStory($qid)
 
     $hlpfile = "manuels/$language/newarticle.html";
 
-    $result = sql_query("SELECT qid, uid, uname, subject, story, bodytext, topic, date_debval,date_finval,auto_epur FROM " . sql_table('queue') . " WHERE qid='$qid'");
+    $result = sql_query("SELECT qid, uid, uname, subject, story, bodytext, topic, date_debval, date_finval, auto_epur 
+                         FROM " . sql_table('queue') . " 
+                         WHERE qid='$qid'");
+
     list($qid, $uid, $uname, $subject, $story, $bodytext, $topic, $date_debval, $date_finval, $epur) = sql_fetch_row($result);
 
     sql_free_result($result);
@@ -529,7 +652,10 @@ function displayStory($qid)
     }
 
     $affiche = false;
-    $result2 = sql_query("SELECT topictext, topicimage, topicadmin FROM " . sql_table('topics') . " WHERE topicid='$topic'");
+    $result2 = sql_query("SELECT topictext, topicimage, topicadmin 
+                          FROM " . sql_table('topics') . " 
+                          WHERE topicid='$topic'");
+
     list($topictext, $topicimage, $topicadmin) = sql_fetch_row($result2);
 
     if ($radminsuper) {
@@ -538,8 +664,9 @@ function displayStory($qid)
         $topicadminX = explode(',', $topicadmin);
 
         for ($i = 0; $i < count($topicadminX); $i++) {
-            if (trim($topicadminX[$i]) == $aid) 
+            if (trim($topicadminX[$i]) == $aid) {
                 $affiche = true;
+            }
         }
     }
 
@@ -569,8 +696,9 @@ function displayStory($qid)
 
         $timage = $imgtmp;
 
-        if (file_exists($imgtmp))
+        if (file_exists($imgtmp)) {
             $topiclogo = '<img class="img-fluid n-sujetsize" src="' . $timage . '" align="right" alt="" />';
+        }
     }
 
     code_aff('<h4>' . $subject . $topiclogo . '</h4>', '<div class="text-body-secondary">' . Metalang::meta_lang($story) . '</div>', Metalang::meta_lang($bodytext), "");
@@ -578,7 +706,7 @@ function displayStory($qid)
     echo '
             </div>
         <div class="mb-3 row">
-            <label class="col-sm-4 col-form-label" for="author">' . userpopover($uname, 40, '') . adm_translate("Utilisateur") . '</label>
+            <label class="col-sm-4 col-form-label" for="author">' . Theme::userpopover($uname, 40, '') . adm_translate("Utilisateur") . '</label>
             <div class="col-sm-8">
                 <input class="form-control" type="text" id="author" name="author" value="' . $uname . '" />
                 <a href="replypmsg.php?send=' . urlencode($uname) . '" target="_blank" title="' . adm_translate("Diffusion d'un Message Interne") . '" data-bs-toggle="tooltip"><i class="far fa-envelope fa-lg"></i></a>
@@ -595,10 +723,13 @@ function displayStory($qid)
             <div class="col-sm-8">
                 <select class="form-select" id="topic" name="topic">';
 
-    $toplist = sql_query("SELECT topicid, topictext, topicadmin FROM " . sql_table('topics') . " ORDER BY topictext");
+    $toplist = sql_query("SELECT topicid, topictext, topicadmin 
+                          FROM " . sql_table('topics') . " 
+                          ORDER BY topictext");
 
-    if ($radminsuper) 
+    if ($radminsuper) {
         echo '<option value="">' . adm_translate("Tous les Sujets") . '</option>';
+    }
 
     while (list($topicid, $topics, $topicadmin) = sql_fetch_row($toplist)) {
         $affiche = false;
@@ -608,7 +739,9 @@ function displayStory($qid)
         } else {
             $topicadminX = explode(',', $topicadmin);
             for ($i = 0; $i < count($topicadminX); $i++) {
-                if (trim($topicadminX[$i]) == $aid) $affiche = true;
+                if (trim($topicadminX[$i]) == $aid) {
+                    $affiche = true;
+                }
             }
         }
 
@@ -688,6 +821,29 @@ function displayStory($qid)
     Css::adminfoot('fv', '', $arg1, '');
 }
 
+/**
+ * [previewStory description]
+ *
+ * @param   [type]  $qid       [$qid description]
+ * @param   [type]  $uid       [$uid description]
+ * @param   [type]  $author    [$author description]
+ * @param   [type]  $subject   [$subject description]
+ * @param   [type]  $hometext  [$hometext description]
+ * @param   [type]  $bodytext  [$bodytext description]
+ * @param   [type]  $topic     [$topic description]
+ * @param   [type]  $notes     [$notes description]
+ * @param   [type]  $catid     [$catid description]
+ * @param   [type]  $ihome     [$ihome description]
+ * @param   [type]  $members   [$members description]
+ * @param   [type]  $Mmembers  [$Mmembers description]
+ * @param   [type]  $dd_pub    [$dd_pub description]
+ * @param   [type]  $fd_pub    [$fd_pub description]
+ * @param   [type]  $dh_pub    [$dh_pub description]
+ * @param   [type]  $fh_pub    [$fh_pub description]
+ * @param   [type]  $epur      [$epur description]
+ *
+ * @return  [type]             [return description]
+ */
 function previewStory($qid, $uid, $author, $subject, $hometext, $bodytext, $topic, $notes, $catid, $ihome, $members, $Mmembers, $dd_pub, $fd_pub, $dh_pub, $fh_pub, $epur)
 {
     global $tipath, $hlpfile, $language, $aid, $radminsuper, $adminimg;
@@ -706,16 +862,20 @@ function previewStory($qid, $uid, $author, $subject, $hometext, $bodytext, $topi
     }
 
     $affiche = false;
-    $result2 = sql_query("SELECT topictext, topicimage, topicadmin FROM " . sql_table('topics') . " WHERE topicid='$topic'");
+    $result2 = sql_query("SELECT topictext, topicimage, topicadmin 
+                          FROM " . sql_table('topics') . " 
+                          WHERE topicid='$topic'");
+
     list($topictext, $topicimage, $topicadmin) = sql_fetch_row($result2);
 
-    if ($radminsuper)
+    if ($radminsuper) {
         $affiche = true;
-    else {
+    } else {
         $topicadminX = explode(',', $topicadmin);
         for ($i = 0; $i < count($topicadminX); $i++) {
-            if (trim($topicadminX[$i]) == $aid) 
+            if (trim($topicadminX[$i]) == $aid) {
                 $affiche = true;
+            }
         }
     }
 
@@ -747,8 +907,9 @@ function previewStory($qid, $uid, $author, $subject, $hometext, $bodytext, $topi
 
         $timage = $imgtmp;
 
-        if (file_exists($imgtmp))
+        if (file_exists($imgtmp)) {
             $topiclogo = '<img class="img-fluid n-sujetsize" src="' . $timage . '" align="right" alt="" />';
+        }
     }
 
     code_aff('<h3>' . $subject . $topiclogo . '</h3>', '<div class="text-body-secondary">' . Metalang::meta_lang($hometext) . '</div>', Metalang::meta_lang($bodytext), Metalang::meta_lang($notes));
@@ -772,9 +933,13 @@ function previewStory($qid, $uid, $author, $subject, $hometext, $bodytext, $topi
             <div class="col-sm-8">
                 <select class="form-select" id="topic" name="topic">';
 
-    $toplist = sql_query("SELECT topicid, topictext, topicadmin FROM " . sql_table('topics') . " ORDER BY topictext");
-    if ($radminsuper) 
+    $toplist = sql_query("SELECT topicid, topictext, topicadmin 
+                          FROM " . sql_table('topics') . " 
+                          ORDER BY topictext");
+
+    if ($radminsuper) {
         echo '<option value="">' . adm_translate("Tous les Sujets") . '</option>';
+    }
 
     while (list($topicid, $topics, $topicadmin) = sql_fetch_row($toplist)) {
         $affiche = false;
@@ -785,8 +950,9 @@ function previewStory($qid, $uid, $author, $subject, $hometext, $bodytext, $topi
             $topicadminX = explode(',', $topicadmin);
 
             for ($i = 0; $i < count($topicadminX); $i++) {
-                if (trim($topicadminX[$i]) == $aid) 
+                if (trim($topicadminX[$i]) == $aid) {
                     $affiche = true;
+                }
             }
         }
 
@@ -808,11 +974,13 @@ function previewStory($qid, $uid, $author, $subject, $hometext, $bodytext, $topi
 
     SelectCategory($catid);
 
-    if (($members == 1) and ($Mmembers == '')) 
+    if (($members == 1) and ($Mmembers == '')) {
         $ihome = '-127';
+    }
 
-    if (($members == 1) and (($Mmembers > 1) and ($Mmembers <= 127))) 
+    if (($members == 1) and (($Mmembers > 1) and ($Mmembers <= 127))) {
         $ihome = $Mmembers;
+    }
 
     puthome($ihome);
 
@@ -862,15 +1030,39 @@ function previewStory($qid, $uid, $author, $subject, $hometext, $bodytext, $topi
     Css::adminfoot('', '', '', '');
 }
 
+/**
+ * [postStory description]
+ *
+ * @param   [type]  $type_pub     [$type_pub description]
+ * @param   [type]  $qid          [$qid description]
+ * @param   [type]  $uid          [$uid description]
+ * @param   [type]  $author       [$author description]
+ * @param   [type]  $subject      [$subject description]
+ * @param   [type]  $hometext     [$hometext description]
+ * @param   [type]  $bodytext     [$bodytext description]
+ * @param   [type]  $topic        [$topic description]
+ * @param   [type]  $notes        [$notes description]
+ * @param   [type]  $catid        [$catid description]
+ * @param   [type]  $ihome        [$ihome description]
+ * @param   [type]  $members      [$members description]
+ * @param   [type]  $Mmembers     [$Mmembers description]
+ * @param   [type]  $date_debval  [$date_debval description]
+ * @param   [type]  $date_finval  [$date_finval description]
+ * @param   [type]  $epur         [$epur description]
+ *
+ * @return  [type]                [return description]
+ */
 function postStory($type_pub, $qid, $uid, $author, $subject, $hometext, $bodytext, $topic, $notes, $catid, $ihome, $members, $Mmembers, $date_debval, $date_finval, $epur)
 {
     global $aid, $ultramode;
 
-    if ($uid == 1) 
+    if ($uid == 1) {
         $author = '';
+    }
 
-    if ($hometext == $bodytext) 
+    if ($hometext == $bodytext) {
         $bodytext = '';
+    }
 
     $artcomplet = array('hometext' => $hometext, 'bodytext' => $bodytext, 'notes' => $notes);
     $rechcacheimage = '#cache/(a[i|c|n]\d+_\d+_\d+.[a-z]{3,4})\\\"#m';
@@ -894,57 +1086,82 @@ function postStory($type_pub, $qid, $uid, $author, $subject, $hometext, $bodytex
     $bodytext = stripslashes(Str::FixQuotes($bodytext));
     $notes = stripslashes(Str::FixQuotes($notes));
 
-    if (($members == 1) and ($Mmembers == '')) 
+    if (($members == 1) and ($Mmembers == '')) {
         $ihome = '-127';
+    }
 
-    if (($members == 1) and (($Mmembers > 1) and ($Mmembers <= 127))) 
+    if (($members == 1) and (($Mmembers > 1) and ($Mmembers <= 127))) {
         $ihome = $Mmembers;
+    }
 
     if ($type_pub == 'pub_immediate') {
-        $result = sql_query("INSERT INTO " . sql_table('stories') . " VALUES (NULL, '$catid', '$aid', '$subject', now(), '$hometext', '$bodytext', '0', '0', '$topic','$author', '$notes', '$ihome', '0', '$date_finval','$epur')");
+        $result = sql_query("INSERT 
+                             INTO " . sql_table('stories') . " 
+                             VALUES (NULL, '$catid', '$aid', '$subject', now(), '$hometext', '$bodytext', '0', '0', '$topic','$author', '$notes', '$ihome', '0', '$date_finval','$epur')");
         
         Log::Ecr_Log("security", "postStory (pub_immediate, $subject) by AID : $aid", "");
     } else {
-        $result = sql_query("INSERT INTO " . sql_table('autonews') . " VALUES (NULL, '$catid', '$aid', '$subject', now(), '$hometext', '$bodytext', '$topic', '$author', '$notes', '$ihome','$date_debval','$date_finval','$epur')");
+        $result = sql_query("INSERT 
+                             INTO " . sql_table('autonews') . " 
+                             VALUES (NULL, '$catid', '$aid', '$subject', now(), '$hometext', '$bodytext', '$topic', '$author', '$notes', '$ihome','$date_debval','$date_finval','$epur')");
         
         Log::Ecr_Log("security", "postStory (autonews, $subject) by AID : $aid", "");
     }
 
-    if (($uid != 1) and ($uid != ''))
-        sql_query("UPDATE " . sql_table('users') . " SET counter=counter+1 WHERE uid='$uid'");
+    if (($uid != 1) and ($uid != '')) {
+        sql_query("UPDATE " . sql_table('users') . " 
+                   SET counter=counter+1 
+                   WHERE uid='$uid'");
+    }
 
-    sql_query("UPDATE " . sql_table('authors') . " SET counter=counter+1 WHERE aid='$aid'");
+    sql_query("UPDATE " . sql_table('authors') . " 
+               SET counter=counter+1
+               WHERE aid='$aid'");
 
-    if ($ultramode)
+    if ($ultramode) {
         News::ultramode();
+    }
 
     deleteStory($qid);
 
     if ($type_pub == 'pub_immediate') {
         global $subscribe;
-        if ($subscribe)
+
+        if ($subscribe){
             Subscribe::subscribe_mail("topic", $topic, '', $subject, '');
+        }
 
         // Cluster Paradise
-        if (file_exists("modules/cluster-paradise/cluster-activate.php")) 
+        if (file_exists("modules/cluster-paradise/cluster-activate.php")) {
             include("modules/cluster-paradise/cluster-activate.php");
+        }
 
-        if (file_exists("modules/cluster-paradise/cluster-M.php")) 
+        if (file_exists("modules/cluster-paradise/cluster-M.php")) {
             include("modules/cluster-paradise/cluster-M.php");
+        }
         // Cluster Paradise
 
         // Réseaux sociaux
-        if (file_exists('modules/npds_twi/npds_to_twi.php')) 
+        if (file_exists('modules/npds_twi/npds_to_twi.php')) {
             include('modules/npds_twi/npds_to_twi.php');
+        }
 
-        if (file_exists('modules/npds_fbk/npds_to_fbk.php')) 
+        if (file_exists('modules/npds_fbk/npds_to_fbk.php')) {
             include('modules/npds_twi/npds_to_fbk.php');
+        }
         // Réseaux sociaux
     }
 
     Url::redirect_url("admin.php?");
 }
 
+/**
+ * [editStory description]
+ *
+ * @param   [type]  $sid  [$sid description]
+ *
+ * @return  [type]        [return description]
+ */
 function editStory($sid)
 {
     global $tipath, $hlpfile, $language, $aid, $radminsuper, $adminimg, $gmt;
@@ -956,12 +1173,16 @@ function editStory($sid)
     admindroits($aid, $f_meta_nom);
     //<== controle droit
 
-    if (($sid == '') or ($sid == '0'))
+    if (($sid == '') or ($sid == '0')) {
         header("location: admin.php");
+    }
 
     $hlpfile = "manuels/$language/newarticle.html";
 
-    $result = sql_query("SELECT catid, title, hometext, bodytext, topic, notes, ihome, date_finval,auto_epur FROM " . sql_table('stories') . " WHERE sid='$sid'");
+    $result = sql_query("SELECT catid, title, hometext, bodytext, topic, notes, ihome, date_finval,auto_epur 
+                         FROM " . sql_table('stories') . " 
+                         WHERE sid='$sid'");
+
     list($catid, $subject, $hometext, $bodytext, $topic, $notes, $ihome, $date_finval, $epur) = sql_fetch_row($result);
 
     $subject = stripslashes($subject);
@@ -972,21 +1193,26 @@ function editStory($sid)
 
     $affiche = false;
 
-    $result2 = sql_query("SELECT topictext, topicname, topicimage, topicadmin FROM " . sql_table('topics') . " WHERE topicid='$topic'");
+    $result2 = sql_query("SELECT topictext, topicname, topicimage, topicadmin 
+                          FROM " . sql_table('topics') . " 
+                          WHERE topicid='$topic'");
+
     list($topictext, $topicname, $topicimage, $topicadmin) = sql_fetch_row($result2);
 
-    if ($radminsuper)
+    if ($radminsuper) {
         $affiche = true;
-    else {
+    } else {
         $topicadminX = explode(',', $topicadmin);
         for ($i = 0; $i < count($topicadminX); $i++) {
-            if (trim($topicadminX[$i]) == $aid) 
+            if (trim($topicadminX[$i]) == $aid) { 
                 $affiche = true;
+            }
         }
     }
 
-    if (!$affiche)
+    if (!$affiche) {
         header("location: admin.php");
+    }
 
     $topiclogo = '<span class="badge bg-secondary float-end"><strong>' . Language::aff_langue($topicname) . '</strong></span>';
 
@@ -995,7 +1221,10 @@ function editStory($sid)
     GraphicAdmin($hlpfile);
     adminhead($f_meta_nom, $f_titre, $adminimg);
 
-    $result = sql_query("SELECT topictext, topicimage FROM " . sql_table('topics') . " WHERE topicid='$topic'");
+    $result = sql_query("SELECT topictext, topicimage 
+                         FROM " . sql_table('topics') . " 
+                         WHERE topicid='$topic'");
+
     list($topictext, $topicimage) = sql_fetch_row($result);
 
     echo '<hr />' . Language::aff_local_langue('', 'local_user_language', '<label class="col-form-label">' . adm_translate("Langue de Prévisualisation") . '</label>');
@@ -1007,8 +1236,9 @@ function editStory($sid)
 
         $timage = $imgtmp;
 
-        if (file_exists($imgtmp))
+        if (file_exists($imgtmp)) {
             $topiclogo = '<img class="img-fluid " src="' . $timage . '" align="right" alt="" />';
+        }
     }
 
     global $local_user_language;
@@ -1034,21 +1264,25 @@ function editStory($sid)
             <div class="col-sm-8">
                 <select class="form-select" id="topic" name="topic">';
 
-    $toplist = sql_query("SELECT topicid, topictext, topicadmin FROM " . sql_table('topics') . " ORDER BY topictext");
+    $toplist = sql_query("SELECT topicid, topictext, topicadmin 
+                          FROM " . sql_table('topics') . " 
+                          ORDER BY topictext");
 
-    if ($radminsuper) 
+    if ($radminsuper) {
         echo '<option value="">' . adm_translate("Tous les Sujets") . '</option>';
+    }
 
     while (list($topicid, $topics, $topicadmin) = sql_fetch_row($toplist)) {
         $affiche = false;
 
-        if ($radminsuper)
+        if ($radminsuper) {
             $affiche = true;
-        else {
+        } else {
             $topicadminX = explode(',', $topicadmin);
             for ($i = 0; $i < count($topicadminX); $i++) {
-                if (trim($topicadminX[$i]) == $aid) 
+                if (trim($topicadminX[$i]) == $aid) {
                     $affiche = true;
+                }
             }
         }
 
@@ -1166,10 +1400,19 @@ function editStory($sid)
     Css::adminfoot('fv', $fv_parametres, $arg1, '');
 }
 
+/**
+ * [deleteStory description]
+ *
+ * @param   [type]  $qid  [$qid description]
+ *
+ * @return  [type]        [return description]
+ */
 function deleteStory($qid)
 {
+    $res = sql_query("SELECT story, bodytext 
+                      FROM " . sql_table('queue') . " 
+                      WHERE qid='$qid'");
 
-    $res = sql_query("SELECT story, bodytext FROM " . sql_table('queue') . " WHERE qid='$qid'");
     list($story, $bodytext) = sql_fetch_row($res);
 
     $artcomplet = $story . $bodytext;
@@ -1181,42 +1424,64 @@ function deleteStory($qid)
         unlink($imagetodelete);
     }
 
-    $result = sql_query("DELETE FROM " . sql_table('queue') . " WHERE qid='$qid'");
+    $result = sql_query("DELETE 
+                         FROM " . sql_table('queue') . " 
+                         WHERE qid='$qid'");
 
     global $aid;
     Log::Ecr_Log("security", "deleteStoryfromQueue($qid) by AID : $aid", "");
 }
 
+/**
+ * [removeStory description]
+ *
+ * @param   [type]  $sid  [$sid description]
+ * @param   [type]  $ok   [$ok description]
+ *
+ * @return  [type]        [return description]
+ */
 function removeStory($sid, $ok = 0)
 {
-    if (($sid == '') or ($sid == '0'))
+    if (($sid == '') or ($sid == '0')) {
         header("location: admin.php");
+    }
 
     global $ultramode, $aid, $radminsuper;
 
-    $result = sql_query("SELECT topic FROM " . sql_table('stories') . " WHERE sid='$sid'");
+    $result = sql_query("SELECT topic 
+                         FROM " . sql_table('stories') . " 
+                         WHERE sid='$sid'");
+
     list($topic) = sql_fetch_row($result);
 
     $affiche = false;
 
-    $result2 = sql_query("SELECT topicadmin, topicname FROM " . sql_table('topics') . " WHERE topicid='$topic'");
+    $result2 = sql_query("SELECT topicadmin, topicname 
+                          FROM " . sql_table('topics') . " 
+                          WHERE topicid='$topic'");
+
     list($topicadmin, $topicname) = sql_fetch_row($result2);
 
-    if ($radminsuper)
+    if ($radminsuper) {
         $affiche = true;
-    else {
+    } else {
         $topicadminX = explode(',', $topicadmin);
         for ($i = 0; $i < count($topicadminX); $i++) {
-            if (trim($topicadminX[$i]) == $aid) 
+            if (trim($topicadminX[$i]) == $aid) {
                 $affiche = true;
+            }
         }
     }
 
-    if (!$affiche) 
+    if (!$affiche) {
         header("location: admin.php");
+    }
 
     if ($ok) {
-        $res = sql_query("SELECT hometext, bodytext, notes FROM " . sql_table('stories') . " WHERE sid='$sid'");
+        $res = sql_query("SELECT hometext, bodytext, notes 
+                          FROM " . sql_table('stories') . " 
+                          WHERE sid='$sid'");
+
         list($hometext, $bodytext, $notes) = sql_fetch_row($res);
 
         $artcomplet = $hometext . $bodytext . $notes;
@@ -1228,20 +1493,26 @@ function removeStory($sid, $ok = 0)
             unlink($imagetodelete);
         }
 
-        sql_query("DELETE FROM " . sql_table('stories') . " WHERE sid='$sid'");
+        sql_query("DELETE 
+                   FROM " . sql_table('stories') . " 
+                   WHERE sid='$sid'");
 
         // commentaires
         if (file_exists("modules/comments/article.conf.php")) {
             include("modules/comments/article.conf.php");
 
-            sql_query("DELETE FROM " . sql_table('posts') . " WHERE forum_id='$forum' AND topic_id='$topic'");
+            sql_query("DELETE 
+                       FROM " . sql_table('posts') . " 
+                       WHERE forum_id='$forum' 
+                       AND topic_id='$topic'");
         }
 
         global $aid;
         Log::Ecr_Log('security', "removeStory ($sid, $ok) by AID : $aid", '');
 
-        if ($ultramode)
+        if ($ultramode) {
             News::ultramode();
+        }
 
         Header("Location: admin.php");
     } else {
@@ -1261,6 +1532,31 @@ function removeStory($sid, $ok = 0)
     }
 }
 
+/**
+ * [changeStory description]
+ *
+ * @param   [type]  $sid          [$sid description]
+ * @param   [type]  $subject      [$subject description]
+ * @param   [type]  $hometext     [$hometext description]
+ * @param   [type]  $bodytext     [$bodytext description]
+ * @param   [type]  $topic        [$topic description]
+ * @param   [type]  $notes        [$notes description]
+ * @param   [type]  $catid        [$catid description]
+ * @param   [type]  $ihome        [$ihome description]
+ * @param   [type]  $members      [$members description]
+ * @param   [type]  $Mmembers     [$Mmembers description]
+ * @param   [type]  $Cdate        [$Cdate description]
+ * @param   [type]  $Csid         [$Csid description]
+ * @param   [type]  $date_finval  [$date_finval description]
+ * @param   [type]  $epur         [$epur description]
+ * @param   [type]  $theme        [$theme description]
+ * @param   [type]  $dd_pub       [$dd_pub description]
+ * @param   [type]  $fd_pub       [$fd_pub description]
+ * @param   [type]  $dh_pub       [$dh_pub description]
+ * @param   [type]  $fh_pub       [$fh_pub description]
+ *
+ * @return  [type]                [return description]
+ */
 function changeStory($sid, $subject, $hometext, $bodytext, $topic, $notes, $catid, $ihome, $members, $Mmembers, $Cdate, $Csid, $date_finval, $epur, $theme, $dd_pub, $fd_pub, $dh_pub, $fh_pub)
 {
     global $aid, $ultramode;
@@ -1270,31 +1566,47 @@ function changeStory($sid, $subject, $hometext, $bodytext, $topic, $notes, $cati
     $bodytext = stripslashes(Str::FixQuotes($bodytext));
     $notes = stripslashes(Str::FixQuotes($notes));
 
-    if (($members == 1) and ($Mmembers == '')) 
+    if (($members == 1) and ($Mmembers == '')) {
         $ihome = '-127';
+    }
 
-    if (($members == 1) and (($Mmembers > 1) and ($Mmembers <= 127))) 
+    if (($members == 1) and (($Mmembers > 1) and ($Mmembers <= 127))) {
         $ihome = $Mmembers;
+    }
 
     if ($Cdate) {
-        sql_query("UPDATE " . sql_table('stories') . " SET catid='$catid', title='$subject', hometext='$hometext', bodytext='$bodytext', topic='$topic', notes='$notes', ihome='$ihome',time=now(), date_finval='$date_finval', auto_epur='$epur', archive='0' WHERE sid='$sid'");
+        sql_query("UPDATE " . sql_table('stories') . " 
+                   SET catid='$catid', title='$subject', hometext='$hometext', bodytext='$bodytext', topic='$topic', notes='$notes', ihome='$ihome',time=now(), date_finval='$date_finval', auto_epur='$epur', archive='0' 
+                   WHERE sid='$sid'");
     } else {
-        sql_query("UPDATE " . sql_table('stories') . " SET catid='$catid', title='$subject', hometext='$hometext', bodytext='$bodytext', topic='$topic', notes='$notes', ihome='$ihome', date_finval='$date_finval', auto_epur='$epur' WHERE sid='$sid'");
+        sql_query("UPDATE " . sql_table('stories') . " 
+                   SET catid='$catid', title='$subject', hometext='$hometext', bodytext='$bodytext', topic='$topic', notes='$notes', ihome='$ihome', date_finval='$date_finval', auto_epur='$epur' 
+                   WHERE sid='$sid'");
     }
 
     if ($Csid) {
-        sql_query("UPDATE " . sql_table('stories') . " SET hometext='<i class=\"fa fa-thumb-tack fa-2x me-2 text-body-secondary\"></i> $hometext' WHERE sid='$sid'");
-        list($Lsid) = sql_fetch_row(sql_query("SELECT sid FROM " . sql_table('stories') . " ORDER BY sid DESC"));
+        sql_query("UPDATE " . sql_table('stories') . " 
+                   SET hometext='<i class=\"fa fa-thumb-tack fa-2x me-2 text-body-secondary\"></i> $hometext' 
+                   WHERE sid='$sid'");
+
+        list($Lsid) = sql_fetch_row(sql_query("SELECT sid 
+                                               FROM " . sql_table('stories') . " 
+                                               ORDER BY sid DESC"));
         
         $Lsid++;
 
-        sql_query("UPDATE " . sql_table('stories') . " SET sid='$Lsid' WHERE sid='$sid'");
+        sql_query("UPDATE " . sql_table('stories') . " 
+                   SET sid='$Lsid' 
+                   WHERE sid='$sid'");
 
         // commentaires
         if (file_exists("modules/comments/article.conf.php")) {
             include("modules/comments/article.conf.php");
 
-            sql_query("UPDATE " . sql_table('posts') . " SET topic_id='$Lsid' WHERE forum_id='$forum' AND topic_id='$topic'");
+            sql_query("UPDATE " . sql_table('posts') . " 
+                       SET topic_id='$Lsid' 
+                       WHERE forum_id='$forum' 
+                       AND topic_id='$topic'");
         }
         $sid = $Lsid;
     }
@@ -1329,6 +1641,11 @@ function changeStory($sid, $subject, $hometext, $bodytext, $topic, $notes, $cati
     Url::redirect_url("admin.php?op=EditStory&sid=$sid");
 }
 
+/**
+ * [adminStory description]
+ *
+ * @return  [type]  [return description]
+ */
 function adminStory()
 {
     global $hlpfile, $language, $aid, $radminsuper, $adminimg;
@@ -1373,28 +1690,33 @@ function adminStory()
             <div class="col-sm-8">
             <select class="form-select" id="topic" name="topic">';
 
-    $toplist = sql_query("SELECT topicid, topictext, topicadmin FROM " . sql_table('topics') . " ORDER BY topictext");
+    $toplist = sql_query("SELECT topicid, topictext, topicadmin 
+                          FROM " . sql_table('topics') . " 
+                          ORDER BY topictext");
 
     //probablement ici aussi mettre les droits pour les gestionnaires de topics ??
-    if ($radminsuper) 
+    if ($radminsuper) {
         echo '<option value="">' . adm_translate("Sélectionner un Sujet") . '</option>';
+    }
 
     while (list($topicid, $topics, $topicadmin) = sql_fetch_row($toplist)) {
         $affiche = false;
 
-        if ($radminsuper)
+        if ($radminsuper) {
             $affiche = true;
-        else {
+        } else {
             $topicadminX = explode(',', $topicadmin);
             for ($i = 0; $i < count($topicadminX); $i++) {
-                if (trim($topicadminX[$i]) == $aid) 
+                if (trim($topicadminX[$i]) == $aid) {
                     $affiche = true;
+                }
             }
         }
 
         if ($affiche) {
-            if ($topicid == $topic) 
+            if ($topicid == $topic) {
                 $sel = 'selected="selected"';
+            }
 
             echo '<option ' . $sel . ' value="' . $topicid . '">' . Language::aff_langue($topics) . '</option>';
 
@@ -1471,6 +1793,25 @@ function adminStory()
     Css::adminfoot('fv', $fv_parametres, $arg1, '');
 }
 
+/**
+ * [previewAdminStory description]
+ *
+ * @param   [type]  $subject   [$subject description]
+ * @param   [type]  $hometext  [$hometext description]
+ * @param   [type]  $bodytext  [$bodytext description]
+ * @param   [type]  $topic     [$topic description]
+ * @param   [type]  $catid     [$catid description]
+ * @param   [type]  $ihome     [$ihome description]
+ * @param   [type]  $members   [$members description]
+ * @param   [type]  $Mmembers  [$Mmembers description]
+ * @param   [type]  $dd_pub    [$dd_pub description]
+ * @param   [type]  $fd_pub    [$fd_pub description]
+ * @param   [type]  $dh_pub    [$dh_pub description]
+ * @param   [type]  $fh_pub    [$fh_pub description]
+ * @param   [type]  $epur      [$epur description]
+ *
+ * @return  [type]             [return description]
+ */
 function previewAdminStory($subject, $hometext, $bodytext, $topic, $catid, $ihome, $members, $Mmembers, $dd_pub, $fd_pub, $dh_pub, $fh_pub, $epur)
 {
     global $tipath, $hlpfile, $language, $aid, $radminsuper, $adminimg, $topicimage;
@@ -1483,26 +1824,32 @@ function previewAdminStory($subject, $hometext, $bodytext, $topic, $catid, $ihom
 
     // settype($sel, 'string');
 
-    if ($topic < 1) 
+    if ($topic < 1) {
         $topic = 1;
+    }
 
     $affiche = false;
 
-    $result2 = sql_query("SELECT topictext, topicimage, topicadmin FROM " . sql_table('topics') . " WHERE topicid='$topic'");
+    $result2 = sql_query("SELECT topictext, topicimage, topicadmin 
+                          FROM " . sql_table('topics') . " 
+                          WHERE topicid='$topic'");
+
     list($topictext, $topicimage, $topicadmin) = sql_fetch_row($result2);
 
-    if ($radminsuper)
+    if ($radminsuper) {
         $affiche = true;
-    else {
+    } else {
         $topicadminX = explode(',', $topicadmin);
         for ($i = 0; $i < count($topicadminX); $i++) {
-            if (trim($topicadminX[$i]) == $aid) 
+            if (trim($topicadminX[$i]) == $aid) {
                 $affiche = true;
+            }
         }
     }
 
-    if (!$affiche) 
+    if (!$affiche) {
         header("location: admin.php");
+    }
 
     $f_meta_nom = 'adminStory';
     $f_titre = adm_translate("Nouvel Article");
@@ -1535,8 +1882,9 @@ function previewAdminStory($subject, $hometext, $bodytext, $topic, $catid, $ihom
 
         $timage = $imgtmp;
 
-        if (file_exists($imgtmp))
+        if (file_exists($imgtmp)) {
             $topiclogo = '<img class="img-fluid " src="' . $timage . '" align="right" alt="" />';
+        }
     }
 
     code_aff('<h3>' . $subject . $topiclogo . '</h3>', '<div class="text-body-secondary">' . $hometext . '</div>', $bodytext, '');
@@ -1555,21 +1903,25 @@ function previewAdminStory($subject, $hometext, $bodytext, $topic, $catid, $ihom
                 <div class="col-sm-8">
                 <select class="form-select" id="topic" name="topic">';
 
-    $toplist = sql_query("SELECT topicid, topictext, topicadmin FROM " . sql_table('topics') . " ORDER BY topictext");
+    $toplist = sql_query("SELECT topicid, topictext, topicadmin 
+                          FROM " . sql_table('topics') . " 
+                          ORDER BY topictext");
 
-    if ($radminsuper) 
+    if ($radminsuper) {
         echo '<option value="">' . adm_translate("Tous les Sujets") . '</option>';
+    }
 
     while (list($topicid, $topics, $topicadmin) = sql_fetch_row($toplist)) {
         $affiche = false;
 
-        if ($radminsuper)
+        if ($radminsuper) {
             $affiche = true;
-        else {
+        } else {
             $topicadminX = explode(',', $topicadmin);
             for ($i = 0; $i < count($topicadminX); $i++) {
-                if (trim($topicadminX[$i]) == $aid) 
+                if (trim($topicadminX[$i]) == $aid) {
                     $affiche = true;
+                }
             }
         }
 
@@ -1593,11 +1945,13 @@ function previewAdminStory($subject, $hometext, $bodytext, $topic, $catid, $ihom
 
     SelectCategory($catid);
 
-    if (($members == 1) and ($Mmembers == '')) 
+    if (($members == 1) and ($Mmembers == '')) {
         $ihome = '-127';
+    }
 
-    if (($members == 1) and (($Mmembers > 1) and ($Mmembers <= 127))) 
+    if (($members == 1) and (($Mmembers > 1) and ($Mmembers <= 127))) {
         $ihome = $Mmembers;
+    }
 
     puthome($ihome);
 
@@ -1667,6 +2021,7 @@ function previewAdminStory($subject, $hometext, $bodytext, $topic, $catid, $ihom
 // settype($catid, 'integer');
 
 switch ($op) {
+
     case 'EditCategory':
         EditCategory($catid);
         break;
@@ -1710,22 +2065,26 @@ switch ($op) {
         // settype($qid, 'integer');
         // settype($uid, 'string');
 
-        if (!$date_debval)
+        if (!$date_debval) {
             $date_debval = $dd_pub . ' ' . $dh_pub . ':01';
+        }
 
-        if (!$date_finval)
+        if (!$date_finval) {
             $date_finval = $fd_pub . ' ' . $fh_pub . ':01';
+        }
 
-        if ($date_finval < $date_debval)
+        if ($date_finval < $date_debval) {
             $date_finval = $date_debval;
+        }
 
         $temp_new = mktime(substr($date_debval, 11, 2), substr($date_debval, 14, 2), 0, substr($date_debval, 5, 2), substr($date_debval, 8, 2), substr($date_debval, 0, 4));
         $temp = time();
         
-        if ($temp > $temp_new)
+        if ($temp > $temp_new) {
             postStory("pub_immediate", $qid, $uid, $author, $subject, $hometext, $bodytext, $topic, $notes, $catid, $ihome, $members, $Mmembers, $date_debval, $date_finval, $epur);
-        else
+        } else {
             postStory("pub_automated", $qid, $uid, $author, $subject, $hometext, $bodytext, $topic, $notes, $catid, $ihome, $members, $Mmembers, $date_debval, $date_finval, $epur);
+        }
         break;
 
     case 'DeleteStory':

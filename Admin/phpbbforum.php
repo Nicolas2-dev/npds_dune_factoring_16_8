@@ -7,8 +7,9 @@ use Npds\Support\Facades\User;
 use Npds\Support\Facades\Forum;
 
 
-if (!function_exists('admindroits'))
+if (!function_exists('admindroits')) {
     include('die.php');
+}
 
 $f_meta_nom = 'ForumAdmin';
 $f_titre = adm_translate('Gestion des forums');
@@ -22,6 +23,11 @@ $hlpfile = "manuels/$language/forumcat.html";
 
 include("auth.php");
 
+/**
+ * [ForumAdmin description]
+ *
+ * @return  [type]  [return description]
+ */
 function ForumAdmin()
 {
     global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
@@ -45,10 +51,15 @@ function ForumAdmin()
         </thead>
         <tbody>';
 
-    $result = sql_query("SELECT cat_id, cat_title FROM " . sql_table('catagories') . " ORDER BY cat_id");
+    $result = sql_query("SELECT cat_id, cat_title 
+                         FROM " . sql_table('catagories') . " 
+                         ORDER BY cat_id");
 
     while (list($cat_id, $cat_title) = sql_fetch_row($result)) {
-        $gets = sql_query("SELECT COUNT(*) AS total FROM " . sql_table('forums') . " WHERE cat_id='$cat_id'");
+        $gets = sql_query("SELECT COUNT(*) AS total 
+                           FROM " . sql_table('forums') . " 
+                           WHERE cat_id='$cat_id'");
+
         $numbers = sql_fetch_assoc($gets);
 
         echo '
@@ -85,6 +96,13 @@ function ForumAdmin()
     Css::adminfoot('fv', '', $arg1, '');
 }
 
+/**
+ * [ForumGo description]
+ *
+ * @param   [type]  $cat_id  [$cat_id description]
+ *
+ * @return  [type]           [return description]
+ */
 function ForumGo($cat_id)
 {
     global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
@@ -94,7 +112,10 @@ function ForumGo($cat_id)
     GraphicAdmin($hlpfile);
     adminhead($f_meta_nom, $f_titre, $adminimg);
 
-    $result = sql_query("SELECT cat_title FROM " . sql_table('catagories') . " WHERE cat_id='$cat_id'");
+    $result = sql_query("SELECT cat_title 
+                         FROM " . sql_table('catagories') . " 
+                         WHERE cat_id='$cat_id'");
+
     list($cat_title) = sql_fetch_row($result);
 
     $ctg = StripSlashes($cat_title);
@@ -117,7 +138,10 @@ function ForumGo($cat_id)
         </thead>
         <tbody>';
 
-    $result = sql_query("SELECT forum_id, forum_name, forum_access, forum_moderator, forum_type, arbre, attachement, forum_index FROM " . sql_table('forums') . " WHERE cat_id='$cat_id' ORDER BY forum_index,forum_id");
+    $result = sql_query("SELECT forum_id, forum_name, forum_access, forum_moderator, forum_type, arbre, attachement, forum_index 
+                         FROM " . sql_table('forums') . " 
+                         WHERE cat_id='$cat_id' 
+                         ORDER BY forum_index, forum_id");
 
     while (list($forum_id, $forum_name, $forum_access, $forum_moderator, $forum_type, $arbre, $attachement, $forum_index) = sql_fetch_row($result)) {
         $moderator = str_replace(' ', ', ', User::get_moderator($forum_moderator));
@@ -129,6 +153,7 @@ function ForumGo($cat_id)
             <td><i class="fa fa-balance-scale fa-lg fa-fw me-1"></i>' . $moderator . '</td>';
 
         switch ($forum_access) {
+
             case (0):
                 echo '<td>' . adm_translate("Publication Anonyme autorisée") . '</td>';
                 break;
@@ -146,28 +171,33 @@ function ForumGo($cat_id)
                 break;
         }
 
-        if ($forum_type == 0)
+        if ($forum_type == 0) {
             echo '<td>' . adm_translate("Public") . '</td>';
-        elseif ($forum_type == 1)
+        } elseif ($forum_type == 1) {
             echo '<td>' . adm_translate("Privé") . '</td>';
-        elseif ($forum_type == 5)
+        } elseif ($forum_type == 5) {
             echo '<td>PHP + ' . adm_translate("Groupe") . '</td>';
-        elseif ($forum_type == 6)
+        } elseif ($forum_type == 6) {
             echo '<td>PHP</td>';
-        elseif ($forum_type == 7)
+        } elseif ($forum_type == 7) {
             echo '<td>' . adm_translate("Groupe") . '</td>';
-        elseif ($forum_type == 8)
+        } elseif ($forum_type == 8) {
             echo '<td>' . adm_translate("Texte étendu") . '</td>';
-        else
+        } else {
             echo '<td>' . adm_translate("Caché") . '</td>';
-        if ($arbre)
+        }
+
+        if ($arbre) {
             echo '<td>' . adm_translate("Arbre") . '</td>';
-        else
+        } else {
             echo '<td>' . adm_translate("Standard") . '</td>';
-        if ($attachement)
+        }
+
+        if ($attachement) {
             echo '<td class="text-danger">' . adm_translate("Oui") . '</td>';
-        else
+        } else {
             echo '<td>' . adm_translate("Non") . '</td>';
+        }
 
         echo '
             <td><a href="admin.php?op=ForumGoEdit&amp;forum_id=' . $forum_id . '&amp;ctg=' . urlencode($ctg) . '"><i class="fa fa-edit fa-lg" title="' . adm_translate("Editer") . '" data-bs-toggle="tooltip"></i></a><a href="admin.php?op=ForumGoDel&amp;forum_id=' . $forum_id . '&amp;ok=0"><i class="fas fa-trash fa-lg text-danger ms-3" title="' . adm_translate("Effacer") . '" data-bs-toggle="tooltip" ></i></a></td>
@@ -357,6 +387,14 @@ function ForumGo($cat_id)
     Css::adminfoot('fv', $fv_parametres, $arg1, '');
 }
 
+/**
+ * [ForumGoEdit description]
+ *
+ * @param   [type]  $forum_id  [$forum_id description]
+ * @param   [type]  $ctg       [$ctg description]
+ *
+ * @return  [type]             [return description]
+ */
 function ForumGoEdit($forum_id, $ctg)
 {
     global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
@@ -366,7 +404,10 @@ function ForumGoEdit($forum_id, $ctg)
     GraphicAdmin($hlpfile);
     adminhead($f_meta_nom, $f_titre, $adminimg);
 
-    $result = sql_query("SELECT forum_id, forum_name, forum_desc, forum_access, forum_moderator, cat_id, forum_type, forum_pass, arbre, attachement, forum_index FROM " . sql_table('forums') . " WHERE forum_id='$forum_id'");
+    $result = sql_query("SELECT forum_id, forum_name, forum_desc, forum_access, forum_moderator, cat_id, forum_type, forum_pass, arbre, attachement, forum_index 
+                         FROM " . sql_table('forums') . " 
+                         WHERE forum_id='$forum_id'");
+
     list($forum_id, $forum_name, $forum_desc, $forum_access, $forum_mod, $cat_id_1, $forum_type, $forum_pass, $arbre, $attachement, $forum_index) = sql_fetch_row($result);
 
     // settype($sel0, 'string');
@@ -419,17 +460,21 @@ function ForumGoEdit($forum_id, $ctg)
             <div class="col-sm-8">
                 <select class="form-select" id="forum_access" name="forum_access">';
 
-    if ($forum_access == 0)
+    if ($forum_access == 0) {
         $sel0 = ' selected="selected"';
+    }
 
-    if ($forum_access == 1)
+    if ($forum_access == 1) {
         $sel1 = ' selected="selected"';
+    }
 
-    if ($forum_access == 2)
+    if ($forum_access == 2) {
         $sel2 = ' selected="selected"';
+    }
 
-    if ($forum_access == 9)
+    if ($forum_access == 9) {
         $sel9 = ' selected="selected"';
+    }
 
     echo '
                 <option value="0"' . $sel0 . '>' . adm_translate("Publication Anonyme autorisée") . '</option>
@@ -444,13 +489,15 @@ function ForumGoEdit($forum_id, $ctg)
             <div class="col-sm-8">
                 <select class="form-select" id="cat_id" name="cat_id">';
 
-    $result = sql_query("SELECT cat_id, cat_title FROM " . sql_table('catagories'));
+    $result = sql_query("SELECT cat_id, cat_title 
+                         FROM " . sql_table('catagories'));
 
     while (list($cat_id, $cat_title) = sql_fetch_row($result)) {
-        if ($cat_id == $cat_id_1)
+        if ($cat_id == $cat_id_1) {
             echo '<option value="' . $cat_id . '" selected="selected">' . StripSlashes($cat_title) . '</option>';
-        else
+        } else {
             echo '<option value="' . $cat_id . '">' . StripSlashes($cat_title) . '</option>';
+        }
     }
 
     echo '
@@ -462,40 +509,47 @@ function ForumGoEdit($forum_id, $ctg)
             <div class="col-sm-8">
                 <select class="form-select" id="forum_type" name="forum_type">';
 
-    if ($forum_type == 0)
+    if ($forum_type == 0) {
         $sel0 = ' selected="selected"';
-    else
+    } else {
         $sel0 = '';
+    }
 
-    if ($forum_type == 1)
+    if ($forum_type == 1) { 
         $sel1 = ' selected="selected"';
-    else
+    } else {
         $sel1 = '';
+    }
 
-    if ($forum_type == 5)
+    if ($forum_type == 5) {
         $sel5 = ' selected="selected"';
-    else
+    } else{
         $sel5 = '';
+    }
 
-    if ($forum_type == 6)
+    if ($forum_type == 6) {
         $sel6 = ' selected="selected"';
-    else
+    } else {
         $sel6 = '';
+    }
 
-    if ($forum_type == 7)
+    if ($forum_type == 7) {
         $sel7 = ' selected="selected"';
-    else
+    } else {
         $sel7 = '';
+    }
 
-    if ($forum_type == 8)
+    if ($forum_type == 8) {
         $sel8 = ' selected="selected"';
-    else
+    } else {
         $sel8 = '';
+    }
 
-    if ($forum_type == 9)
+    if ($forum_type == 9) {
         $sel9 = ' selected="selected"';
-    else
+    } else {
         $sel9 = '';
+    }
 
     $lana = '';
     $dinp = 'd-none';
@@ -555,14 +609,15 @@ function ForumGoEdit($forum_id, $ctg)
             <div class="col-sm-8">
                 <select class="form-select" id="arbre" name="arbre">';
 
-    if ($arbre)
+    if ($arbre) {
         echo '
                <option value="0">' . adm_translate("Standard") . '</option>
                <option value="1" selected="selected">' . adm_translate("Arbre") . '</option>';
-    else
+    } else {
         echo '
                <option value="0" selected="selected">' . adm_translate("Standard") . '</option>
                <option value="1">' . adm_translate("Arbre") . '</option>';
+    }
 
     echo '
                 </select>
@@ -573,14 +628,15 @@ function ForumGoEdit($forum_id, $ctg)
             <div class="col-sm-8">
                 <select class="form-select" id="attachement" name="attachement">';
 
-    if ($attachement)
+    if ($attachement) {
         echo '
                <option value="0">' . adm_translate("Non") . '</option>
                <option value="1" selected="selected">' . adm_translate("Oui") . '</option>';
-    else
+    } else {
         echo '
                <option value="0" selected="selected">' . adm_translate("Non") . '</option>
                <option value="1">' . adm_translate("Oui") . '</option>';
+    }
 
     echo '
                 </select>
@@ -686,6 +742,13 @@ function ForumGoEdit($forum_id, $ctg)
     Css::adminfoot('fv', $fv_parametres, $arg1, '');
 }
 
+/**
+ * [ForumCatEdit description]
+ *
+ * @param   [type]  $cat_id  [$cat_id description]
+ *
+ * @return  [type]           [return description]
+ */
 function ForumCatEdit($cat_id)
 {
     global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
@@ -695,7 +758,10 @@ function ForumCatEdit($cat_id)
     GraphicAdmin($hlpfile);
     adminhead($f_meta_nom, $f_titre, $adminimg);
 
-    $result = sql_query("SELECT cat_id, cat_title FROM " . sql_table('catagories') . " WHERE cat_id='$cat_id'");
+    $result = sql_query("SELECT cat_id, cat_title 
+                         FROM " . sql_table('catagories') . " 
+                         WHERE cat_id='$cat_id'");
+
     list($cat_id, $cat_title) = sql_fetch_row($result);
 
     echo '
@@ -744,12 +810,26 @@ function ForumCatEdit($cat_id)
     Css::adminfoot('fv', $fv_parametres, $arg1, '');
 }
 
+/**
+ * [ForumCatSave description]
+ *
+ * @param   [type]  $old_catid  [$old_catid description]
+ * @param   [type]  $cat_id     [$cat_id description]
+ * @param   [type]  $cat_title  [$cat_title description]
+ *
+ * @return  [type]              [return description]
+ */
 function ForumCatSave($old_catid, $cat_id, $cat_title)
 {
-    $return = sql_query("UPDATE " . sql_table('catagories') . " SET cat_id='$cat_id', cat_title='" . AddSlashes($cat_title) . "' WHERE cat_id='$old_catid'");
+    $return = sql_query("UPDATE " . sql_table('catagories') . " 
+                         SET cat_id='$cat_id', cat_title='" . AddSlashes($cat_title) . "' 
+                         WHERE cat_id='$old_catid'");
 
-    if ($return)
-        sql_query("UPDATE " . sql_table('forums') . " SET cat_id='$cat_id' WHERE cat_id='$old_catid'");
+    if ($return) {
+        sql_query("UPDATE " . sql_table('forums') . " 
+                   SET cat_id='$cat_id' 
+                   WHERE cat_id='$old_catid'");
+    }
 
     Q_Clean();
 
@@ -759,6 +839,24 @@ function ForumCatSave($old_catid, $cat_id, $cat_title)
     Header("Location: admin.php?op=ForumAdmin");
 }
 
+/**
+ * [ForumGoSave description]
+ *
+ * @param   [type]  $forum_id      [$forum_id description]
+ * @param   [type]  $forum_name    [$forum_name description]
+ * @param   [type]  $forum_desc    [$forum_desc description]
+ * @param   [type]  $forum_access  [$forum_access description]
+ * @param   [type]  $forum_mod     [$forum_mod description]
+ * @param   [type]  $cat_id        [$cat_id description]
+ * @param   [type]  $forum_type    [$forum_type description]
+ * @param   [type]  $forum_pass    [$forum_pass description]
+ * @param   [type]  $arbre         [$arbre description]
+ * @param   [type]  $attachement   [$attachement description]
+ * @param   [type]  $forum_index   [$forum_index description]
+ * @param   [type]  $ctg           [$ctg description]
+ *
+ * @return  [type]                 [return description]
+ */
 function ForumGoSave($forum_id, $forum_name, $forum_desc, $forum_access, $forum_mod, $cat_id, $forum_type, $forum_pass, $arbre, $attachement, $forum_index, $ctg)
 {
     global $hlpfile;
@@ -771,15 +869,22 @@ function ForumGoSave($forum_id, $forum_name, $forum_desc, $forum_access, $forum_
     $error_mod = '';
 
     for ($i = 0; $i < count($moderator); $i++) {
-        $result = sql_query("SELECT uid FROM " . sql_table('users') . " WHERE uname='" . trim($moderator[$i]) . "'");
+        $result = sql_query("SELECT uid 
+                             FROM " . sql_table('users') . " 
+                             WHERE uname='" . trim($moderator[$i]) . "'");
+
         list($forum_moderator) = sql_fetch_row($result);
 
         if ($forum_moderator != '') {
             $forum_mod .= $forum_moderator . ' ';
 
-            sql_query("UPDATE " . sql_table('users_status') . " SET level='2' WHERE uid='$forum_moderator'");
-        } else
+            sql_query("UPDATE " . sql_table('users_status') . " 
+                       SET level='2' 
+                       WHERE uid='$forum_moderator'");
+
+        } else {
             $error_mod .= $moderator[$i] . ' ';
+        }
     }
 
     if ($error_mod != '') {
@@ -794,17 +899,41 @@ function ForumGoSave($forum_id, $forum_name, $forum_desc, $forum_access, $forum_
     } else {
         $forum_mod = str_replace(' ', ',', chop($forum_mod));
 
-        if ($arbre > 1)
+        if ($arbre > 1) {
             $arbre = 1;
+        }
 
         if ($forum_pass) {
             if (($forum_type == 7) and ($forum_access == 0)) {
                 $forum_access = 1;
             }
 
-            sql_query("UPDATE " . sql_table('forums') . " SET forum_name='$forum_name', forum_desc='$forum_desc', forum_access='$forum_access', forum_moderator='$forum_mod', cat_id='$cat_id', forum_type='$forum_type', forum_pass='$forum_pass', arbre='$arbre', attachement='$attachement', forum_index='$forum_index' WHERE forum_id='$forum_id'");
-        } else
-            sql_query("UPDATE " . sql_table('forums') . " SET forum_name='$forum_name', forum_desc='$forum_desc', forum_access='$forum_access', forum_moderator='$forum_mod', cat_id='$cat_id', forum_type='$forum_type', forum_pass='', arbre='$arbre', attachement='$attachement', forum_index='$forum_index' WHERE forum_id='$forum_id'");
+            sql_query("UPDATE " . sql_table('forums') . " 
+                       SET  forum_name='$forum_name', 
+                            forum_desc='$forum_desc', 
+                            forum_access='$forum_access', 
+                            forum_moderator='$forum_mod', 
+                            cat_id='$cat_id', 
+                            forum_type='$forum_type', 
+                            forum_pass='$forum_pass', 
+                            arbre='$arbre', 
+                            attachement='$attachement', 
+                            forum_index='$forum_index' 
+                        WHERE forum_id='$forum_id'");
+        } else {
+            sql_query("UPDATE " . sql_table('forums') . " 
+                       SET  forum_name='$forum_name', 
+                            forum_desc='$forum_desc', 
+                            forum_access='$forum_access', 
+                            forum_moderator='$forum_mod', 
+                            cat_id='$cat_id', 
+                            forum_type='$forum_type', 
+                            forum_pass='', 
+                            arbre='$arbre', 
+                            attachement='$attachement', 
+                            forum_index='$forum_index' 
+                        WHERE forum_id='$forum_id'");
+        }
 
         Q_Clean();
 
@@ -815,9 +944,18 @@ function ForumGoSave($forum_id, $forum_name, $forum_desc, $forum_access, $forum_
     }
 }
 
+/**
+ * [ForumCatAdd description]
+ *
+ * @param   [type]  $catagories  [$catagories description]
+ *
+ * @return  [type]               [return description]
+ */
 function ForumCatAdd($catagories)
 {
-    sql_query("INSERT INTO " . sql_table('catagories') . " VALUES (NULL, '$catagories')");
+    sql_query("INSERT 
+               INTO " . sql_table('catagories') . " 
+               VALUES (NULL, '$catagories')");
 
     global $aid;
     Log::Ecr_Log('security', "AddForumCat($catagories) by AID : $aid", '');
@@ -825,6 +963,23 @@ function ForumCatAdd($catagories)
     Header("Location: admin.php?op=ForumAdmin");
 }
 
+/**
+ * [ForumGoAdd description]
+ *
+ * @param   [type]  $forum_name    [$forum_name description]
+ * @param   [type]  $forum_desc    [$forum_desc description]
+ * @param   [type]  $forum_access  [$forum_access description]
+ * @param   [type]  $forum_mod     [$forum_mod description]
+ * @param   [type]  $cat_id        [$cat_id description]
+ * @param   [type]  $forum_type    [$forum_type description]
+ * @param   [type]  $forum_pass    [$forum_pass description]
+ * @param   [type]  $arbre         [$arbre description]
+ * @param   [type]  $attachement   [$attachement description]
+ * @param   [type]  $forum_index   [$forum_index description]
+ * @param   [type]  $ctg           [$ctg description]
+ *
+ * @return  [type]                 [return description]
+ */
 function ForumGoAdd($forum_name, $forum_desc, $forum_access, $forum_mod, $cat_id, $forum_type, $forum_pass, $arbre, $attachement, $forum_index, $ctg)
 {
     global $hlpfile;
@@ -837,14 +992,21 @@ function ForumGoAdd($forum_name, $forum_desc, $forum_access, $forum_mod, $cat_id
     $error_mod = '';
 
     for ($i = 0; $i < count($moderator); $i++) {
-        $result = sql_query("SELECT uid FROM " . sql_table('users') . " WHERE uname='" . trim($moderator[$i]) . "'");
+        $result = sql_query("SELECT uid 
+                             FROM " . sql_table('users') . " 
+                             WHERE uname='" . trim($moderator[$i]) . "'");
+
         list($forum_moderator) = sql_fetch_row($result);
 
         if ($forum_moderator != '') {
             $forum_mod .= $forum_moderator . ' ';
-            sql_query("UPDATE " . sql_table('users_status') . " SET level='2' WHERE uid='$forum_moderator'");
-        } else
+            sql_query("UPDATE " . sql_table('users_status') . " 
+                       SET level='2' 
+                       WHERE uid='$forum_moderator'");
+
+        } else {
             $error_mod .= $moderator[$i] . ' ';
+        }
     }
 
     if ($error_mod != '') {
@@ -860,12 +1022,15 @@ function ForumGoAdd($forum_name, $forum_desc, $forum_access, $forum_mod, $cat_id
 
         include("footer.php");
     } else {
-        if ($arbre > 1)
+        if ($arbre > 1) {
             $arbre = 1;
+        }
 
         $forum_mod = str_replace(' ', ',', chop($forum_mod));
 
-        sql_query("INSERT INTO " . sql_table('forums') . " VALUES (NULL, '$forum_name', '$forum_desc', '$forum_access', '$forum_mod', '$cat_id', '$forum_type', '$forum_pass', '$arbre', '$attachement', '$forum_index')");
+        sql_query("INSERT 
+                   INTO " . sql_table('forums') . " 
+                   VALUES (NULL, '$forum_name', '$forum_desc', '$forum_access', '$forum_mod', '$cat_id', '$forum_type', '$forum_pass', '$arbre', '$attachement', '$forum_index')");
 
         Q_Clean();
 
@@ -876,26 +1041,46 @@ function ForumGoAdd($forum_name, $forum_desc, $forum_access, $forum_mod, $cat_id
     }
 }
 
+/**
+ * [ForumCatDel description]
+ *
+ * @param   [type]  $cat_id  [$cat_id description]
+ * @param   [type]  $ok      [$ok description]
+ *
+ * @return  [type]           [return description]
+ */
 function ForumCatDel($cat_id, $ok = 0)
 {
     global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
 
     if ($ok == 1) {
-        $result = sql_query("SELECT forum_id FROM " . sql_table('forums') . " WHERE cat_id='$cat_id'");
+        $result = sql_query("SELECT forum_id 
+                             FROM " . sql_table('forums') . " 
+                             WHERE cat_id='$cat_id'");
 
         while (list($forum_id) = sql_fetch_row($result)) {
-            sql_query("DELETE FROM " . sql_table('forumtopics') . " WHERE forum_id='$forum_id'");
+            sql_query("DELETE 
+                       FROM " . sql_table('forumtopics') . " 
+                       WHERE forum_id='$forum_id'");
 
-            sql_query("DELETE FROM " . sql_table('forum_read') . " WHERE forum_id='$forum_id'");
+            sql_query("DELETE 
+                       FROM " . sql_table('forum_read') . " 
+                       WHERE forum_id='$forum_id'");
 
             Forum::control_efface_post("forum_npds", "", "", $forum_id);
 
-            sql_query("DELETE FROM " . sql_table('posts') . " WHERE forum_id='$forum_id'");
+            sql_query("DELETE 
+                       FROM " . sql_table('posts') . " 
+                       WHERE forum_id='$forum_id'");
         }
 
-        sql_query("DELETE FROM " . sql_table('forums') . " WHERE cat_id='$cat_id'");
+        sql_query("DELETE 
+                   FROM " . sql_table('forums') . " 
+                   WHERE cat_id='$cat_id'");
 
-        sql_query("DELETE FROM " . sql_table('catagories') . " WHERE cat_id='$cat_id'");
+        sql_query("DELETE 
+                   FROM " . sql_table('catagories') . " 
+                   WHERE cat_id='$cat_id'");
 
         Q_Clean();
 
@@ -921,20 +1106,36 @@ function ForumCatDel($cat_id, $ok = 0)
     }
 }
 
+/**
+ * [ForumGoDel description]
+ *
+ * @param   [type]  $forum_id  [$forum_id description]
+ * @param   [type]  $ok        [$ok description]
+ *
+ * @return  [type]             [return description]
+ */
 function ForumGoDel($forum_id, $ok = 0)
 {
     global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
 
     if ($ok == 1) {
-        sql_query("DELETE FROM " . sql_table('forumtopics') . " WHERE forum_id='$forum_id'");
+        sql_query("DELETE 
+                   FROM " . sql_table('forumtopics') . " 
+                   WHERE forum_id='$forum_id'");
 
-        sql_query("DELETE FROM " . sql_table('forum_read') . " WHERE forum_id='$forum_id'");
+        sql_query("DELETE 
+                   FROM " . sql_table('forum_read') . " 
+                   WHERE forum_id='$forum_id'");
 
         Forum::control_efface_post('forum_npds', '', '', $forum_id);
 
-        sql_query("DELETE FROM " . sql_table('forums') . " WHERE forum_id='$forum_id'");
+        sql_query("DELETE 
+                   FROM " . sql_table('forums') . " 
+                   WHERE forum_id='$forum_id'");
 
-        sql_query("DELETE FROM " . sql_table('posts') . " WHERE forum_id='$forum_id'");
+        sql_query("DELETE 
+                   FROM " . sql_table('posts') . " 
+                   WHERE forum_id='$forum_id'");
 
         Q_Clean();
 

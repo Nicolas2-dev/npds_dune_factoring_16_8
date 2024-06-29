@@ -96,7 +96,10 @@ switch ($apli) {
                     if ($apli == 'forum_npds') {
                         include('auth.php');
 
-                        $sql = "UPDATE $upload_table SET compteur = compteur+1 WHERE att_id = '$att_id'";
+                        $sql = "UPDATE $upload_table 
+                                SET compteur = compteur+1 
+                                WHERE att_id = '$att_id'";
+                                
                         sql_query($sql);
                     }
 

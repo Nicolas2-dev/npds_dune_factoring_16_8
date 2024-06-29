@@ -43,7 +43,9 @@ function adminhead($f_meta_nom, $f_titre, $adminimg)
 {
     global $admf_ext, $f_meta_nom, $ModPath, $adm_img_mod;
 
-    list($furlscript, $ficone) = sql_fetch_row(sql_query("SELECT furlscript, ficone FROM " . sql_table('fonctions') . " WHERE fnom='$f_meta_nom'"));
+    list($furlscript, $ficone) = sql_fetch_row(sql_query("SELECT furlscript, ficone 
+                                                          FROM " . sql_table('fonctions') . " 
+                                                          WHERE fnom='$f_meta_nom'"));
 
     if (file_exists($adminimg . $ficone . '.' . $admf_ext)) {
         $img_adm = '<img src="' . $adminimg . $ficone . '.' . $admf_ext . '" class="me-2" alt="' . $f_titre . '" loading="lazy" />';
@@ -118,34 +120,53 @@ function GraphicAdmin($hlpfile)
     $bloc_foncts = '';
     $bloc_foncts_A = '';
 
-    $Q = sql_fetch_assoc(sql_query("SELECT * FROM " . sql_table('authors') . " WHERE aid='$aid' LIMIT 1"));
+    $Q = sql_fetch_assoc(sql_query("SELECT * 
+                                    FROM " . sql_table('authors') . " 
+                                    WHERE aid='$aid' 
+                                    LIMIT 1"));
 
     //==> recupérations des états des fonctions d'ALERTE ou activable et maj (faire une fonction avec cache court dev ..)
     
     //article à valider
-    $newsubs = sql_num_rows(sql_query("SELECT qid FROM " . sql_table('queue') . ""));
+    $newsubs = sql_num_rows(sql_query("SELECT qid 
+                                       FROM " . sql_table('queue') . ""));
     if ($newsubs) {
-        sql_query("UPDATE " . sql_table('fonctions') . " SET fetat='1',fretour='" . $newsubs . "',fretour_h='" . adm_translate("Articles en attente de validation !") . "' WHERE fid='38'");
+        sql_query("UPDATE " . sql_table('fonctions') . " 
+                   SET fetat='1',fretour='" . $newsubs . "',fretour_h='" . adm_translate("Articles en attente de validation !") . "' 
+                   WHERE fid='38'");
     } else {
-        sql_query("UPDATE " . sql_table('fonctions') . " SET fetat='0',fretour='0' WHERE fid='38'");
+        sql_query("UPDATE " . sql_table('fonctions') . " 
+                   SET fetat='0',fretour='0' 
+                   WHERE fid='38'");
     }
 
     //news auto
-    $newauto = sql_num_rows(sql_query("SELECT anid FROM " . sql_table('autonews') . ""));
+    $newauto = sql_num_rows(sql_query("SELECT anid 
+                                       FROM " . sql_table('autonews') . ""));
     if ($newauto) {
-        sql_query("UPDATE " . sql_table('fonctions') . " SET fetat='1',fretour='" . $newauto . "',fretour_h='" . adm_translate("Articles programmés pour la publication.") . "' WHERE fid=37");
+        sql_query("UPDATE " . sql_table('fonctions') . " 
+                   SET fetat='1',fretour='" . $newauto . "',fretour_h='" . adm_translate("Articles programmés pour la publication.") . "' 
+                   WHERE fid=37");
     } else {
-        sql_query("UPDATE " . sql_table('fonctions') . " SET fetat='0',fretour='0',fretour_h='' WHERE fid=37");
+        sql_query("UPDATE " . sql_table('fonctions') . " 
+                   SET fetat='0',fretour='0',fretour_h='' 
+                   WHERE fid=37");
     }
     //etat filemanager
     if ($filemanager) {
-        sql_query("UPDATE " . sql_table('fonctions') . " SET fetat='1' WHERE fid='27'");
+        sql_query("UPDATE " . sql_table('fonctions') . " 
+                   SET fetat='1' 
+                   WHERE fid='27'");
     } else  { 
-        sql_query("UPDATE " . sql_table('fonctions') . " SET fetat='0' WHERE fid='27'");
+        sql_query("UPDATE " . sql_table('fonctions') . " 
+                   SET fetat='0' 
+                   WHERE fid='27'");
     }
 
     //==> recuperation traitement des messages de NPDS
-    $QM = sql_query("SELECT * FROM " . sql_table('fonctions') . " WHERE fnom REGEXP'mes_npds_[[:digit:]]'");
+    $QM = sql_query("SELECT * 
+                     FROM " . sql_table('fonctions') . " 
+                     WHERE fnom REGEXP'mes_npds_[[:digit:]]'");
 
     // settype($f_mes, 'array');
 
@@ -163,17 +184,26 @@ function GraphicAdmin($hlpfile)
     $versus_info = explode('|', $messages_npds[0]);
 
     if ($versus_info[1] == $Version_Sub and $versus_info[2] == $Version_Num) {
-        sql_query("UPDATE " . sql_table('fonctions') . " SET fetat='1', fretour='', fretour_h='Version NPDS " . $Version_Sub . " " . $Version_Num . "', furlscript='' WHERE fid='36'");
+        sql_query("UPDATE " . sql_table('fonctions') . " 
+                   SET fetat='1', fretour='', fretour_h='Version NPDS " . $Version_Sub . " " . $Version_Num . "', furlscript='' 
+                   WHERE fid='36'");
     } else {
-        sql_query("UPDATE " . sql_table('fonctions') . " SET fetat='1', fretour='N', furlscript='data-bs-toggle=\"modal\" data-bs-target=\"#versusModal\"', fretour_h='Une nouvelle version NPDS est disponible !<br />" . $versus_info[1] . " " . $versus_info[2] . "<br />Cliquez pour télécharger.' WHERE fid='36'");
+        sql_query("UPDATE " . sql_table('fonctions') . " 
+                   SET fetat='1', fretour='N', furlscript='data-bs-toggle=\"modal\" data-bs-target=\"#versusModal\"', fretour_h='Une nouvelle version NPDS est disponible !<br />" . $versus_info[1] . " " . $versus_info[2] . "<br />Cliquez pour télécharger.' 
+                   WHERE fid='36'");
     }
 
     $mess = array_slice($messages_npds, 1);
 
     if (empty($mess)) {
         //si pas de message on nettoie la base
-        sql_query("DELETE FROM " . sql_table('fonctions') . " WHERE fnom REGEXP'mes_npds_[[:digit:]]'");
-        sql_query("ALTER TABLE " . sql_table('fonctions') . " AUTO_INCREMENT = (SELECT MAX(fid)+1 FROM " . sql_table('fonctions') . ")");
+        sql_query("DELETE 
+                   FROM " . sql_table('fonctions') . " 
+                   WHERE fnom REGEXP'mes_npds_[[:digit:]]'");
+
+        sql_query("ALTER 
+                   TABLE " . sql_table('fonctions') . " AUTO_INCREMENT = (SELECT MAX(fid)+1 
+                   FROM " . sql_table('fonctions') . ")");
     } else {
         $fico = '';
         $o = 0;
@@ -181,10 +211,14 @@ function GraphicAdmin($hlpfile)
         foreach ($mess as $v) {
             $ibid = explode('|', $v);
             $fico = $ibid[0] != 'Note' ? 'message_npds_a' : 'message_npds_i';
-            $QM = sql_num_rows(sql_query("SELECT * FROM " . sql_table('fonctions') . " WHERE fnom='mes_npds_" . $o . "'"));
+            $QM = sql_num_rows(sql_query("SELECT * 
+                                          FROM " . sql_table('fonctions') . " 
+                                          WHERE fnom='mes_npds_" . $o . "'"));
 
             if ($QM === false) {
-                sql_query("INSERT INTO " . sql_table('fonctions') . " (fnom,fretour_h,fcategorie,fcategorie_nom,ficone,fetat,finterface,fnom_affich,furlscript) VALUES ('mes_npds_" . $o . "','" . addslashes($ibid[1]) . "','9','Alerte','" . $fico . "','1','1','" . addslashes($ibid[2]) . "','data-bs-toggle=\"modal\" data-bs-target=\"#messageModal\");\n");
+                sql_query("INSERT 
+                           INTO " . sql_table('fonctions') . " (fnom,fretour_h,fcategorie,fcategorie_nom,ficone,fetat,finterface,fnom_affich,furlscript) 
+                           VALUES ('mes_npds_" . $o . "','" . addslashes($ibid[1]) . "','9','Alerte','" . $fico . "','1','1','" . addslashes($ibid[2]) . "','data-bs-toggle=\"modal\" data-bs-target=\"#messageModal\");\n");
             }
 
             $o++;
@@ -205,79 +239,124 @@ function GraphicAdmin($hlpfile)
 
                 unset($f_mes[$k]);
 
-                $result = sql_query("SELECT fnom_affich FROM " . sql_table('fonctions') . " WHERE fnom='mes_npds_$i'");
+                $result = sql_query("SELECT fnom_affich 
+                                     FROM " . sql_table('fonctions') . " WHERE fnom='mes_npds_$i'");
 
                 if (sql_num_rows($result) == 1) {
                     $alertinfo = sql_fetch_assoc($result);
 
                     if ($alertinfo['fnom_affich'] != $ibid[2]) {
-                        sql_query('UPDATE ' . sql_table('fonctions') . ' SET fdroits1_descr="", fnom_affich="' . addslashes($ibid[2]) . '" WHERE fnom="mes_npds_' . $i . '"');
+                        sql_query('UPDATE ' . sql_table('fonctions') . ' 
+                                   SET fdroits1_descr="", fnom_affich="' . addslashes($ibid[2]) . '" 
+                                   WHERE fnom="mes_npds_' . $i . '"');
                     }
                 }
             } else {
-                sql_query('REPLACE ' . sql_table('fonctions') . ' SET fnom="mes_npds_' . $i . '",fretour_h="' . $ibid[1] . '",fcategorie="9", fcategorie_nom="Alerte", ficone="' . $fico . '",fetat="1", finterface="1", fnom_affich="' . addslashes($ibid[2]) . '", furlscript="data-bs-toggle=\"modal\" data-bs-target=\"#messageModal\"",fdroits1_descr=""');
+                sql_query('REPLACE ' . sql_table('fonctions') . ' 
+                           SET fnom="mes_npds_' . $i . '",fretour_h="' . $ibid[1] . '",fcategorie="9", fcategorie_nom="Alerte", ficone="' . $fico . '",fetat="1", finterface="1", fnom_affich="' . addslashes($ibid[2]) . '", furlscript="data-bs-toggle=\"modal\" data-bs-target=\"#messageModal\"",fdroits1_descr=""');
             }
         }
 
         if (count($f_mes) !== 0) {
             foreach ($f_mes as $v) {
-                sql_query('DELETE from ' . sql_table('fonctions') . ' where fretour_h="' . $v . '" and fcategorie="9"');
+                sql_query('DELETE 
+                           FROM ' . sql_table('fonctions') . ' 
+                           WHERE fretour_h="' . $v . '" 
+                           AND fcategorie="9"');
             }
         }
     }
     //<== recuperation traitement des messages de NPDS
 
     //utilisateur à valider
-    $newsuti = sql_num_rows(sql_query("SELECT uid FROM " . sql_table('users_status') . " WHERE uid!='1' AND open='0'"));
+    $newsuti = sql_num_rows(sql_query("SELECT uid 
+                                       FROM " . sql_table('users_status') . " 
+                                       WHERE uid!='1' 
+                                       AND open='0'"));
+
     if ($newsuti) {
-        sql_query("UPDATE " . sql_table('fonctions') . " SET fetat='1',fretour='" . $newsuti . "',fretour_h='" . adm_translate("Utilisateur en attente de validation !") . "' WHERE fid='44'");
+        sql_query("UPDATE " . sql_table('fonctions') . " 
+                   SET fetat='1',fretour='" . $newsuti . "',fretour_h='" . adm_translate("Utilisateur en attente de validation !") . "' 
+                   WHERE fid='44'");
     } else {
-        sql_query("UPDATE " . sql_table('fonctions') . " SET fetat='0',fretour='0' WHERE fid='44'");
+        sql_query("UPDATE " . sql_table('fonctions') . " 
+                   SET fetat='0',fretour='0' 
+                   WHERE fid='44'");
     }
 
     //référants à gérer
     if ($httpref == 1) {
-        $result = sql_fetch_assoc(sql_query("SELECT COUNT(*) AS total FROM " . sql_table('referer')));
+        $result = sql_fetch_assoc(sql_query("SELECT COUNT(*) AS total 
+                                             FROM " . sql_table('referer')));
+
         if ($result['total'] >= $httprefmax) {
-            sql_query("UPDATE " . sql_table('fonctions') . " set fetat='1', fretour='!!!' WHERE fid='39'");
+            sql_query("UPDATE " . sql_table('fonctions') . " 
+                       SET fetat='1', fretour='!!!' 
+                       WHERE fid='39'");
         } else {
-            sql_query("UPDATE " . sql_table('fonctions') . " SET fetat='0' WHERE fid='39'");
+            sql_query("UPDATE " . sql_table('fonctions') . " 
+                       SET fetat='0' 
+                       WHERE fid='39'");
         }
     }
 
     //critique en attente
-    $critsubs = sql_num_rows(sql_query("SELECT * FROM " . sql_table('reviews_add') . ""));
+    $critsubs = sql_num_rows(sql_query("SELECT * 
+                                        FROM " . sql_table('reviews_add') . ""));
     if ($critsubs) { 
-        sql_query("UPDATE " . sql_table('fonctions') . " SET fetat='1',fretour='" . $critsubs . "', fretour_h='" . adm_translate("Critique en attente de validation.") . "' WHERE fid='35'");
+        sql_query("UPDATE " . sql_table('fonctions') . " 
+                   SET fetat='1',fretour='" . $critsubs . "', fretour_h='" . adm_translate("Critique en attente de validation.") . "'
+                   WHERE fid='35'");
     } else { 
-        sql_query("UPDATE " . sql_table('fonctions') . " SET fetat='0',fretour='0' WHERE fid='35'");
+        sql_query("UPDATE " . sql_table('fonctions') . " 
+                   SET fetat='0',fretour='0' 
+                   WHERE fid='35'");
     }
 
     //nouveau lien à valider
-    $newlink = sql_num_rows(sql_query("SELECT * FROM " . sql_table('links_newlink') . ""));
+    $newlink = sql_num_rows(sql_query("SELECT * 
+                                       FROM " . sql_table('links_newlink') . ""));
     if ($newlink) {
-        sql_query("UPDATE " . sql_table('fonctions') . " SET fetat='1',fretour='" . $newlink . "', fretour_h='" . adm_translate("Liens à valider.") . "' WHERE fid='41'");
+        sql_query("UPDATE " . sql_table('fonctions') . " 
+                   SET fetat='1',fretour='" . $newlink . "', fretour_h='" . adm_translate("Liens à valider.") . "' 
+                   WHERE fid='41'");
     } else {
-        sql_query("UPDATE " . sql_table('fonctions') . " SET fetat='0',fretour='0' WHERE fid='41'");
+        sql_query("UPDATE " . sql_table('fonctions') . " 
+                   SET fetat='0',fretour='0' 
+                   WHERE fid='41'");
     }
 
     //lien rompu à valider
-    $brokenlink = sql_num_rows(sql_query("SELECT * FROM " . sql_table('links_modrequest') . " where brokenlink='1'"));
+    $brokenlink = sql_num_rows(sql_query("SELECT * 
+                                          FROM " . sql_table('links_modrequest') . " 
+                                          WHERE brokenlink='1'"));
     if ($brokenlink) { 
-        sql_query("UPDATE " . sql_table('fonctions') . " SET fetat='1',fretour='" . $brokenlink . "', fretour_h='" . adm_translate("Liens rompus à valider.") . "' WHERE fid='42'");
+        sql_query("UPDATE " . sql_table('fonctions') . " 
+                   SET fetat='1',fretour='" . $brokenlink . "', fretour_h='" . adm_translate("Liens rompus à valider.") . "' 
+                   WHERE fid='42'");
     } else { 
-        sql_query("UPDATE " . sql_table('fonctions') . " SET fetat='0',fretour='0' WHERE fid='42'");
+        sql_query("UPDATE " . sql_table('fonctions') . " 
+                   SET fetat='0',fretour='0' 
+                   WHERE fid='42'");
     }
 
     //nouvelle publication
     $newpubli = $Q['radminsuper'] == 1 
-        ? sql_num_rows(sql_query("SELECT * FROM " . sql_table('seccont_tempo') . "")) 
-        : sql_num_rows(sql_query("SELECT * FROM " . sql_table('seccont_tempo') . " WHERE author='$aid'"));
+        ? sql_num_rows(sql_query("SELECT * 
+                                  FROM " . sql_table('seccont_tempo') . "")) 
+
+        : sql_num_rows(sql_query("SELECT * 
+                                  FROM " . sql_table('seccont_tempo') . " 
+                                  WHERE author='$aid'"));
 
     if ($newpubli) { 
-        sql_query("UPDATE " . sql_table('fonctions') . " SET fetat='1',fretour='" . $newpubli . "', fretour_h='" . adm_translate("Publication(s) en attente de validation") . "' WHERE fid='50'");
+        sql_query("UPDATE " . sql_table('fonctions') . " 
+                   SET fetat='1',fretour='" . $newpubli . "', fretour_h='" . adm_translate("Publication(s) en attente de validation") . "' 
+                   WHERE fid='50'");
     } else {
-        sql_query("UPDATE " . sql_table('fonctions') . " SET fetat='0',fretour='0' WHERE fid='50'");
+        sql_query("UPDATE " . sql_table('fonctions') . " 
+                   SET fetat='0',fretour='0' 
+                   WHERE fid='50'");
     }
 
     //utilisateur(s) en attente de groupe
@@ -291,9 +370,13 @@ function GraphicAdmin($hlpfile)
     }
 
     if ($j > 0) {
-        sql_query("UPDATE " . sql_table('fonctions') . " SET fetat='1',fretour='" . $j . "',fretour_h='" . adm_translate("Utilisateur en attente de groupe !") . "' WHERE fid='46'");
+        sql_query("UPDATE " . sql_table('fonctions') . " 
+                   SET fetat='1',fretour='" . $j . "',fretour_h='" . adm_translate("Utilisateur en attente de groupe !") . "' 
+                   WHERE fid='46'");
     } else {
-        sql_query("UPDATE " . sql_table('fonctions') . " SET fetat='0',fretour='0' WHERE fid='46'");
+        sql_query("UPDATE " . sql_table('fonctions') . " 
+                   SET fetat='0',fretour='0' 
+                   WHERE fid='46'");
     }
     //<== etc...etc recupérations des états des fonctions d'ALERTE et maj
 
@@ -317,9 +400,13 @@ function GraphicAdmin($hlpfile)
 
                 if ($ibid) {
                     $fr = $reqalertes[$i][1] != 1 ? $reqalertes[$i][1] : $ibid;
-                    sql_query("UPDATE " . sql_table('fonctions') . " SET fetat='1',fretour='" . $fr . "', fretour_h='" . $reqalertes[$i][2] . "' WHERE fid=" . $am['fid'] . "");
+                    sql_query("UPDATE " . sql_table('fonctions') . " 
+                               SET fetat='1',fretour='" . $fr . "', fretour_h='" . $reqalertes[$i][2] . "' 
+                               WHERE fid=" . $am['fid'] . "");
                 } else {
-                    sql_query("UPDATE " . sql_table('fonctions') . " SET fetat='0',fretour='' WHERE fid=" . $am['fid'] . "");
+                    sql_query("UPDATE " . sql_table('fonctions') . " 
+                               SET fetat='0',fretour='' 
+                               WHERE fid=" . $am['fid'] . "");
                 }
 
                 $i++;
@@ -701,13 +788,17 @@ function adminMain($deja_affiches)
     <div id="adm_men_art" class="adm_workarea">
         <h2><img src="asets/images/admin/submissions.' . $admf_ext . '" class="adm_img" title="' . adm_translate("Articles") . '" alt="icon_' . adm_translate("Articles") . '" />&nbsp;' . adm_translate("Derniers") . ' ' . $admart . ' ' . adm_translate("Articles") . '</h2>';
 
-    $resul = sql_query("SELECT sid FROM " . sql_table('stories'));
+    $resul = sql_query("SELECT sid 
+                        FROM " . sql_table('stories'));
     $nbre_articles = sql_num_rows($resul);
 
     // settype($deja_affiches, "integer");
     // settype($admart, "integer");
 
-    $result = sql_query("SELECT sid, title, hometext, topic, informant, time, archive, catid, ihome FROM " . sql_table('stories') . " ORDER BY sid DESC LIMIT $deja_affiches,$admart");
+    $result = sql_query("SELECT sid, title, hometext, topic, informant, time, archive, catid, ihome 
+                         FROM " . sql_table('stories') . " 
+                         ORDER BY sid DESC 
+                         LIMIT $deja_affiches, $admart");
 
     $nbPages = ceil($nbre_articles / $admart);
     $current = 1;
@@ -740,10 +831,16 @@ function adminMain($deja_affiches)
 
             $affiche = false;
 
-            $result2 = sql_query("SELECT topicadmin, topictext, topicimage FROM " . sql_table('topics') . " WHERE topicid='$topic'");
+            $result2 = sql_query("SELECT topicadmin, topictext, topicimage 
+                                  FROM " . sql_table('topics') . " 
+                                  WHERE topicid='$topic'");
+
             list($topicadmin, $topictext, $topicimage) = sql_fetch_row($result2);
 
-            $result3 = sql_query("SELECT title FROM " . sql_table('stories_cat') . " WHERE catid='$catid'");
+            $result3 = sql_query("SELECT title 
+                                  FROM " . sql_table('stories_cat') . " 
+                                  WHERE catid='$catid'");
+
             list($cat_title) = sql_fetch_row($result3);
 
             if ($radminsuper) {
@@ -884,7 +981,10 @@ if ($admintest) {
             break;
 
         case 'deleteNotice':
-            sql_query("DELETE FROM " . sql_table('reviews_add') . " WHERE id='$id'");
+            sql_query("DELETE 
+                       FROM " . sql_table('reviews_add') . " 
+                       WHERE id='$id'");
+
             Header("Location: admin.php?op=$op_back");
             break;
 
@@ -1522,5 +1622,6 @@ if ($admintest) {
             adminMain(0);
             break;
     }
-} else
+} else {
     login();
+}

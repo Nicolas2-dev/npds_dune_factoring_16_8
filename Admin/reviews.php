@@ -5,8 +5,9 @@ use Npds\Support\Facades\Str;
 use Npds\Support\Facades\Language;
 
 
-if (!function_exists('admindroits'))
+if (!function_exists('admindroits')) {
     include('die.php');
+}
 
 $f_meta_nom = 'reviews';
 $f_titre = adm_translate("Critiques");
@@ -18,16 +19,30 @@ admindroits($aid, $f_meta_nom);
 global $language;
 $hlpfile = "manuels/$language/reviews.html";
 
+/**
+ * [mod_main description]
+ *
+ * @param   [type]  $title        [$title description]
+ * @param   [type]  $description  [$description description]
+ *
+ * @return  [type]                [return description]
+ */
 function mod_main($title, $description)
 {
     $title = stripslashes(Str::FixQuotes($title));
     $description = stripslashes(Str::FixQuotes($description));
 
-    sql_query("UPDATE " . sql_table('reviews_main') . " SET title='$title', description='$description'");
+    sql_query("UPDATE " . sql_table('reviews_main') . " 
+               SET title='$title', description='$description'");
 
     Header("Location: admin.php?op=reviews");
 }
 
+/**
+ * [reviews description]
+ *
+ * @return  [type]  [return description]
+ */
 function reviews()
 {
     global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
@@ -37,7 +52,9 @@ function reviews()
     GraphicAdmin($hlpfile);
     adminhead($f_meta_nom, $f_titre, $adminimg);
 
-    $resultrm = sql_query("SELECT title, description FROM " . sql_table('reviews_main'));
+    $resultrm = sql_query("SELECT title, description 
+                           FROM " . sql_table('reviews_main'));
+
     list($title, $description) = sql_fetch_row($resultrm);
 
     echo '
@@ -68,7 +85,10 @@ function reviews()
     </form>
     <hr />';
 
-    $result = sql_query("SELECT * FROM " . sql_table('reviews_add') . " ORDER BY id");
+    $result = sql_query("SELECT * 
+                         FROM " . sql_table('reviews_add') . " 
+                         ORDER BY id");
+
     $numrows = sql_num_rows($result);
 
     echo '<h3>' . adm_translate("Critiques en attente de validation") . '<span class="badge bg-danger float-end">' . $numrows . '</span></h3>';
@@ -215,6 +235,22 @@ function reviews()
     Css::adminfoot('fv', '', $arg1, '');
 }
 
+/**
+ * [add_review description]
+ *
+ * @param   [type]  $id         [$id description]
+ * @param   [type]  $date       [$date description]
+ * @param   [type]  $title      [$title description]
+ * @param   [type]  $text       [$text description]
+ * @param   [type]  $reviewer   [$reviewer description]
+ * @param   [type]  $email      [$email description]
+ * @param   [type]  $score      [$score description]
+ * @param   [type]  $cover      [$cover description]
+ * @param   [type]  $url        [$url description]
+ * @param   [type]  $url_title  [$url_title description]
+ *
+ * @return  [type]              [return description]
+ */
 function add_review($id, $date, $title, $text, $reviewer, $email, $score, $cover, $url, $url_title)
 {
     $title = stripslashes(Str::FixQuotes($title));
@@ -222,13 +258,19 @@ function add_review($id, $date, $title, $text, $reviewer, $email, $score, $cover
     $reviewer = stripslashes(Str::FixQuotes($reviewer));
     $email = stripslashes(Str::FixQuotes($email));
 
-    sql_query("INSERT INTO " . sql_table('reviews') . " VALUES (NULL, '$date', '$title', '$text', '$reviewer', '$email', '$score', '$cover', '$url', '$url_title', '1')");
-    sql_query("DELETE FROM " . sql_table('reviews_add') . " WHERE id = '$id'");
+    sql_query("INSERT 
+               INTO " . sql_table('reviews') . " 
+               VALUES (NULL, '$date', '$title', '$text', '$reviewer', '$email', '$score', '$cover', '$url', '$url_title', '1')");
+
+    sql_query("DELETE 
+               FROM " . sql_table('reviews_add') . " 
+               WHERE id = '$id'");
 
     Header("Location: admin.php?op=reviews");
 }
 
 switch ($op) {
+    
     case 'reviews':
         reviews();
         break;

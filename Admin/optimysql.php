@@ -4,8 +4,9 @@ use Npds\Support\Facades\Css;
 use Npds\Support\Facades\Log;
 
 
-if (!function_exists('admindroits'))
+if (!function_exists('admindroits')) {
     include('die.php');
+}
 
 $f_meta_nom = 'OptimySQL';
 $f_titre = adm_translate("Optimisation de la base de données") . ' : ' . $dbname;
@@ -26,17 +27,24 @@ GraphicAdmin($hlpfile);
 global $dbname; // non utile ?
 
 // Insertion de valeurs d'initialisation de la table (si nécessaire)
-$result = sql_query("SELECT optid FROM " . sql_table('optimy'));
+$result = sql_query("SELECT optid 
+                     FROM " . sql_table('optimy'));
 
 list($idopt) = sql_fetch_row($result);
 
-if (!$idopt or ($idopt == ''))
-    $result = sql_query("INSERT INTO " . sql_table('optimy') . " (optid, optgain, optdate, opthour, optcount) VALUES ('1', '0', '', '', '0')");
+if (!$idopt or ($idopt == '')) {
+    $result = sql_query("INSERT 
+                         INTO " . sql_table('optimy') . " (optid, optgain, optdate, opthour, optcount) 
+                         VALUES ('1', '0', '', '', '0')");
+}
 
 // Extraction de la date et de l'heure de la précédente optimisation
 $last_opti = '';
 
-$result = sql_query("SELECT optdate, opthour FROM " . sql_table('optimy') . " WHERE optid='1'");
+$result = sql_query("SELECT optdate, opthour 
+                     FROM " . sql_table('optimy') . " 
+                     WHERE optid='1'");
+
 list($dateopt, $houropt) = sql_fetch_row($result);
 
 if (!$dateopt or ($dateopt == '') or !$houropt or ($houropt == '')) {
@@ -70,7 +78,7 @@ if (sql_num_rows($result)) {
         $gain = round($gain, 3);
         $resultat = sql_query("OPTIMIZE TABLE " . $row['Name'] . " ");
 
-        if ($gain == 0)
+        if ($gain == 0) {
             $li_tab_opti .= '
             <tr class="table-success">
                 <td align="right">' . $row['Name'] . '</td>
@@ -78,7 +86,7 @@ if (sql_num_rows($result)) {
                 <td align="center">' . adm_translate("optimisée") . '</td>
                 <td align="center"> -- </td>
             </tr>';
-        else
+        } else {
             $li_tab_opti .= '
             <tr class="table-danger">
                 <td align="right">' . $row['Name'] . '</td>
@@ -86,6 +94,7 @@ if (sql_num_rows($result)) {
                 <td class="text-danger" align="center">' . adm_translate("non optimisée") . '</td>
                 <td align="right">' . $gain . ' Ko</td>
             </tr>';
+        }
     }
 }
 
@@ -93,17 +102,25 @@ $total_gain = round($total_gain, 3);
 
 // Historique des gains
 // Extraction du nombre d'optimisation effectuée
-$result = sql_query("SELECT optgain, optcount FROM " . sql_table('optimy') . " WHERE optid='1'");
+$result = sql_query("SELECT optgain, optcount 
+                     FROM " . sql_table('optimy') . " 
+                     WHERE optid='1'");
+
 list($gainopt, $countopt) = sql_fetch_row($result);
 
 $newgain = ($gainopt + $total_gain);
 $newcount = ($countopt + 1);
 
 // Enregistrement du nouveau gain
-$result = sql_query("UPDATE " . sql_table('optimy') . " SET optgain='$newgain', optdate='$date_opt', opthour='$heure_opt', optcount='$newcount' WHERE optid='1'");
+$result = sql_query("UPDATE " . sql_table('optimy') . " 
+                     SET optgain='$newgain', optdate='$date_opt', opthour='$heure_opt', optcount='$newcount' 
+                     WHERE optid='1'");
 
 // Lecture des gains précédents et addition
-$result = sql_query("SELECT optgain, optcount FROM " . sql_table('optimy') . " WHERE optid='1'");
+$result = sql_query("SELECT optgain, optcount 
+                     FROM " . sql_table('optimy') . " 
+                     WHERE optid='1'");
+                     
 list($gainopt, $countopt) = sql_fetch_row($result);
 
 // Affichage

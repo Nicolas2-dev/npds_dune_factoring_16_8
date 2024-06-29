@@ -9,10 +9,15 @@ use Npds\Cache\SuperCacheManager;
 use Npds\Support\Facades\Request;
 
 
-if (!function_exists("Mysql_Connexion"))
+if (!function_exists("Mysql_Connexion")) {
     include("Bootstrap/Boot.php");
+}
 
-// Redirect for default Start Page of the portal - look at Admin Preferences for choice
+/**
+ * Redirect for default Start Page of the portal - look at Admin Preferences for choice
+ *
+ * @return  [type]  [return description]
+ */
 function select_start_page()
 {
     global $index;
@@ -40,6 +45,11 @@ function select_start_page()
     }
 }
 
+/**
+ * [index description]
+ *
+ * @return  [type]  [return description]
+ */
 function index()
 {
     include("header.php");
@@ -71,8 +81,8 @@ function index()
             //
             News::aff_news($op, $catid, $marqeur);
         } else {
-            if (file_exists("themes/$theme/central.php")) {
-                include("themes/$theme/central.php");
+            if (file_exists("Themes/$theme/central.php")) {
+                include("Themes/$theme/central.php");
             } else {
                 if (($op == 'edito') 
                 or ($op == 'edito-nonews')) 
