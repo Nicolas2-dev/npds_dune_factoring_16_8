@@ -1,8 +1,9 @@
 <?php
 
 
-if (!function_exists("Mysql_Connexion"))
+if (!function_exists("Mysql_Connexion")) {
     include("Bootstrap/Boot.php");
+}
 
 include("header.php");
 

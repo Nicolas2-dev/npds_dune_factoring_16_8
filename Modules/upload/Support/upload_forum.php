@@ -1,6 +1,16 @@
 <?php
 
-
+/**
+ * [win_upload description]
+ *
+ * @param   [type]  $apli     [$apli description]
+ * @param   [type]  $IdPost   [$IdPost description]
+ * @param   [type]  $IdForum  [$IdForum description]
+ * @param   [type]  $IdTopic  [$IdTopic description]
+ * @param   [type]  $typeL    [$typeL description]
+ *
+ * @return  [type]            [return description]
+ */
 function win_upload($apli, $IdPost, $IdForum, $IdTopic, $typeL)
 {
     if ($typeL == 'win') {

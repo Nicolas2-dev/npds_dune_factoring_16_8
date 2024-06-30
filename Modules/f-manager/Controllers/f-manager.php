@@ -334,7 +334,7 @@ if (substr(@php_uname(), 0, 7) == "Windows")
 else
     $log_dir = str_replace("\\", "/", str_replace($basedir_fma, '', $base));
 
-include_once("modules/upload/config/upload.conf.php");
+include_once("modules/upload/Config/upload.conf.php");
 
 // settype($op, 'string');
 

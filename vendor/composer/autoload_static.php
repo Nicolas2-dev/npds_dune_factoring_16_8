@@ -21,9 +21,14 @@ class ComposerStaticInit98e3fd088bb87612804f2b3a668f367a
         array (
             'Npds\\' => 5,
         ),
+        'C' => 
+        array (
+            'Composer\\CaBundle\\' => 18,
+        ),
         'A' => 
         array (
             'App\\' => 4,
+            'Abraham\\TwitterOAuth\\' => 21,
         ),
     );
 
@@ -36,9 +41,17 @@ class ComposerStaticInit98e3fd088bb87612804f2b3a668f367a
         array (
             0 => __DIR__ . '/../..' . '/Npds',
         ),
+        'Composer\\CaBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/composer/ca-bundle/src',
+        ),
         'App\\' => 
         array (
             0 => __DIR__ . '/../..' . '/',
+        ),
+        'Abraham\\TwitterOAuth\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/abraham/twitteroauth/src',
         ),
     );
 

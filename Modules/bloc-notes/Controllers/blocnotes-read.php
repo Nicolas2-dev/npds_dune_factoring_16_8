@@ -8,10 +8,13 @@ if (strstr($bnid, '..')
 || stristr($bnid, 'iframe') 
 || stristr($bnid, 'applet') 
 || stristr($bnid, 'object') 
-|| stristr($bnid, 'meta'))
+|| stristr($bnid, 'meta')) {
     die();
+}
 
-$result = sql_query("SELECT texte FROM " . sql_table('blocnotes') . " WHERE bnid='$bnid'");
+$result = sql_query("SELECT texte 
+                     FROM " . sql_table('blocnotes') . " 
+                     WHERE bnid='$bnid'");
 
 if (sql_num_rows($result) > 0) {
     list($texte) = sql_fetch_row($result);

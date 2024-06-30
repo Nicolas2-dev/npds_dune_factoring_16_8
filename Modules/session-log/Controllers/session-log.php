@@ -6,9 +6,9 @@ use Npds\Support\Facades\Spam;
 use Npds\Support\Facades\Mailer;
 
 
-
-if (!function_exists('admindroits'))
+if (!function_exists('admindroits')) {
     include($_SERVER['DOCUMENT_ROOT'] . '/admin/die.php');
+}
 
 $f_meta_nom = 'session_log';
 
@@ -20,15 +20,16 @@ global $language, $ModPath, $ModStart;
 
 $hlpfile = 'manuels/' . $language . '/logs.html';
 
-include('modules/upload/upload.conf.php');
-include('modules/geoloc/geoloc_locip.php');
+include('modules/upload/Config/upload.conf.php');
+include('modules/geoloc/Support/geoloc_locip.php');
 
 if ($DOCUMENTROOT == '') {
     global $DOCUMENT_ROOT;
-    if ($DOCUMENT_ROOT)
+    if ($DOCUMENT_ROOT) {
         $DOCUMENTROOT = $DOCUMENT_ROOT;
-    else
+    } else {
         $DOCUMENTROOT = $_SERVER['DOCUMENT_ROOT'];
+    }
 }
 
 $FileSecure = $DOCUMENTROOT . $racine . '/slogs/security.log';
@@ -43,14 +44,23 @@ $f_titre = SessionLog_translate("Gestion des Logs");
 
 // settype($subop, 'string');
 
+/**
+ * [action_log description]
+ *
+ * @param   [type]  $ThisFile  [$ThisFile description]
+ * @param   [type]  $logtype   [$logtype description]
+ *
+ * @return  [type]             [return description]
+ */
 function action_log($ThisFile, $logtype)
 {
     global $FileSecure, $FileUpload, $RepTempFil, $rep_cache;
 
     $whatlog = 'security';
 
-    if ($FileUpload != $FileSecure) 
+    if ($FileUpload != $FileSecure) {
         $whatlog = 'upload';
+    }
 
     $task = '
       <a class="dropdown-item" href="' . $ThisFile . '&amp;subop=mailog&amp;log=' . $whatlog . '"><i class="fa fa-at me-1 fa-lg text-primary"></i>' . SessionLog_translate("Recevoir le fichier par mail") . '</a>
@@ -97,7 +107,8 @@ if ($subop == 'session') {
             </thead>
             <tbody>';
 
-    $result = sql_query("SELECT username, host_addr, guest, uri, agent FROM " . sql_table('session'));
+    $result = sql_query("SELECT username, host_addr, guest, uri, agent 
+                         FROM " . sql_table('session'));
 
     while (list($username, $host_addr, $guest, $uri, $agent) = sql_fetch_row($result)) {
         if ($username == $host_addr) {
@@ -106,10 +117,11 @@ if ($subop == 'session') {
             $username = $anonymous;
         }
 
-        if (preg_match('#(crawl|bot|spider|yahoo)#', strtolower($agent))) 
+        if (preg_match('#(crawl|bot|spider|yahoo)#', strtolower($agent))) {
             $agent = "Bot";
-        else 
+        } else {
             $agent = "Browser";
+        }
 
         echo '
             <tr>
@@ -140,12 +152,14 @@ if ($subop == 'info') {
         $domfai = explode('.', $hostname);
         $prov = $domfai[count($domfai) - 2] . '.' . $domfai[count($domfai) - 1];
 
-        if ($prov == 'co.jp' or $prov == 'co.uk')
+        if ($prov == 'co.jp' or $prov == 'co.uk') {
             $provider = $domfai[sizeof($domfai) - 3] . '.' . $prov;
-        else
+        } else {
             $provider = $prov;
-    } else
+        }
+    } else {
         $hostname = $theip;
+    }
 
     echo '
         <div class="card card-body">
@@ -184,13 +198,17 @@ if ($subop == 'vidlog') {
 
 // Email du contenu des Logs
 if ($subop == 'mailog') {
-    if ($log == 'security')
-        if (file_exists($FileSecure))
+    if ($log == 'security') {
+        if (file_exists($FileSecure)) {
             $Mylog = $FileSecure;
+        }
+    }
 
-    if ($log == 'upload')
-        if (file_exists($FileUpload))
+    if ($log == 'upload') {
+        if (file_exists($FileUpload)) {
             $Mylog = $FileUpload;
+        }
+    }
 
     $file = [
         'file' => $Mylog,
@@ -211,8 +229,9 @@ if ($subop == 'vidtemp') {
         $i = 0;
 
         while (false !== ($filename = readdir($dh))) {
-            if ($filename === '.' or $filename === '..' or $filename === 'index.html') 
+            if ($filename === '.' or $filename === '..' or $filename === 'index.html') {
                 continue;
+            }
 
             @unlink($RepTempFil . $filename);
         }
@@ -233,12 +252,12 @@ if ($subop == 'security') {
                 $buffer = fgets($fd, 4096);
 
                 if (strlen($buffer) > 10) {
-                    if (stristr($buffer, 'Upload'))
+                    if (stristr($buffer, 'Upload')) {
                         $UpLog .= '
                         <tr>
                             <td style="font-size:10px;">' . $buffer . '</td>
                         </tr>';
-                    else {
+                    } else {
                         $ip = substr(strrchr($buffer, "=>"), 2);
                         $SecLog .= '
                         <tr>

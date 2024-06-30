@@ -1,26 +1,29 @@
 <?php
 
 
-if (!stristr($_SERVER['PHP_SELF'], 'modules.php')) die();
+if (!stristr($_SERVER['PHP_SELF'], 'modules.php')) {
+    die();
+}
 
 /*****************************************************/
 /* Include et definition                             */
 /*****************************************************/
 include_once("modules/upload/language/upload.lang-$language.php");
-include_once("modules/upload/include_editeur/upload.conf.editeur.php");
+include_once("modules/upload/Support/include_editeur/upload.conf.editeur.php");
 
 /*****************************************************/
 /* Entete                                            */
 /*****************************************************/
 $Titlesitename = upload_translate("Télécharg.");
 
-include("meta/meta.php");
+include("storage/meta/meta.php");
 
 if ($url_upload_css) {
     $url_upload_cssX = str_replace('style.css', "$language-style.css", $url_upload_css);
 
-    if (is_readable($url_upload . $url_upload_cssX))
+    if (is_readable($url_upload . $url_upload_cssX)) {
         $url_upload_css = $url_upload_cssX;
+    }
 
     print("<link href=\"" . $url_upload . $url_upload_css . "\" title=\"default\" rel=\"stylesheet\" type=\"text/css\" media=\"all\" />\n");
 }
@@ -29,6 +32,7 @@ echo "</head>\n";
 
 if (isset($actiontype)) {
     switch ($actiontype) {
+
         case 'upload':
             $ret = editeur_upload();
             $js = '';
@@ -81,34 +85,46 @@ echo '
     </body>
     </html>';
 
-/*****************************************************/
-/* Upload du fichier                                 */
-/*****************************************************/
+// Upload du fichier
+
+/**
+ * [load_mimetypes description]
+ *
+ * @return  [type]  [return description]
+ */
 function load_mimetypes()
 {
     global $mimetypes, $mimetype_default, $mime_dspinl, $mime_dspfmt, $mime_renderers, $att_icons, $att_icon_default, $att_icon_multiple;
     
-    if (defined('ATT_DSP_LINK'))
+    if (defined('ATT_DSP_LINK')) { 
         return;
+    }
 
-    if (file_exists("modules/upload/include/mimetypes.php"))
-        include("modules/upload/include/mimetypes.php");
+    if (file_exists("modules/upload/Support/include/mimetypes.php")) {
+        include("modules/upload/Support/include/mimetypes.php");
+    }
 }
 
+/**
+ * [editeur_upload description]
+ *
+ * @return  [type]  [return description]
+ */
 function editeur_upload()
 {
     global $apli, $pcfile, $pcfile_size, $pcfile_name, $pcfile_type;
     global $MAX_FILE_SIZE, $MAX_FILE_SIZE_TOTAL, $mimetypes, $mimetype_default, $rep_upload_editeur, $path_upload_editeur;
 
-    include "modules/upload/include/fileupload.php";
+    include "modules/upload/Support/include/fileupload.php";
 
     // Récupération des valeurs de PCFILE
     global $HTTP_POST_FILES, $_FILES;
 
-    if (!empty($HTTP_POST_FILES))
+    if (!empty($HTTP_POST_FILES)) {
         $fic = $HTTP_POST_FILES;
-    else
+    } else {
         $fic = $_FILES;
+    }
 
     $pcfile_name = $fic['pcfile']['name'];
     $pcfile_type = $fic['pcfile']['type'];
@@ -132,6 +148,7 @@ function editeur_upload()
         
         return ($path_upload_editeur . $pcfile_name);
     } else {
-        return ('');
+        return '';
     }
+    
 }

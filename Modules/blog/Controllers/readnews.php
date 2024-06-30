@@ -5,6 +5,18 @@ use Npds\Support\Facades\Url;
 use Npds\Support\Facades\DataImage;
 
 
+/**
+ * [readnews description]
+ *
+ * @param   [type]  $blog_dir   [$blog_dir description]
+ * @param   [type]  $op         [$op description]
+ * @param   [type]  $perpage    [$perpage description]
+ * @param   [type]  $startpage  [$startpage description]
+ * @param   [type]  $action     [$action description]
+ * @param   [type]  $adminblog  [$adminblog description]
+ *
+ * @return  [type]              [return description]
+ */
 function readnews($blog_dir, $op, $perpage, $startpage, $action, $adminblog)
 {
     global $tiny_mce;
@@ -25,8 +37,11 @@ function readnews($blog_dir, $op, $perpage, $startpage, $action, $adminblog)
     $startpage -= 1;
     $ubound = count($xnews);
 
-    if ($startpage < 0 || $startpage >= $ubound / $perpage) 
+    if ($startpage < 0 || $startpage >= $ubound / $perpage) {
         $startpage = 0;
+    }
+
+    $contentT = '';
 
     if ($ubound > $perpage) {
         $contentT .= '
@@ -71,6 +86,7 @@ function readnews($blog_dir, $op, $perpage, $startpage, $action, $adminblog)
             @copy($blog_file, $blog_file . '.bak');
 
             $fp = fopen($blog_file, "a");
+
             if (!$tiny_mce) {
                 $formatted = str_replace("\r\n", '<br />', $story);
                 $formatted = str_replace('<img', '<img class="img-fluid" ', $story);
@@ -88,6 +104,7 @@ function readnews($blog_dir, $op, $perpage, $startpage, $action, $adminblog)
 
             Url::redirect_url("minisite.php?op=$op");
         }
+
         // Ajouter
         if (substr($action, 0, 1) == 'A') {
             $content .= '
@@ -144,6 +161,7 @@ function readnews($blog_dir, $op, $perpage, $startpage, $action, $adminblog)
             fclose($fp);
             Url::redirect_url("minisite.php?op=$op");
         }
+
         // Modifier
         if (substr($action, 0, 1) == 'M') {
             $index = substr($action, 1);

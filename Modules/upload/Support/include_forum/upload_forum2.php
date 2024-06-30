@@ -6,7 +6,9 @@ use Npds\Support\Facades\Error;
 use Npds\Support\Facades\Forum;
 
 
-if (!stristr($_SERVER['PHP_SELF'], 'modules.php')) die();
+if (!stristr($_SERVER['PHP_SELF'], 'modules.php')) {
+    die();
+}
 
 global $Titlesitename;
 
@@ -17,22 +19,24 @@ $forum = $IdForum;
 
 include_once("auth.php");
 include_once("modules/upload/language/upload.lang-$language.php");
-include_once("modules/upload/include_forum/upload.conf.forum.php");
-include_once("modules/upload/include_forum/upload.func.forum.php");
+include_once("modules/upload/Support/include_forum/upload.conf.forum.php");
+include_once("modules/upload/Support/include_forum/upload.func.forum.php");
 
 $inline_list['1'] = upload_translate("Oui");
 $inline_list['0'] = upload_translate("Non");
 
 // Security
-if (!$allow_upload_forum) 
+if (!$allow_upload_forum) {
     Access_Error();
+}
 
-if (!Forum::autorize()) 
+if (!Forum::autorize()) {
     Access_Error();
+}
 
-/*****************************************************/
-/* Entete                                            */
-/*****************************************************/
+
+// Entete
+
 ob_start();
 
 $Titlesitename = upload_translate("Télécharg.");
@@ -45,22 +49,26 @@ $userdata = explode(':', $userX);
 if ($userdata[9] != '') {
     $ibix = explode('+', urldecode($userdata[9]));
 
-    if (array_key_exists(0, $ibix)) 
+    if (array_key_exists(0, $ibix)) {
         $theme = $ibix[0];
-    else 
+    } else {
         $theme = $Default_Theme;
+    }
 
-    if (array_key_exists(1, $ibix)) 
+    if (array_key_exists(1, $ibix)) {
         $skin = $ibix[1];
-    else 
+    } else {
         $skin = $Default_Skin;
+    }
 
     $tmp_theme = $theme;
 
-    if (!$file = @opendir("themes/$theme")) 
-        $tmp_theme = $Default_Theme;
-} else
+    if (!$file = @opendir("Themes/$theme")) {
+        
+    }
+} else {
     $tmp_theme = $Default_Theme;
+}
 
 $skin = $skin == '' ? 'default' : $skin;
 
@@ -77,10 +85,13 @@ echo '
 
 // Moderator
 
-$sql = "SELECT forum_moderator FROM " . sql_table('forums') . " WHERE forum_id = '$forum'";
+$sql = "SELECT forum_moderator 
+        FROM " . sql_table('forums') . " 
+        WHERE forum_id = '$forum'";
 
-if (!$result = sql_query($sql))
+if (!$result = sql_query($sql)) {
     Error::code('0001');
+}
 
 $myrow = sql_fetch_assoc($result);
 $moderator = User::get_moderator($myrow['forum_moderator']);
@@ -101,6 +112,7 @@ $thanks_msg = '';
 
 if ($actiontype) {
     switch ($actiontype) {
+
         case 'delete':
             delete($del_att);
             break;
@@ -121,23 +133,31 @@ if ($actiontype) {
     }
 }
 
-include("modules/upload/include/minigf.php");
+include("modules/upload/Support/include/minigf.php");
 
-/*****************************************************/
-/* Upload du fichier                                 */
-/*****************************************************/
+// Upload du fichier
+
+/**
+ * [forum_upload description]
+ *
+ * @return  [type]  [return description]
+ */
 function forum_upload()
 {
     global $apli, $IdPost, $IdForum, $IdTopic, $pcfile, $pcfile_size, $pcfile_name, $pcfile_type, $att_count, $att_size, $total_att_count, $total_att_size;
     global $MAX_FILE_SIZE, $MAX_FILE_SIZE_TOTAL, $mimetypes, $mimetype_default, $upload_table, $rep_upload_forum; // mine......
 
-    list($sum) = sql_fetch_row(sql_query("SELECT SUM(att_size ) FROM $upload_table WHERE apli = '$apli' AND post_id = '$IdPost'"));
+    list($sum) = sql_fetch_row(sql_query("SELECT SUM(att_size ) 
+                                          FROM $upload_table 
+                                          WHERE apli = '$apli' 
+                                          AND post_id = '$IdPost'"));
 
     // gestion du quota de place d'un post
-    if (($MAX_FILE_SIZE_TOTAL - $sum) < $MAX_FILE_SIZE)
+    if (($MAX_FILE_SIZE_TOTAL - $sum) < $MAX_FILE_SIZE) {
         $MAX_FILE_SIZE = $MAX_FILE_SIZE_TOTAL - $sum;
+    }
 
-    include "modules/upload/include/fileupload.php";
+    include "modules/upload/Support/include/fileupload.php";
 
     // settype($thanks_msg, 'string');
 
@@ -178,5 +198,5 @@ function forum_upload()
         $total_att_size += $att_size;
     }
 
-    return ($thanks_msg);
+    return $thanks_msg;
 }

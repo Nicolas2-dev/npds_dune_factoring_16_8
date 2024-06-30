@@ -18,6 +18,11 @@ include("modules/push/language/push-lang-$language.php");
 
 include("push.conf.php");
 
+/**
+ * [push_menu description]
+ *
+ * @return  [type]  [return description]
+ */
 function push_menu()
 {
     global $options, $push_br;
@@ -47,6 +52,11 @@ function push_menu()
     echo "document.write('</p>');\n";
 }
 
+/**
+ * [index description]
+ *
+ * @return  [type]  [return description]
+ */
 function index()
 {
     global $options;
@@ -86,13 +96,21 @@ function index()
     push_footer();
 }
 
+/**
+ * [push_news description]
+ *
+ * @return  [type]  [return description]
+ */
 function push_news()
 {
     global $push_news_limit;
 
     // settype($push_news_limit, "integer");
 
-    $result = sql_query("SELECT sid, title, ihome, catid FROM " . sql_table('stories') . " ORDER BY sid DESC limit $push_news_limit");
+    $result = sql_query("SELECT sid, title, ihome, catid 
+                         FROM " . sql_table('stories') . " 
+                         ORDER BY sid DESC 
+                         LIMIT $push_news_limit");
 
     if ($result) {
         echo "document.write('<a name=\"article\"></a>');\n";
@@ -115,11 +133,21 @@ function push_news()
     sql_free_result($result);
 }
 
+/**
+ * [new_show description]
+ *
+ * @param   [type]  $sid     [$sid description]
+ * @param   [type]  $offset  [$offset description]
+ *
+ * @return  [type]           [return description]
+ */
 function new_show($sid, $offset)
 {
     global $nuke_url, $follow_links, $datetime;
 
-    $result = sql_query("SELECT hometext, bodytext, notes, title, time, informant, topic FROM " . sql_table('stories') . " WHERE sid='$sid'");
+    $result = sql_query("SELECT hometext, bodytext, notes, title, time, informant, topic 
+                         FROM " . sql_table('stories') . " 
+                         WHERE sid='$sid'");
 
     if ($result) {
         push_header("suite");
@@ -127,7 +155,9 @@ function new_show($sid, $offset)
         list($hometext, $bodytext, $notes, $title, $time, $informant, $topic) = sql_fetch_row($result);
         sql_free_result($result);
 
-        $result = sql_query("SELECT topictext FROM " . sql_table('topics') . " WHERE topicid='$topic'");
+        $result = sql_query("SELECT topictext 
+                             FROM " . sql_table('topics') . " 
+                             WHERE topicid='$topic'");
 
         if ($result) {
             list($topictext) = sql_fetch_row($result);
@@ -163,21 +193,37 @@ function new_show($sid, $offset)
     sql_free_result($result);
 }
 
+/**
+ * [push_poll description]
+ *
+ * @return  [type]  [return description]
+ */
 function push_poll()
 {
     echo "document.write('<a name=\"poll\"></a>');\n";
     echo "document.write('<li><b>" . push_translate("Latest Poll Results") . "</b></li>');\n";
 
-    $result = sql_query("SELECT pollID, polltitle FROM " . sql_table('poll_desc') . " ORDER BY pollID DESC LIMIT 1");
+    $result = sql_query("SELECT pollID, polltitle 
+                         FROM " . sql_table('poll_desc') . " 
+                         ORDER BY pollID DESC 
+                         LIMIT 1");
+
     list($pollID, $polltitle) = sql_fetch_row($result);
     sql_free_result($result);
 
     if ($pollID) {
-        $result = sql_query("SELECT SUM(optionCount) FROM " . sql_table('poll_data') . " WHERE pollID='$pollID'");
+        $result = sql_query("SELECT SUM(optionCount) 
+                             FROM " . sql_table('poll_data') . " 
+                             WHERE pollID='$pollID'");
+
         list($sum) = sql_fetch_row($result);
         sql_free_result($result);
 
-        $result = sql_query("SELECT optionText, optionCount FROM " . sql_table('poll_data') . " WHERE pollID='$pollID' and optionText != \"\" ORDER BY voteID");
+        $result = sql_query("SELECT optionText, optionCount 
+                             FROM " . sql_table('poll_data') . " 
+                             WHERE pollID='$pollID' 
+                             AND optionText != \"\" ORDER BY voteID");
+
         echo "document.write('<p align=\"center\"><b>.:|" . Language::aff_langue($polltitle) . "|:.</b></p><table width=\"100%\" border=\"0\">');\n";
 
         $ibid = sql_num_rows($result);
@@ -204,12 +250,19 @@ function push_poll()
     echo "document.write('<br />');\n";
 }
 
+/**
+ * [push_faq description]
+ *
+ * @return  [type]  [return description]
+ */
 function push_faq()
 {
     echo "document.write('<a name=\"faq\"></a>');\n";
     echo "document.write('<li><b>Faqs</b></li><br />');\n";
 
-    $result = sql_query("SELECT id_cat, categories FROM " . sql_table('faqcategories') . " ORDER BY id_cat ASC");
+    $result = sql_query("SELECT id_cat, categories 
+                         FROM " . sql_table('faqcategories') . " 
+                         ORDER BY id_cat ASC");
 
     while (list($id_cat, $categories) = sql_fetch_row($result)) {
         $categories = str_replace("'", "\'", $categories);
@@ -221,18 +274,30 @@ function push_faq()
     sql_free_result($result);
 }
 
+/**
+ * [faq_show description]
+ *
+ * @param   [type]  $id_cat  [$id_cat description]
+ *
+ * @return  [type]           [return description]
+ */
 function faq_show($id_cat)
 {
     push_header("suite");
 
-    $result = sql_query("SELECT categories FROM " . sql_table('faqcategories') . " WHERE id_cat='$id_cat'");
+    $result = sql_query("SELECT categories 
+                         FROM " . sql_table('faqcategories') . " 
+                         WHERE id_cat='$id_cat'");
+
     list($categories) = sql_fetch_row($result);
 
     $categories = str_replace("'", "\'", $categories);
 
     echo "document.write('<p align=\"center\"><a name=\"$id_cat\"></a><b>" . Language::aff_langue($categories) . "</b></p>');\n";
 
-    $result = sql_query("SELECT id, id_cat, question, answer FROM " . sql_table('faqanswer') . " WHERE id_cat='$id_cat'");
+    $result = sql_query("SELECT id, id_cat, question, answer 
+                         FROM " . sql_table('faqanswer') . " 
+                         WHERE id_cat='$id_cat'");
 
     while (list($id, $id_cat, $question, $answer) = sql_fetch_row($result)) {
         $question = str_replace("'", "\'", $question);
@@ -248,6 +313,11 @@ function faq_show($id_cat)
     sql_free_result($result);
 }
 
+/**
+ * [push_members description]
+ *
+ * @return  [type]  [return description]
+ */
 function push_members()
 {
     global $anonymous;
@@ -268,7 +338,10 @@ function push_members()
     // settype($page, "integer");
     // settype($push_member_limit, "integer");
 
-    $result = sql_query("SELECT uname FROM " . sql_table('users') . " ORDER BY uname ASC LIMIT $page,$push_member_limit");
+    $result = sql_query("SELECT uname 
+                         FROM " . sql_table('users') . " 
+                         ORDER BY uname ASC 
+                         LIMIT $page, $push_member_limit");
 
     while (list($uname) = sql_fetch_row($result)) {
         $offset = $offset + 1;
@@ -301,6 +374,11 @@ function push_members()
     sql_free_result($result);
 }
 
+/**
+ * [push_links description]
+ *
+ * @return  [type]  [return description]
+ */
 function push_links()
 {
     global $push_orderby;
@@ -312,11 +390,17 @@ function push_links()
 
     echo "document.write('<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr>');\n";
 
-    $result = sql_query("SELECT cid, title, cdescription FROM " . sql_table('links_categories') . " ORDER BY $orderby");
+    $result = sql_query("SELECT cid, title, cdescription 
+                         FROM " . sql_table('links_categories') . " 
+                         ORDER BY $orderby");
+
     $count = 0;
 
     while (list($cid, $title, $cdescription) = sql_fetch_row($result)) {
-        $cresult = sql_query("SELECT * FROM " . sql_table('links_links') . " WHERE cid='$cid'");
+        $cresult = sql_query("SELECT * 
+                              FROM " . sql_table('links_links') . " 
+                              WHERE cid='$cid'");
+
         $cnumrows = sql_num_rows($cresult);
 
         $title = str_replace("'", "\'", $title);
@@ -330,7 +414,12 @@ function push_links()
             echo "document.write('<br />');\n";
         }
 
-        $result2 = sql_query("SELECT sid, title FROM " . sql_table('links_subcategories') . " WHERE cid='$cid' ORDER BY $orderby LIMIT 0,3");
+        $result2 = sql_query("SELECT sid, title 
+                              FROM " . sql_table('links_subcategories') . " 
+                              WHERE cid='$cid' 
+                              ORDER BY $orderby 
+                              LIMIT 0,3");
+
         $space = 0;
 
         while (list($sid, $stitle) = sql_fetch_row($result2)) {
@@ -361,33 +450,52 @@ function push_links()
     sql_free_result($result);
 }
 
+/**
+ * [viewlink_show description]
+ *
+ * @param   [type]  $cid  [$cid description]
+ * @param   [type]  $min  [$min description]
+ *
+ * @return  [type]        [return description]
+ */
 function viewlink_show($cid, $min)
 {
     global $follow_links, $nuke_url, $push_view_perpage, $push_orderby;
 
     push_header("suite");
 
-    if (!isset($min)) 
+    if (!isset($min)) {
         $min = 0;
+    }
 
     $perpage = $push_view_perpage;
     $orderby = "title " . $push_orderby;
 
-    $result = sql_query("SELECT title FROM " . sql_table('links_categories') . " WHERE cid='$cid'");
+    $result = sql_query("SELECT title 
+                         FROM " . sql_table('links_categories') . " 
+                         WHERE cid='$cid'");
+
     list($title) = sql_fetch_row($result);
 
     $title = str_replace("'", "\'", $title);
 
     echo "document.write('<span  style=\"font-size: 11px;\"><b>" . Language::aff_langue($title) . "</b></span>');\n";
 
-    $subresult = sql_query("SELECT sid, title FROM " . sql_table('links_subcategories') . " WHERE cid='$cid' ORDER BY $orderby");
+    $subresult = sql_query("SELECT sid, title 
+                            FROM " . sql_table('links_subcategories') . " 
+                            WHERE cid='$cid' 
+                            ORDER BY $orderby");
+
     $numrows = sql_num_rows($subresult);
 
     if ($numrows != 0) {
         echo "document.write('<b> / Sub-Cat</b><br />');\n";
 
         while (list($sid, $title) = sql_fetch_row($subresult)) {
-            $result2 = sql_query("SELECT * FROM " . sql_table('links_links') . " WHERE sid='$sid'");
+            $result2 = sql_query("SELECT * 
+                                  FROM " . sql_table('links_links') . " 
+                                  WHERE sid='$sid'");
+
             $numrows = sql_num_rows($result2);
 
             $title = str_replace("'", "\'", $title);
@@ -403,8 +511,17 @@ function viewlink_show($cid, $min)
     // settype($min, "integer");
     // settype($perpage, "integer");
 
-    $result = sql_query("SELECT lid, title FROM " . sql_table('links_links') . " WHERE cid='$cid' AND sid=0 ORDER BY $orderby LIMIT $min,$perpage");
-    $fullcountresult = sql_query("SELECT lid, title FROM " . sql_table('links_links') . " WHERE cid='$cid' AND sid=0");
+    $result = sql_query("SELECT lid, title 
+                         FROM " . sql_table('links_links') . " 
+                         WHERE cid='$cid' 
+                         AND sid=0 
+                         ORDER BY $orderby 
+                         LIMIT $min,$perpage");
+
+    $fullcountresult = sql_query("SELECT lid, title 
+                                  FROM " . sql_table('links_links') . "
+                                  WHERE cid='$cid' 
+                                  AND sid=0");
 
     $totalselectedlinks = sql_num_rows($fullcountresult);
 
@@ -431,22 +548,37 @@ function viewlink_show($cid, $min)
     sql_free_result($result);
 }
 
+/**
+ * [viewslink_show description]
+ *
+ * @param   [type]  $sid  [$sid description]
+ * @param   [type]  $min  [$min description]
+ *
+ * @return  [type]        [return description]
+ */
 function viewslink_show($sid, $min)
 {
     global $follow_links, $nuke_url, $push_view_perpage, $push_orderby;
 
     push_header("suite");
 
-    if (!isset($min)) 
+    if (!isset($min)) {
         $min = 0;
+    }
 
     $perpage = $push_view_perpage;
     $orderby = "title " . $push_orderby;
 
-    $result = sql_query("SELECT cid, title FROM " . sql_table('links_subcategories') . " WHERE sid='$sid'");
+    $result = sql_query("SELECT cid, title 
+                         FROM " . sql_table('links_subcategories') . " 
+                         WHERE sid='$sid'");
+
     list($cid, $stitle) = sql_fetch_row($result);
 
-    $result2 = sql_query("SELECT cid, title FROM " . sql_table('links_categories') . " WHERE cid='$cid'");
+    $result2 = sql_query("SELECT cid, title 
+                          FROM " . sql_table('links_categories') . " 
+                          WHERE cid='$cid'");
+
     list($cid, $title) = sql_fetch_row($result2);
 
     $title = str_replace("'", "\'", $title);
@@ -457,8 +589,17 @@ function viewslink_show($sid, $min)
     // settype($min, "integer");
     // settype($perpage, "integer");
 
-    $result = sql_query("SELECT lid, title FROM " . sql_table('links_links') . " WHERE cid='$cid' AND sid='$sid' ORDER BY $orderby LIMIT $min,$perpage");
-    $fullcountresult = sql_query("SELECT lid, title FROM " . sql_table('links_links') . " WHERE cid='$cid' AND sid='$sid'");
+    $result = sql_query("SELECT lid, title 
+                         FROM " . sql_table('links_links') . " 
+                         WHERE cid='$cid' 
+                         AND sid='$sid' 
+                         ORDER BY $orderby 
+                         LIMIT $min,$perpage");
+
+    $fullcountresult = sql_query("SELECT lid, title 
+                                  FROM " . sql_table('links_links') . " 
+                                  WHERE cid='$cid' 
+                                  AND sid='$sid'");
 
     $totalselectedlinks = sql_num_rows($fullcountresult);
 
@@ -487,6 +628,15 @@ function viewslink_show($sid, $min)
     sql_free_result($result);
 }
 
+/**
+ * [convert_nl description]
+ *
+ * @param   [type]  $string  [$string description]
+ * @param   [type]  $from    [$from description]
+ * @param   [type]  $to      [$to description]
+ *
+ * @return  [type]           [return description]
+ */
 function convert_nl($string, $from, $to)
 {
     $OS['mac'] = chr(13);
@@ -494,18 +644,28 @@ function convert_nl($string, $from, $to)
     $OS['nix'] = chr(10);
     $OS['html'] = "<br />";
 
-    if ($to == $from)
-        return TRUE;
+    if ($to == $from) {
+        return true;
+    }
 
-    if (!in_array($from, array_keys($OS)))
-        return FALSE;
+    if (!in_array($from, array_keys($OS))) {
+        return false;
+    }
 
-    if (!in_array($to, array_keys($OS)))
-        return FALSE;
+    if (!in_array($to, array_keys($OS))) {
+        return false;
+    }
 
     return str_replace($OS[$from], $OS[$to], $string);
 }
 
+/**
+ * [links description]
+ *
+ * @param   [type]  $ibid  [$ibid description]
+ *
+ * @return  [type]         [return description]
+ */
 function links($ibid)
 {
     global $follow_links, $nuke_url;
@@ -561,4 +721,5 @@ if (($cache_obj->genereting_output == 1) or ($cache_obj->genereting_output == -1
     if ($SuperCache) {
         $cache_obj->endCachingPage();
     }
+    
 }

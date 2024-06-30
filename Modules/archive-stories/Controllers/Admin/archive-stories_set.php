@@ -4,8 +4,9 @@ use Npds\Support\Facades\Css;
 
 
 // For More security
-if (!function_exists('admindroits'))
+if (!function_exists('admindroits')) {
     include($_SERVER['DOCUMENT_ROOT'] . "/admin/die.php");
+}
 
 if (strstr($ModPath, '..') 
 || strstr($ModStart, '..') 
@@ -20,8 +21,9 @@ if (strstr($ModPath, '..')
 || stristr($ModStart, 'iframe') 
 || stristr($ModStart, 'applet') 
 || stristr($ModStart, 'object') 
-|| stristr($ModStart, 'meta'))
+|| stristr($ModStart, 'meta')) {
     die();
+}
 
 // For More security
 $f_meta_nom = 'archive-stories';
@@ -33,12 +35,24 @@ admindroits($aid, $f_meta_nom);
 
 $hlpfile = '/manuels/' . $language . '/mod-archive-stories.html';
 
+/**
+ * [ConfigureArchive description]
+ *
+ * @param   [type]  $ModPath     [$ModPath description]
+ * @param   [type]  $ModStart    [$ModStart description]
+ * @param   [type]  $f_meta_nom  [$f_meta_nom description]
+ * @param   [type]  $f_titre     [$f_titre description]
+ * @param   [type]  $adminimg    [$adminimg description]
+ *
+ * @return  [type]               [return description]
+ */
 function ConfigureArchive($ModPath, $ModStart, $f_meta_nom, $f_titre, $adminimg)
 {
     global $hlpfile;
 
-    if (file_exists("modules/$ModPath/archive-stories.conf.php"))
+    if (file_exists("modules/$ModPath/archive-stories.conf.php")) {
         include("modules/$ModPath/archive-stories.conf.php");
+    }
 
     GraphicAdmin($hlpfile);
     adminhead($f_meta_nom, $f_titre, $adminimg);
@@ -124,6 +138,18 @@ function ConfigureArchive($ModPath, $ModStart, $f_meta_nom, $f_titre, $adminimg)
     Css::adminfoot('fv', $fv_parametres, $arg1, '');
 }
 
+/**
+ * [SaveSetArchive_stories description]
+ *
+ * @param   [type]  $maxcount    [$maxcount description]
+ * @param   [type]  $arch        [$arch description]
+ * @param   [type]  $arch_titre  [$arch_titre description]
+ * @param   [type]  $retcache    [$retcache description]
+ * @param   [type]  $ModPath     [$ModPath description]
+ * @param   [type]  $ModStart    [$ModStart description]
+ *
+ * @return  [type]               [return description]
+ */
 function SaveSetArchive_stories($maxcount, $arch, $arch_titre, $retcache, $ModPath, $ModStart)
 {
     $file = fopen("modules/$ModPath/archive-stories.conf.php", "w");

@@ -5,6 +5,15 @@ use Npds\Support\Facades\Hack;
 use Npds\Support\Facades\Theme;
 
 
+/**
+ * [marquetapage_add description]
+ *
+ * @param   [type]  $uri     [$uri description]
+ * @param   [type]  $topic   [$topic description]
+ * @param   [type]  $action  [$action description]
+ *
+ * @return  [type]           [return description]
+ */
 function marquetapage_add($uri, $topic, $action)
 {
     global $cookie, $nuke_url;
@@ -17,38 +26,56 @@ function marquetapage_add($uri, $topic, $action)
         } elseif ($drname == '/') {
             $uri = $nuke_url . $uri;
         } else {
-            if ($_SERVER['SERVER_PORT'] == "80")
+            if ($_SERVER['SERVER_PORT'] == "80") {
                 $uri = "http://" . $_SERVER['SERVER_NAME'] . $uri;
-            else
+            } else {
                 $uri = "http://" . $_SERVER['SERVER_NAME'] . ":" . $_SERVER['SERVER_PORT'] . $uri;
+            }
         }
 
-        sql_query("INSERT INTO " . sql_table('marquetapage') . " (uid, uri, topic) VALUES ('$cookie[0]', '$uri', '$topic')");
+        sql_query("INSERT 
+                   INTO " . sql_table('marquetapage') . " (uid, uri, topic) 
+                   VALUES ('$cookie[0]', '$uri', '$topic')");
 
         Url::redirect_url($uri);
     }
 
     if (($action == "sp_tapage") and ($cookie[0])) {
-        $result = sql_query("SELECT uri FROM " . sql_table('marquetapage') . " WHERE uid='$cookie[0]' AND uri='$uri'");
+        $result = sql_query("SELECT uri 
+                             FROM " . sql_table('marquetapage') . " 
+                             WHERE uid='$cookie[0]' 
+                             AND uri='$uri'");
 
         if (sql_num_rows($result) > 0) {
-            sql_query("DELETE FROM " . sql_table('marquetapage') . " WHERE uid='$cookie[0]' AND uri='$uri'");
+            sql_query("DELETE 
+                       FROM " . sql_table('marquetapage') . " 
+                       WHERE uid='$cookie[0]' 
+                       AND uri='$uri'");
             
             Url::redirect_url($uri);
         }
     }
 
     if (($action == 'sp_tespages') and ($cookie[0])) {
-        $result = sql_query("SELECT uri FROM " . sql_table('marquetapage') . " WHERE uid='$cookie[0]'");
+        $result = sql_query("SELECT uri 
+                             FROM " . sql_table('marquetapage') . " 
+                             WHERE uid='$cookie[0]'");
 
         if (sql_num_rows($result) > 0) {
-            sql_query("DELETE FROM " . sql_table('marquetapage') . " WHERE uid='$cookie[0]'");
+            sql_query("DELETE 
+                       FROM " . sql_table('marquetapage') . " 
+                       WHERE uid='$cookie[0]'");
 
             Url::redirect_url($uri);
         }
     }
 }
 
+/**
+ * [marquetapage description]
+ *
+ * @return  [type]  [return description]
+ */
 function marquetapage()
 {
     global $cookie;
@@ -68,7 +95,11 @@ function marquetapage()
             $addj = "modules/marquetapage/addj.gif";
         }
 
-        $result = sql_query("SELECT uri, topic FROM " . sql_table('marquetapage') . " WHERE uid='$cookie[0]' ORDER BY topic ASC");
+        $result = sql_query("SELECT uri, topic 
+                             FROM " . sql_table('marquetapage') . " 
+                             WHERE uid='$cookie[0]' 
+                             ORDER BY topic ASC");
+
         $content = '';
 
         if (sql_num_rows($result)) {
@@ -109,11 +140,14 @@ function marquetapage()
 
 // settype($op, 'string');
 
-if ($op == 'add')
+if ($op == 'add') {
     marquetapage_add(Hack::removeHack($uri), Hack::removeHack($topic), 'ad_tapage');
+}
 
-if ($op == 'supp')
+if ($op == 'supp') {
     marquetapage_add(Hack::removeHack($uri), '', 'sp_tapage');
+}
 
-if ($op == 'supp_all')
+if ($op == 'supp_all') {
     marquetapage_add(Hack::removeHack($uri), '', 'sp_tespages');
+}

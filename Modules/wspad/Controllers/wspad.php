@@ -3,6 +3,7 @@
 use Npds\Support\Facades\Str;
 use Npds\Support\Facades\Hack;
 use Npds\Support\Facades\Crypt;
+use Npds\Support\Facades\Theme;
 use Npds\Support\Facades\Groupe;
 use Npds\Support\Facades\Editeur;
 use Npds\Support\Facades\Language;
@@ -11,8 +12,9 @@ use Npds\Support\Facades\DataImage;
 
 
 // For More security
-if (!stristr($_SERVER['PHP_SELF'], "modules.php"))
+if (!stristr($_SERVER['PHP_SELF'], "modules.php")) {
     die();
+}
 
 if (
     strstr($ModPath, '..')
@@ -29,17 +31,19 @@ if (
     || stristr($ModStart, 'applet')
     || stristr($ModStart, 'object')
     || stristr($ModStart, 'meta')
-)
+) {
     die();
+}
 
 global $title, $language, $user, $admin, $nuke_url;
 // For More security
 
-if (file_exists("modules/$ModPath/pages.php"))
-    include("modules/$ModPath/pages.php");
+if (file_exists("modules/$ModPath/Routes/pages.php")) {
+    include("modules/$ModPath/Routes/pages.php");
+}
 
-include_once("modules/$ModPath/lang/$language.php");
-include_once("modules/$ModPath/config.php");
+include_once("modules/$ModPath/language/$language.php");
+include_once("modules/$ModPath/Config/config.php");
 
 // limite l'utilisation aux membres et admin
 // settype($member, 'integer');
@@ -60,14 +64,20 @@ if ($user or $admin) {
         } else
             header("location: index.php");
     }
-} else
+} else {
     header("location: index.php");
+}
 
 $surlignage = $couleur[Str::hexfromchr($auteur)];
 
 // Paramètres utilisé par le script
 $ThisFile = "modules.php?ModPath=$ModPath&amp;ModStart=$ModStart";
 
+/**
+ * [Liste_Page description]
+ *
+ * @return  [type]  [return description]
+ */
 function Liste_Page()
 {
     global $ModPath, $ModStart, $ThisFile, $gmt, $auteur, $groupe, $couleur;
@@ -111,21 +121,31 @@ function Liste_Page()
     echo $aff;
 
     $aff = '<h3 class="mb-3"><a class="arrow-toggle text-primary" id="show_paddoc" data-bs-toggle="collapse" data-bs-target="#lst_paddoc" title="' . wspad_trans("Déplier la liste") . '"><i id="i_lst_paddoc" class="toggle-icon fa fa-caret-down fa-lg" ></i></a>&nbsp;';
-    $nb_pages = sql_num_rows(sql_query("SELECT COUNT(page) FROM " . sql_table('wspad') . " WHERE member='$groupe' GROUP BY page"));
+    $nb_pages = sql_num_rows(sql_query("SELECT COUNT(page) 
+                                        FROM " . sql_table('wspad') . " 
+                                        WHERE member='$groupe' 
+                                        GROUP BY page"));
     
     if ($groupe > 0) {
-        $gp = sql_fetch_assoc(sql_query("SELECT groupe_name FROM " . sql_table('groupes') . " WHERE groupe_id='$groupe'"));
+        $gp = sql_fetch_assoc(sql_query("SELECT groupe_name 
+                                         FROM " . sql_table('groupes') . " 
+                                         WHERE groupe_id='$groupe'"));
+
         $aff .= '<span class="badge bg-secondary me-2">' . $nb_pages . '</span>' . wspad_trans("Document(s) et révision(s) disponible(s) pour le groupe") . ' <span class="text-body-secondary">' . Language::aff_langue($gp['groupe_name']) . " [$groupe]</span></h3>";
-    } else
+    } else {
         $aff .= '<span class="badge bg-secondary me-2">' . $nb_pages . '</span>' . wspad_trans("Document(s) et révision(s) disponible(s) pour les administrateurs") . '</h3>';
-    
+    }
+
     $aff .= '<div id="lst_paddoc" class="collapse" style =" padding-left:10px;">';
     
     if ($nb_pages > 0) {
         $ibid = 0;
         $pgibid = 0;
 
-        $result = sql_query("SELECT DISTINCT page FROM " . sql_table('wspad') . " WHERE member='$groupe' ORDER BY page ASC");
+        $result = sql_query("SELECT DISTINCT page 
+                             FROM " . sql_table('wspad') . " 
+                             WHERE member='$groupe' 
+                             ORDER BY page ASC");
 
         while (list($page) = sql_fetch_row($result)) {
 
@@ -133,11 +153,15 @@ function Liste_Page()
             clearstatcache();
 
             $refresh = 15;
-            $filename = "modules/$ModPath/locks/$page-vgp-$groupe.txt";
+            $filename = "modules/$ModPath/storage/locks/$page-vgp-$groupe.txt";
 
             if (file_exists($filename)) {
                 if ((time() - $refresh) > filemtime($filename)) {
-                    sql_query("UPDATE " . sql_table('wspad') . " SET verrou='' WHERE page='$page' AND member='$groupe'");
+                    sql_query("UPDATE " . sql_table('wspad') . " 
+                               SET verrou='' 
+                               WHERE page='$page' 
+                               AND member='$groupe'");
+
                     @unlink($filename);
                     $verrou = '';
                 }
@@ -185,7 +209,11 @@ function Liste_Page()
             </h4>
             <div id="lst_page_' . $pgibid . '" class="collapse" style ="padding-left:10px;">';
 
-            $result2 = sql_query("SELECT modtime, editedby, ranq, verrou FROM " . sql_table('wspad') . " WHERE page='$page' AND member='$groupe' ORDER BY ranq ASC");
+            $result2 = sql_query("SELECT modtime, editedby, ranq, verrou 
+                                  FROM " . sql_table('wspad') . " 
+                                  WHERE page='$page' 
+                                  AND member='$groupe' 
+                                  ORDER BY ranq ASC");
 
             $aff .= '
             <table class=" table-sm" data-toggle="table" data-striped="true" data-mobile-responsive="true" >
@@ -218,21 +246,23 @@ function Liste_Page()
                     $act = 1;
                 }
 
-                if ($ranq >= 100) 
+                if ($ranq >= 100) {
                     $ibid = '';
-                elseif ($ranq < 100 and $ranq >= 10) 
+                } elseif ($ranq < 100 and $ranq >= 10) {
                     $ibid = '0';
-                else 
+                } else {
                     $ibid = '00';
+                }
 
                 $aff .= '
                 <tr>
                     <td>' . $ibid . $ranq . '</td>
-                    <td><div class="me-1" style="float: left; margin-top: 0.5rem; width: 1.5rem; height: 1.5rem; border-radius:50%; background-color: ' . $couleur[Str::hexfromchr($editedby)] . ';"></div>' . userpopover($editedby, '40', 2) . '&nbsp;' . $editedby . '</td>
-                    <td class="small">' . date(translate("dateinternal"), $modtime + ((int)$gmt * 3600)) . '</td>';
+                    <td><div class="me-1" style="float: left; margin-top: 0.5rem; width: 1.5rem; height: 1.5rem; border-radius:50%; background-color: ' . $couleur[Str::hexfromchr($editedby)] . ';"></div>' . Theme::userpopover($editedby, '40', 2) . '&nbsp;' . $editedby . '</td>
+                    <td class="small">' . date(translate("dateinternal"), $modtime + ((int) $gmt * 3600)) . '</td>';
                 
                   // voir la révision du ranq x
                 $PopUp = JavaPopUp("modules.php?ModPath=$ModPath&amp;ModStart=preview&amp;pad=" . Crypt::encrypt($page . "#wspad#" . $groupe . "#wspad#" . $ranq), "NPDS_wspad", 500, 400);
+                
                 $aff .= '
                     <td>
                         <a class="me-2 fs-5" href="javascript:void(0);" onclick="window.open(' . $PopUp . ');" title="' . wspad_trans("Prévisualiser") . '" data-bs-toggle="tooltip" data-bs-placement="left"><i class="bi bi-eye"></i></a>';
@@ -252,9 +282,10 @@ function Liste_Page()
                     $aff .= '
                         <a class="ms-2 fs-5" href="' . $ThisFile . '&amp;op=conv_new&amp;page=' . urlencode($page) . '&amp;member=' . $groupe . '&amp;ranq=' . $ranq . '" title="' . wspad_trans("Transformer en New") . '" data-bs-toggle="tooltip" data-bs-placement="left"><i class="bi bi-newspaper"></i></a>
                     </td>';
-                } else
-                    $aff .= '<i class="text-danger fs-5 me-2 bi bi-lock-fill"></i>' . wspad_trans("Verrouillé par : ") . userpopover($verrou, '40', 2) . '</td>';
-                
+                } else {
+                    $aff .= '<i class="text-danger fs-5 me-2 bi bi-lock-fill"></i>' . wspad_trans("Verrouillé par : ") . Theme::userpopover($verrou, '40', 2) . '</td>';
+                }
+
                 $aff .= '</tr>';
             }
 
@@ -271,6 +302,14 @@ function Liste_Page()
     </div>';
 }
 
+/**
+ * [Page description]
+ *
+ * @param   [type]  $page  [$page description]
+ * @param   [type]  $ranq  [$ranq description]
+ *
+ * @return  [type]         [return description]
+ */
 function Page($page, $ranq)
 {
     global $ModPath, $ModStart, $gmt, $auteur, $groupe, $mess;
@@ -331,16 +370,23 @@ function Page($page, $ranq)
             if ($cont[0] == $auteur) {
                 $edition = true;
                 echo $tmp;
-            } else
+            } else {
                 $edition = false;
+            }
         } else {
             // pose le verrou
             $fp = fopen($filename, "w");
             fwrite($fp, $auteur);
             fclose($fp);
 
-            sql_query("UPDATE " . sql_table('wspad') . " SET verrou='' WHERE verrou='$auteur'");
-            sql_query("UPDATE " . sql_table('wspad') . " SET verrou='$auteur' WHERE page='$page' AND member='$groupe'");
+            sql_query("UPDATE " . sql_table('wspad') . " 
+                       SET verrou='' 
+                       WHERE verrou='$auteur'");
+
+            sql_query("UPDATE " . sql_table('wspad') . " 
+                       SET verrou='$auteur' 
+                       WHERE page='$page' 
+                       AND member='$groupe'");
 
             $edition = true;
             echo $tmp;
@@ -351,26 +397,38 @@ function Page($page, $ranq)
         fwrite($fp, $auteur);
         fclose($fp);
 
-        sql_query("UPDATE " . sql_table('wspad') . " SET verrou='' WHERE verrou='$auteur'");
-        sql_query("UPDATE " . sql_table('wspad') . " SET verrou='$auteur' WHERE page='$page' AND member='$groupe'");
+        sql_query("UPDATE " . sql_table('wspad') . " 
+                   SET verrou='' 
+                   WHERE verrou='$auteur'");
+
+        sql_query("UPDATE " . sql_table('wspad') . " 
+                   SET verrou='$auteur' 
+                   WHERE page='$page' 
+                   AND member='$groupe'");
 
         $edition = true;
         echo $tmp;
     }
     // Analyse des verrous
 
-    $row = sql_fetch_assoc(sql_query("SELECT content, modtime, editedby, ranq FROM " . sql_table('wspad') . " WHERE page='$page' AND member='$groupe' AND ranq='$ranq'"));
+    $row = sql_fetch_assoc(sql_query("SELECT content, modtime, editedby, ranq 
+                                      FROM " . sql_table('wspad') . " 
+                                      WHERE page='$page' 
+                                      AND member='$groupe' 
+                                      AND ranq='$ranq'"));
     
-    if (!$edition)
+    if (!$edition) {
         $mess = wspad_trans("Mode lecture seulement");
+    }
 
     if (!is_array($row)) {
         $row['ranq'] = 1;
         $row['editedby'] = $auteur;
         $row['modtime'] = time();
         $row['content'] = '';
-    } else
+    } else {
         $row['ranq'] += 1;
+    }
 
     global $surlignage;
 
@@ -386,7 +444,7 @@ function Page($page, $ranq)
 
     echo Editeur::fetch('content', '');
 
-    if ($edition)
+    if ($edition) {
         echo '
         <div class="mb-3">
             <input class="btn btn-primary" type="submit" name="sauve" value="' . wspad_trans("Sauvegarder") . '" />
@@ -394,6 +452,7 @@ function Page($page, $ranq)
             <input type="hidden" name="page" value="' . $page . '" />
             <input type="hidden" name="op" value="sauve" />
         </div>';
+    }
 
     echo '</form>';
 }
@@ -412,11 +471,20 @@ switch ($op) {
         $content = Hack::removeHack(stripslashes(Str::FixQuotes(DataImage::dataimagetofileurl($content, 'modules/upload/upload/ws'))));
         $auteur = Hack::removeHack(stripslashes(Str::FixQuotes($auteur)));
 
-        $row = sql_fetch_assoc(sql_query("SELECT MAX(ranq) AS ranq FROM " . sql_table('wspad') . " WHERE page='$page' AND member='$groupe'"));
-        $result = sql_query("INSERT INTO " . sql_table('wspad') . " VALUES ('0', '$page', '$content', '" . time() . "', '$auteur', '" . ($row['ranq'] + 1) . "', '$groupe','')");
-        sql_query("UPDATE " . sql_table('wspad') . " SET verrou='' WHERE verrou='$auteur'");
+        $row = sql_fetch_assoc(sql_query("SELECT MAX(ranq) AS ranq 
+                                          FROM " . sql_table('wspad') . " 
+                                          WHERE page='$page' 
+                                          AND member='$groupe'"));
 
-        @unlink("modules/$ModPath/locks/$page-vgp-$groupe.txt");
+        $result = sql_query("INSERT 
+                             INTO " . sql_table('wspad') . " 
+                             VALUES ('0', '$page', '$content', '" . time() . "', '$auteur', '" . ($row['ranq'] + 1) . "', '$groupe','')");
+
+        sql_query("UPDATE " . sql_table('wspad') . " 
+                   SET verrou='' 
+                   WHERE verrou='$auteur'");
+
+        @unlink("modules/$ModPath/stoarge/locks/$page-vgp-$groupe.txt");
 
         $mess = wspad_trans("révision") . " " . ($row['ranq'] + 1) . " " . wspad_trans("sauvegardée");
         break;
@@ -424,17 +492,27 @@ switch ($op) {
     case "supp":
         $auteur = Hack::removeHack(stripslashes(Str::FixQuotes($auteur)));
 
-        $result = sql_query("DELETE FROM " . sql_table('wspad') . " WHERE page='$page' AND member='$groupe' AND ranq='$ranq'");
-        sql_query("UPDATE " . sql_table('wspad') . " SET verrou='' WHERE verrou='$auteur'");
+        $result = sql_query("DELETE 
+                             FROM " . sql_table('wspad') . " 
+                             WHERE page='$page' 
+                             AND member='$groupe' 
+                             AND ranq='$ranq'");
+
+        sql_query("UPDATE " . sql_table('wspad') . " 
+                   SET verrou='' 
+                   WHERE verrou='$auteur'");
 
         break;
 
     case "suppdoc":
         // settype($member, 'integer');
 
-        $result = sql_query("DELETE FROM " . sql_table('wspad') . " WHERE page='$page' AND member='$member'");
+        $result = sql_query("DELETE 
+                             FROM " . sql_table('wspad') . " 
+                             WHERE page='$page' 
+                             AND member='$member'");
 
-        @unlink("modules/$ModPath/locks/$page-vgp-$groupe.txt");
+        @unlink("modules/$ModPath/storage/locks/$page-vgp-$groupe.txt");
         break;
 
     case "renomer":
@@ -442,19 +520,28 @@ switch ($op) {
         $newpage = preg_replace('#[^a-zA-Z0-9\\s\\_\\.\\-]#i', '_', Hack::removeHack(stripslashes(urldecode($newpage))));
         // settype($member, 'integer');
 
-        $result = sql_query("UPDATE " . sql_table('wspad') . " SET page='$newpage', verrou='' WHERE page='$page' AND member='$member'");
+        $result = sql_query("UPDATE " . sql_table('wspad') . " 
+                             SET page='$newpage', verrou='' 
+                             WHERE page='$page' 
+                             AND member='$member'");
 
-        @unlink("modules/$ModPath/locks/$page-vgp-$groupe.txt");
+        @unlink("modules/$ModPath/storage/locks/$page-vgp-$groupe.txt");
         break;
 
     case "conv_new":
-        $row = sql_fetch_assoc(sql_query("SELECT content FROM " . sql_table('wspad') . " WHERE page='$page' AND member='$groupe' AND ranq='$ranq'"));
+        $row = sql_fetch_assoc(sql_query("SELECT content 
+                                          FROM " . sql_table('wspad') . " 
+                                          WHERE page='$page' 
+                                          AND member='$groupe' 
+                                          AND ranq='$ranq'"));
 
         $date_debval = date("Y-d-m H:i:s", time());
         $deb_year = substr($date_debval, 0, 4);
         $date_finval = ($deb_year + 99) . "-01-01 00:00:00";
 
-        $result = sql_query("INSERT INTO " . sql_table('queue') . " VALUES (NULL, $cookie[0], '$auteur', '$page', '" . Str::FixQuotes($row['content']) . "', '', now(), '','$date_debval','$date_finval','0')");
+        $result = sql_query("INSERT 
+                             INTO " . sql_table('queue') . " 
+                             VALUES (NULL, $cookie[0], '$auteur', '$page', '" . Str::FixQuotes($row['content']) . "', '', now(), '','$date_debval','$date_finval','0')");
         break;
 }
 
@@ -466,13 +553,14 @@ include('header.php');
 
 // Head banner de présentation
 if (file_exists("modules/$ModPath/html/head.html")) {
-    $Xcontent = join('', file("modules/$ModPath/html/head.html"));
+    $Xcontent = join('', file("modules/$ModPath/Views/head.html"));
     $Xcontent = Metalang::meta_lang(Language::aff_langue($Xcontent));
 
     echo $Xcontent;
 }
 
 switch ($op) {
+
     case 'sauve':
         Liste_Page();
         Page($page, ($row['ranq'] + 1));
@@ -494,8 +582,8 @@ switch ($op) {
 }
 
 // Foot banner de présentation
-if (file_exists("modules/$ModPath/html/foot.html")) {
-    $Xcontent = join("", file("modules/$ModPath/html/foot.html"));
+if (file_exists("modules/$ModPath/Views/foot.html")) {
+    $Xcontent = join("", file("modules/$ModPath/Views/foot.html"));
     $Xcontent .= '<p class="text-end">NPDS WsPad ' . $version . ' by Dev&nbsp;&&nbsp;Jpb&nbsp;</p>';
     $Xcontent = Metalang::meta_lang(Language::aff_langue($Xcontent));
 

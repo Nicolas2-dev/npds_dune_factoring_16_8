@@ -3,8 +3,9 @@
 use Npds\Support\Facades\Css;
 
 
-if (!function_exists('admindroits'))
+if (!function_exists('admindroits')) {
     include($_SERVER['DOCUMENT_ROOT'] . '/admin/die.php');
+}
 
 $f_meta_nom = 'setban';
 
@@ -20,11 +21,21 @@ $f_titre = ipban_translate("Administration de l'IpBan");
 
 $hlpfile = 'manuels/' . $language . '/ipban.html';
 
+/**
+ * [ConfigureBan description]
+ *
+ * @param   [type]  $ModPath   [$ModPath description]
+ * @param   [type]  $ModStart  [$ModStart description]
+ *
+ * @return  [type]             [return description]
+ */
 function ConfigureBan($ModPath, $ModStart)
 {
     global $f_meta_nom, $f_titre, $adminimg, $language, $hlpfile;
 
     // settype($ip_ban, 'string');
+
+    $ip_ban = '';
 
     if (file_exists('storage/slogs/spam.log')) {
         $fd = fopen('storage/slogs/spam.log', 'r');
@@ -67,6 +78,13 @@ function ConfigureBan($ModPath, $ModStart)
     Css::adminfoot('', '', '', '');
 }
 
+/**
+ * [SaveSetBan description]
+ *
+ * @param   [type]  $Xip_ban  [$Xip_ban description]
+ *
+ * @return  [type]            [return description]
+ */
 function SaveSetBan($Xip_ban)
 {
     $file = fopen('storage/slogs/spam.log', 'w');
@@ -78,6 +96,7 @@ function SaveSetBan($Xip_ban)
 // settype($subop, 'string');
 
 switch ($subop) {
+    
     case 'SaveSetBan':
         SaveSetBan($ipban);
     default:

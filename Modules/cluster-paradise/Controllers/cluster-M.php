@@ -3,11 +3,16 @@
 use Npds\Support\Facades\Crypt;
 
 
+/**
+ * [FindPartners_secur_cluster description]
+ *
+ * @return  [type]  [return description]
+ */
 function FindPartners_secur_cluster()
 {
-    if (file_exists("modules/cluster-paradise/data-cluster-M.php")) {
+    if (file_exists("modules/cluster-paradise/Config/data-cluster-M.php")) {
 
-        include("modules/cluster-paradise/data-cluster-M.php");
+        include("modules/cluster-paradise/Config/data-cluster-M.php");
 
         $cpt = 1;
         $part_cpt = 0;
@@ -15,55 +20,75 @@ function FindPartners_secur_cluster()
         // Note a revoir le each !!!!
         while (each($part)) {
             if (strtoupper($part[$cpt]["OP"]) == "EXPORT") {
-                $Xpart[$part_cpt]["WWW"] = $part[$cpt]["WWW"];
-                $Xpart[$part_cpt]["SUBSCRIBE"] = $part[$cpt]["SUBSCRIBE"];
-                $Xpart[$part_cpt]["OP"] = $part[$cpt]["OP"];
-                $Xpart[$part_cpt]["FROMTOPICID"] = $part[$cpt]["FROMTOPICID"];
-                $Xpart[$part_cpt]["TOTOPIC"] = $part[$cpt]["TOTOPIC"];
-                $Xpart[$part_cpt]["FROMCATID"] = $part[$cpt]["FROMCATID"];
-                $Xpart[$part_cpt]["TOCATEG"] = $part[$cpt]["TOCATEG"];
-                $Xpart[$part_cpt]["AUTHOR"] = $part[$cpt]["AUTHOR"];
-                $Xpart[$part_cpt]["MEMBER"] = $part[$cpt]["MEMBER"];
+                $Xpart[$part_cpt]["WWW"]            = $part[$cpt]["WWW"];
+                $Xpart[$part_cpt]["SUBSCRIBE"]      = $part[$cpt]["SUBSCRIBE"];
+                $Xpart[$part_cpt]["OP"]             = $part[$cpt]["OP"];
+                $Xpart[$part_cpt]["FROMTOPICID"]    = $part[$cpt]["FROMTOPICID"];
+                $Xpart[$part_cpt]["TOTOPIC"]        = $part[$cpt]["TOTOPIC"];
+                $Xpart[$part_cpt]["FROMCATID"]      = $part[$cpt]["FROMCATID"];
+                $Xpart[$part_cpt]["TOCATEG"]        = $part[$cpt]["TOCATEG"];
+                $Xpart[$part_cpt]["AUTHOR"]         = $part[$cpt]["AUTHOR"];
+                $Xpart[$part_cpt]["MEMBER"]         = $part[$cpt]["MEMBER"];
                 $part_cpt = $part_cpt + 1;
             }
 
             $cpt = $cpt + 1;
         }
 
-        return ($Xpart);
+        return $Xpart;
     }
 }
 
+/**
+ * [key_secur_cluster description]
+ *
+ * @return  [type]  [return description]
+ */
 function key_secur_cluster()
 {
-    if (file_exists("modules/cluster-paradise/data-cluster-M.php")) {
-        include("modules/cluster-paradise/data-cluster-M.php");
+    if (file_exists("modules/cluster-paradise/Config/data-cluster-M.php")) {
+        include("modules/cluster-paradise/Config/data-cluster-M.php");
 
         return (md5($part[0]["WWW"] . $part[0]["KEY"]));
     }
 }
 
+/**
+ * [L_encrypt description]
+ *
+ * @param   [type]  $txt  [$txt description]
+ *
+ * @return  [type]        [return description]
+ */
 function L_encrypt($txt)
 {
-    if (file_exists("modules/cluster-paradise/data-cluster-M.php")) {
-        include("modules/cluster-paradise/data-cluster-M.php");
+    if (file_exists("modules/cluster-paradise/Config/data-cluster-M.php")) {
+        include("modules/cluster-paradise/Config/data-cluster-M.php");
 
         $key = $part[0]["KEY"];
     }
 
-    return (Crypt::encryptK($txt, $key));
+    return Crypt::encryptK($txt, $key);
 }
+
 
 if ($cluster_activate) {
     global $language;
+
     $local_key = key_secur_cluster();
     $tmp = FindPartners_secur_cluster();
+
     if (is_array($tmp)) {
         $cpt = 0;
 
         // Note a revoir le each !!!!
         while (each($tmp)) {
-            if ((empty($tmp[$cpt]["FROMTOPICID"]) && empty($tmp[$cpt]["FROMCATID"])) || ($tmp[$cpt]["FROMTOPICID"] == $topic || $tmp[$cpt]["FROMCATID"] == $catid)) {
+
+            if ((empty($tmp[$cpt]["FROMTOPICID"]) 
+            && empty($tmp[$cpt]["FROMCATID"])) 
+            || ($tmp[$cpt]["FROMTOPICID"] == $topic 
+            || $tmp[$cpt]["FROMCATID"] == $catid)) 
+            {
                 echo "<script type=\"text/javascript\">\n//<![CDATA[\nvar cluster$cpt=window.open('', 'cluster$cpt', 'width=300, height=60, resizable=yes');\n//]]>\n</script>";
                 $Zibid = "<html><head><title>NPDS - Cluster Paradise</title>";
 
@@ -72,8 +97,9 @@ if ($cluster_activate) {
                 if ($url_upload_css) {
                     $url_upload_cssX = str_replace("style.css", "$language-style.css", $url_upload_css);
 
-                    if (is_readable($url_upload . $url_upload_cssX))
+                    if (is_readable($url_upload . $url_upload_cssX)) {
                         $url_upload_css = $url_upload_cssX;
+                    }
 
                     $Zibid .= "<link href=\"" . $url_upload . $url_upload_css . "\" title=\"default\" rel=\"stylesheet\" type=\"text/css\" media=\"all\" />";
                 }
@@ -86,6 +112,7 @@ if ($cluster_activate) {
                 $Zibid .= "<input type=\"hidden\" name=\"key\" value=\"" . L_encrypt($local_key) . "\" />";
 
                 if ((strtoupper($tmp[$cpt]["SUBSCRIBE"]) == "NEWS") and (strtoupper($tmp[$cpt]["OP"]) == "EXPORT")) {
+                    
                     if (isset($tmp[$cpt]["TOCATEG"])) {
                         $Xcatid = $tmp[$cpt]["TOCATEG"];
                     } else {

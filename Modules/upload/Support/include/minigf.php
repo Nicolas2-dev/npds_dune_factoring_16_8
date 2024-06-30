@@ -140,8 +140,9 @@ if (is_array($att)) {
     $att_count = count($att);
     $display_att = true;
 
-    if ($Mmod)
+    if ($Mmod) {
         $vizut = '<th data-width="15" data-width-unit="%" data-halign="right" data-align="right">' . upload_translate("Visibilité") . '</th>';
+    }
 
     $att_table = '
             <table data-toggle="table" data-classes="table table-sm table-no-bordered table-hover table-striped" data-mobile-responsive="true">
@@ -159,6 +160,7 @@ if (is_array($att)) {
                
     $Fichier = new FileManagement;
     $visu = '';
+
     for ($i = 0; $i < $att_count; $i++) {
         $id = $att[$i]['att_id'];
         $tsz += $att[$i]['att_size'];
@@ -166,11 +168,13 @@ if (is_array($att)) {
         $sz = $Fichier->file_size_format($att[$i]['att_size'], 2);
 
         if (getAttDisplayMode($att[$i]['att_type'], 'A') == ATT_DSP_LINK) {
+            
             // This mime-type can't be displayed inline
             echo '<input type="hidden" name="inline_att[' . $id . ']" value="0" />';
             $inline_box = '--';
-        } else
+        } else {
             $inline_box = getListBox("inline_att[$id]", $inline_list, $att[$i]["inline"]);
+        }
 
         if ($Mmod) {
             $visu = '<td>' . getCheckBox("visible_att[]", $id, ($att[$i]["visible"] == 1) ? $id : -1, '', '') . '</td>';
@@ -195,9 +199,10 @@ if (is_array($att)) {
     
     $att_inline_button = '<button class="btn btn-primary btn-sm" onclick="InlineType(this.form);">' . upload_translate("Adapter") . '<span class="d-sm-none d-xl-inline"> ' . upload_translate("Affichage intégré") . '</span></button>';
     
-    if ($Mmod)
+    if ($Mmod) {
         $visu_button = '<button class="btn btn-primary btn-sm" onclick="visibleFile(this.form);">' . upload_translate("Adapter") . '<span class="d-sm-none d-xl-inline"> ' . upload_translate("Visibilité") . '</span></button>';
-
+    }
+    
     $att_table .= '
                   <tr class="mt-2">
                      <td colspan="2"><i class="fas fa-level-up-alt fa-2x fa-flip-horizontal text-danger me-1"></i><a class="text-danger" href="#" onclick="deleteFile(document.form0); return false;"><span class="d-sm-none" title="' . upload_translate("Supprimer les fichiers sélectionnés") . '" data-bs-toggle="tooltip" data-bs-placement="right" ><i class="fas fa-trash fa-2x ms-1"></i></span><span class="d-none d-sm-inline">' . upload_translate("Supprimer les fichiers sélectionnés") . '</span></a></td>

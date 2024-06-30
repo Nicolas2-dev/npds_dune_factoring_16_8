@@ -6,10 +6,12 @@ include("modules/upload/Config/upload.conf.php");
 // Répertoire serveur de la racine du site (avec le / terminal)
 if ($DOCUMENTROOT == '') {
     global $DOCUMENT_ROOT;
-    if ($DOCUMENT_ROOT)
+
+    if ($DOCUMENT_ROOT) {
         $DOCUMENTROOT = $DOCUMENT_ROOT;
-    else
+    } else {
         $DOCUMENTROOT = $_SERVER['DOCUMENT_ROOT'];
+    }
 }
 
 // Répertoire de téléchargement (avec le / terminal)
@@ -37,11 +39,13 @@ if (isset($groupe)) {
                 if (@mkdir($DOCUMENTROOT . $user_dir, 0777)) {
                     $fp = fopen($DOCUMENTROOT . $user_dir . "/index.html", 'w');
                     fclose($fp);
-                } else
+                } else {
                     Access_Error();
+                }
             }
-        } else
+        } else {
             Access_Error();
+        }
 
         $rep_upload_editeur = $user_dir . "/";
     } else {

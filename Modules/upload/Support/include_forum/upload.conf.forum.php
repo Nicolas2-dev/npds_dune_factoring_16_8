@@ -7,14 +7,15 @@ include("modules/upload/Config/upload.conf.php");
 // Répertoire serveur de la racine du site (avec le / terminal)
 if ($DOCUMENTROOT == '') {
     global $DOCUMENT_ROOT;
-    if ($DOCUMENT_ROOT)
+    if ($DOCUMENT_ROOT) {
         $DOCUMENTROOT = $DOCUMENT_ROOT;
-    else
+    } else {
         $DOCUMENTROOT = $_SERVER['DOCUMENT_ROOT'];
+    }
 }
 
 // Répertoire de téléchargement (avec le / terminal)
-$rep_upload_forum = $racine . "/modules/upload/upload_forum/";
+$rep_upload_forum = $racine . "/modules/upload/Support/upload_forum/";
 
 // Max size
 $MAX_FILE_SIZE_TOTAL = $quota;

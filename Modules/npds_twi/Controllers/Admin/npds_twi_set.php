@@ -3,10 +3,11 @@
 use Npds\Support\Facades\Css;
 
 
-if (!function_exists('admindroits'))
+if (!function_exists('admindroits')) {
     include($_SERVER['DOCUMENT_ROOT'] . '/admin/die.php');
+}
 
-include('modules/' . $ModPath . '/lang/twi.lang-' . $language . '.php');
+include('modules/' . $ModPath . '/language/twi.lang-' . $language . '.php');
 
 $f_meta_nom = 'npds_twi';
 $f_titre = 'npds_twitter';
@@ -32,14 +33,34 @@ global $adminimg;
 // settype($oauth_token, 'string');
 
 
+/**
+ * [Configuretwi description]
+ *
+ * @param   [type]  $subop               [$subop description]
+ * @param   [type]  $ModPath             [$ModPath description]
+ * @param   [type]  $ModStart            [$ModStart description]
+ * @param   [type]  $class_sty_2         [$class_sty_2 description]
+ * @param   [type]  $npds_twi_arti       [$npds_twi_arti description]
+ * @param   [type]  $npds_twi_urshort    [$npds_twi_urshort description]
+ * @param   [type]  $npds_twi_post       [$npds_twi_post description]
+ * @param   [type]  $consumer_key        [$consumer_key description]
+ * @param   [type]  $consumer_secret     [$consumer_secret description]
+ * @param   [type]  $oauth_token         [$oauth_token description]
+ * @param   [type]  $oauth_token_secret  [$oauth_token_secret description]
+ * @param   [type]  $tbox_width          [$tbox_width description]
+ * @param   [type]  $tbox_height         [$tbox_height description]
+ *
+ * @return  [type]                       [return description]
+ */
 function Configuretwi($subop, $ModPath, $ModStart, $class_sty_2, $npds_twi_arti, $npds_twi_urshort, $npds_twi_post, $consumer_key, $consumer_secret, $oauth_token, $oauth_token_secret, $tbox_width, $tbox_height)
 {
     global $language;
 
-    if (file_exists('modules/' . $ModPath . '/twi_conf.php'))
-        include('modules/' . $ModPath . '/twi_conf.php');
+    if (file_exists('modules/' . $ModPath . '/Config/twi_conf.php')) {
+        include('modules/' . $ModPath . '/Config/twi_conf.php');
+    }
 
-    $hlpfile = 'modules/' . $ModPath . '/doc/admtwi-' . $language . '.html';
+    $hlpfile = 'modules/' . $ModPath . '/Views/doc/admtwi-' . $language . '.html';
 
     global $f_meta_nom, $f_titre, $adminimg, $npds_twi;
 
@@ -51,26 +72,31 @@ function Configuretwi($subop, $ModPath, $ModStart, $class_sty_2, $npds_twi_arti,
     $urshort_ft = '';
     $urshort_c = '';
 
-    if ($npds_twi_arti === 1) 
+    if ($npds_twi_arti === 1) {
         $checkarti_y = 'checked="checked"';
-    else 
+    } else {
         $checkarti_n = 'checked="checked"';
+    }
 
-    if ($npds_twi_post === 1) 
+    if ($npds_twi_post === 1) {
         $checkpost_y = 'checked="checked"';
-    else 
+    } else {
         $checkpost_n = 'checked="checked"';
+    }
 
-    if ($npds_twi_urshort === 1) 
+    if ($npds_twi_urshort === 1) {
         $urshort_mr = 'checked="checked"';
+    }
 
-    if ($npds_twi_urshort === 2) 
+    if ($npds_twi_urshort === 2) {
         $urshort_ft = 'checked="checked"';
-    if ($npds_twi_urshort === 3) 
+    }
+
+    if ($npds_twi_urshort === 3) { 
         $urshort_c = 'checked="checked"';
-    else {
+    } else {
         $checkpost_n = 'checked="checked"';
-    };
+    }
 
     //en attente implémentation pour notice
     // settype($tbox_width, 'integer');
@@ -196,11 +222,30 @@ function Configuretwi($subop, $ModPath, $ModStart, $class_sty_2, $npds_twi_arti,
     Css::adminfoot('fv', '', $arg1, '');
 }
 
+/**
+ * [SaveSettwi description]
+ *
+ * @param   [type]  $npds_twi_arti       [$npds_twi_arti description]
+ * @param   [type]  $npds_twi_urshort    [$npds_twi_urshort description]
+ * @param   [type]  $npds_twi_post       [$npds_twi_post description]
+ * @param   [type]  $consumer_key        [$consumer_key description]
+ * @param   [type]  $consumer_secret     [$consumer_secret description]
+ * @param   [type]  $oauth_token         [$oauth_token description]
+ * @param   [type]  $oauth_token_secret  [$oauth_token_secret description]
+ * @param   [type]  $tbox_width          [$tbox_width description]
+ * @param   [type]  $tbox_height         [$tbox_height description]
+ * @param   [type]  $class_sty_1         [$class_sty_1 description]
+ * @param   [type]  $class_sty_2         [$class_sty_2 description]
+ * @param   [type]  $ModPath             [$ModPath description]
+ * @param   [type]  $ModStart            [$ModStart description]
+ *
+ * @return  [type]                       [return description]
+ */
 function SaveSettwi($npds_twi_arti, $npds_twi_urshort, $npds_twi_post, $consumer_key, $consumer_secret, $oauth_token, $oauth_token_secret, $tbox_width, $tbox_height, $class_sty_1, $class_sty_2, $ModPath, $ModStart)
 {
 
     //==> modifie le fichier de configuration
-    $file_conf = fopen("modules/$ModPath/twi_conf.php", "w+");
+    $file_conf = fopen("modules/$ModPath/Config/twi_conf.php", "w+");
 
     $content = "<?php \n";
     $content .= "/************************************************************************/\n";
@@ -218,18 +263,21 @@ function SaveSettwi($npds_twi_arti, $npds_twi_urshort, $npds_twi_post, $consumer
     $content .= "/* dev team :                                                           */\n";
     $content .= "/************************************************************************/\n";
 
-    if (!$npds_twi_arti) 
+    if (!$npds_twi_arti) {
         $npds_twi_arti = 0;
+    }
 
     $content .= "\$npds_twi_arti = $npds_twi_arti; // activation publication auto des news sur twitter\n";
 
-    if (!$npds_twi_post) 
+    if (!$npds_twi_post) {
         $npds_twi_post = 0;
+    }
 
     $content .= "\$npds_twi_post = $npds_twi_post; // activation publication auto des posts sur twitter\n";
 
-    if (!$npds_twi_urshort) 
+    if (!$npds_twi_urshort) {
         $npds_twi_urshort = 0;
+    }
 
     $content .= "\$npds_twi_urshort = $npds_twi_urshort; // activation du raccourciceur d'url\n";
     $content .= "\$consumer_key = \"$consumer_key\"; //\n";

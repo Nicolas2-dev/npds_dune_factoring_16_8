@@ -4,9 +4,9 @@ use Npds\Support\Facades\Url;
 use Npds\Support\Facades\Error;
 
 
-if (!function_exists("Mysql_Connexion"))
+if (!function_exists("Mysql_Connexion")) {
     die();
-
+}
 
 include('auth.php');
 
@@ -14,52 +14,66 @@ include('modules/geoloc/Controllers/geoloc_locip.php');
 
 filtre_module($file_name);
 
-if (file_exists("modules/comments/$file_name.conf.php"))
-    include("modules/comments/$file_name.conf.php");
-else
+if (file_exists("modules/comments/Config/$file_name.conf.php")) {
+    include("modules/comments/Config/$file_name.conf.php");
+} else {
     die();
+}
 
 // settype($forum, 'integer');
 
-if ($forum >= 0)
+if ($forum >= 0) {
     die();
+}
 
 // gestion des params du 'forum' : type, accès, modérateur ...
 $forum_name = 'comments';
 $forum_type = 0;
 $allow_to_post = false;
 
-if ($anonpost)
+if ($anonpost) {
     $forum_access = 0;
-else
+} else {
     $forum_access = 1;
+}
 
-if (($moderate == 1) and $admin)
+if (($moderate == 1) and $admin) {
     $Mmod = true;
-elseif ($moderate == 2) {
+
+} elseif ($moderate == 2) {
     $userX = base64_decode($user);
     $userdata = explode(':', $userX);
 
-    $result = sql_query("SELECT level FROM " . sql_table('users_status') . " WHERE uid='" . $userdata[0] . "'");
+    $result = sql_query("SELECT level 
+                         FROM " . sql_table('users_status') . " 
+                         WHERE uid='" . $userdata[0] . "'");
+
     list($level) = sql_fetch_row($result);
 
-    if ($level >= 2)
+    if ($level >= 2) {
         $Mmod = true;
-} else
+    }
+} else {
     $Mmod = false;
+}
 // gestion des params du 'forum' : type, accès, modérateur ...
 
 if ($Mmod) {
     switch ($mode) {
         case 'del':
-            $sql = "DELETE FROM " . sql_table('posts') . " WHERE forum_id='$forum' AND topic_id = '$topic'";
+            $sql = "DELETE 
+                    FROM " . sql_table('posts') . " 
+                    WHERE forum_id='$forum' 
+                    AND topic_id = '$topic'";
 
-            if (!$result = sql_query($sql))
+            if (!$result = sql_query($sql)) {
                 Error::code('0009');
+            }
 
             // ordre de mise à jour d'un champ externe ?
-            if ($comments_req_raz != '')
+            if ($comments_req_raz != '') {
                 sql_query("UPDATE " . sql_table($comments_req_raz));
+            }
 
             Url::redirect_url("$url_ret");
             break;
@@ -67,13 +81,18 @@ if ($Mmod) {
         case 'viewip':
             include("header.php");
 
-            $sql = "SELECT u.uname, p.poster_ip, p.poster_dns FROM " . sql_table('users') . " u, " . sql_table('posts') . " p WHERE p.post_id = '$post' AND u.uid = p.poster_id";
+            $sql = "SELECT u.uname, p.poster_ip, p.poster_dns 
+                    FROM " . sql_table('users') . " u, " . sql_table('posts') . " p 
+                    WHERE p.post_id = '$post' 
+                    AND u.uid = p.poster_id";
             
-            if (!$r = sql_query($sql))
+            if (!$r = sql_query($sql)) {
                 Error::code('0013');
+            }
 
-            if (!$m = sql_fetch_assoc($r))
+            if (!$m = sql_fetch_assoc($r)) {
                 Error::code('0014');
+            }
 
             echo '
             <h2 class="mb-3">' . translate("Commentaire") . '</h2>
@@ -95,11 +114,12 @@ if ($Mmod) {
 
             include('modules/geoloc/Config/geoloc.conf');
 
-            if ($geo_ip == 1)
+            if ($geo_ip == 1) {
                 echo '
                 <div class="card-footer text-end">
                     <a href="modules.php?ModPath=geoloc&amp;ModStart=geoloc&amp;op=allip"><span><i class=" fa fa-globe fa-lg me-1"></i><i class=" fa fa-tv fa-lg me-2"></i></span><span class="d-none d-sm-inline">Carte des IP</span></a>
                 </div>';
+            }
 
             echo '
             </div>
@@ -114,11 +134,13 @@ if ($Mmod) {
 
             // ordre de mise à jour d'un champ externe ?
             if ($ordre) {
-                if ($comments_req_add != '')
+                if ($comments_req_add != '') {
                     sql_query("UPDATE " . sql_table($comments_req_add));
+                }
             } else {
-                if ($comments_req_del != '')
+                if ($comments_req_del != '') {
                     sql_query("UPDATE " . sql_table($comments_req_del));
+                }
             }
 
             Url::redirect_url("$url_ret");

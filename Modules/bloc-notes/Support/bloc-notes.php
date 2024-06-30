@@ -1,9 +1,30 @@
 <?php
 
+use Npds\Support\Facades\Theme;
 
-#autodoc blocnotes ($typeBlocNote="shared", $nomBlocNote="", $largeur="", $nblBlocNote="5", $bnclass="") : Bloc blocnotes<br />=> syntaxe :
-#autodoc : function#blocnotes<br />params#shared OU context (partagé ou contextuel), nom_du_bloc OU le texte : $username (nom du bloc=nom du membre ou de l'admin), classe du form, nb de ligne de la textarea, classe pour la zone de saisie (textarea)<br />
-#autodoc : function#blocnotes<br />params#shared,TNT (blocnote partagé s'appelant TNT)
+
+/**
+ * Bloc blocnotes
+ * 
+ * syntaxe :
+ * 
+ * function#blocnotes
+ * params#shared OU context (partagé ou contextuel), nom_du_bloc OU le texte 
+ * : $username (nom du bloc=nom du membre ou de l'admin), classe du form, nb de ligne de la textarea, classe pour la zone de saisie (textarea)
+ * 
+ * function#blocnotes
+ * params#shared,TNT (blocnote partagé s'appelant TNT)
+ *
+ * @param   [type]  $typeBlocNote  [$typeBlocNote description]
+ * @param   shared  $nomBlocNote   [$nomBlocNote description]
+ * @param   [type]  $largeur       [$largeur description]
+ * @param   [type]  $nblBlocNote   [$nblBlocNote description]
+ * @param   [type]  $bnclass       [$bnclass description]
+ * @param   [type]  $affiche       [$affiche description]
+ * @param   true                   [ description]
+ *
+ * @return  [type]                 [return description]
+ */
 function blocnotes($typeBlocNote = 'shared', $nomBlocNote = '', $largeur = '', $nblBlocNote = '5', $bnclass = '', $affiche = true)
 {
     global $REQUEST_URI;
@@ -27,24 +48,29 @@ function blocnotes($typeBlocNote = 'shared', $nomBlocNote = '', $largeur = '', $
 
             $cur_admin = explode(':', base64_decode($admin));
 
-            if ($cur_admin)
+            if ($cur_admin) {
                 $nomBlocNote = $cur_admin[0];
+            }
         }
 
-        if (stristr($REQUEST_URI, "article.php"))
+        if (stristr($REQUEST_URI, "article.php")) {
             $bnid = md5($nomBlocNote . substr($REQUEST_URI, 0, strpos($REQUEST_URI, "&")));
-        else
+        } else {
             $bnid = md5($nomBlocNote . $REQUEST_URI);
-    } else
+        }
+    } else {
         $nomBlocNote = '';
+    }
 
     if ($nomBlocNote) {
-        global $theme;
+        global $block_title;
 
         if ($block_title == '')
+        {
             $title = $nomBlocNote;
-        else
+        } else {
             $title = $block_title;
+        }
 
         $aff .= '
             <form class="' . $largeur . '" method="post" action="modules.php?ModPath=bloc-notes&amp;ModStart=blocnotes" name="A' . $bnid . '">
@@ -66,8 +92,9 @@ function blocnotes($typeBlocNote = 'shared', $nomBlocNote = '', $largeur = '', $
             <script type="text/javascript" src="modules.php?ModPath=bloc-notes&amp;ModStart=blocnotes-read&amp;bnid=' . $bnid . '"></script>';
     }
     
-    if ($affiche)
-        themesidebox($title, $aff);
-    else
-        return ($aff);
+    if ($affiche) {
+        Theme::themesidebox($title, $aff);
+    } else {
+        return $aff;
+    }
 }

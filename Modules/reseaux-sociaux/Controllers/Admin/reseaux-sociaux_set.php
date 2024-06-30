@@ -4,8 +4,9 @@ use Npds\Support\Facades\Css;
 
 
 // For More security
-if (!function_exists('admindroits'))
+if (!function_exists('admindroits')) {
     include($_SERVER['DOCUMENT_ROOT'] . '/admin/die.php');
+}
 
 if (strstr($ModPath, '..') 
 || strstr($ModStart, '..') 
@@ -20,8 +21,9 @@ if (strstr($ModPath, '..')
 || stristr($ModStart, 'iframe') 
 || stristr($ModStart, 'applet') 
 || stristr($ModStart, 'object') 
-|| stristr($ModStart, 'meta'))
+|| stristr($ModStart, 'meta')) {
     die();
+}
 
 // For More security
 $f_meta_nom = 'reseaux-sociaux';
@@ -38,10 +40,22 @@ $ModStart = 'admin/reseaux-sociaux_set';
 
 GraphicAdmin($hlpfile);
 
+/**
+ * [ListReseaux description]
+ *
+ * @param   [type]  $ModPath     [$ModPath description]
+ * @param   [type]  $ModStart    [$ModStart description]
+ * @param   [type]  $f_meta_nom  [$f_meta_nom description]
+ * @param   [type]  $f_titre     [$f_titre description]
+ * @param   [type]  $adminimg    [$adminimg description]
+ *
+ * @return  [type]               [return description]
+ */
 function ListReseaux($ModPath, $ModStart, $f_meta_nom, $f_titre, $adminimg)
 {
-    if (file_exists("modules/$ModPath/reseaux-sociaux.conf.php"))
-        include("modules/$ModPath/reseaux-sociaux.conf.php");
+    if (file_exists("modules/$ModPath/Config/reseaux-sociaux.conf.php")) {
+        include("modules/$ModPath/Config/reseaux-sociaux.conf.php");
+    }
 
     adminhead($f_meta_nom, $f_titre, $adminimg);
 
@@ -79,21 +93,39 @@ function ListReseaux($ModPath, $ModStart, $f_meta_nom, $f_titre, $adminimg)
     Css::adminfoot('', '', '', '');
 }
 
+/**
+ * [EditReseaux description]
+ *
+ * @param   [type]  $ModPath     [$ModPath description]
+ * @param   [type]  $ModStart    [$ModStart description]
+ * @param   [type]  $f_meta_nom  [$f_meta_nom description]
+ * @param   [type]  $f_titre     [$f_titre description]
+ * @param   [type]  $adminimg    [$adminimg description]
+ * @param   [type]  $rs_id       [$rs_id description]
+ * @param   [type]  $rs_url      [$rs_url description]
+ * @param   [type]  $rs_ico      [$rs_ico description]
+ * @param   [type]  $subop       [$subop description]
+ * @param   [type]  $old_id      [$old_id description]
+ *
+ * @return  [type]               [return description]
+ */
 function EditReseaux($ModPath, $ModStart, $f_meta_nom, $f_titre, $adminimg, $rs_id, $rs_url, $rs_ico, $subop, $old_id)
 {
-    if (file_exists("modules/$ModPath/reseaux-sociaux.conf.php"))
-        include("modules/$ModPath/reseaux-sociaux.conf.php");
+    if (file_exists("modules/$ModPath/Config/reseaux-sociaux.conf.php")) {
+        include("modules/$ModPath/Config/reseaux-sociaux.conf.php");
+    }
 
     adminhead($f_meta_nom, $f_titre, $adminimg);
 
-    if ($subop == 'AddReseaux')
+    if ($subop == 'AddReseaux') {
         echo '
         <hr />
         <h3 class="mb-3">' . adm_translate("Ajouter") . '</h3>';
-    else
+    } else {
         echo '
         <hr />
         <h3 class="mb-3">' . adm_translate("Editer") . '</h3>';
+    }
 
     echo '
     <form id="reseauxadm" action="admin.php" method="post">
@@ -140,29 +172,46 @@ function EditReseaux($ModPath, $ModStart, $f_meta_nom, $f_titre, $adminimg, $rs_
     Css::adminfoot('fv', '', $arg1, '');
 }
 
+/**
+ * [SaveSetReseaux description]
+ *
+ * @param   [type]  $ModPath   [$ModPath description]
+ * @param   [type]  $ModStart  [$ModStart description]
+ * @param   [type]  $rs_id     [$rs_id description]
+ * @param   [type]  $rs_url    [$rs_url description]
+ * @param   [type]  $rs_ico    [$rs_ico description]
+ * @param   [type]  $subop     [$subop description]
+ * @param   [type]  $old_id    [$old_id description]
+ *
+ * @return  [type]             [return description]
+ */
 function SaveSetReseaux($ModPath, $ModStart, $rs_id, $rs_url, $rs_ico, $subop, $old_id)
 {
-    if (file_exists("modules/$ModPath/reseaux-sociaux.conf.php"))
-        include("modules/$ModPath/reseaux-sociaux.conf.php");
+    if (file_exists("modules/$ModPath/Config/reseaux-sociaux.conf.php")) {
+        include("modules/$ModPath/Config/reseaux-sociaux.conf.php");
+    }
 
     $newar = array($rs_id, $rs_url, $rs_ico);
     $newrs = array();
 
     $j = 0;
     foreach ($rs as $v1) {
-        if (in_array($old_id, $v1, true)) 
+        if (in_array($old_id, $v1, true)) {
             unset($rs[$j]);
+        }
 
         $j++;
     }
 
     foreach ($rs as $v1) {
-        if (!in_array($rs_id, $v1, true)) 
+        if (!in_array($rs_id, $v1, true)) {
             $newrs[] = $v1;
+        }
     }
 
-    if ($subop !== 'DeleteReseaux') 
+    if ($subop !== 'DeleteReseaux') {
         $newrs[] = $newar;
+    }
 
     $file = fopen("modules/$ModPath/reseaux-sociaux.conf.php", "w+");
 
@@ -213,6 +262,7 @@ function SaveSetReseaux($ModPath, $ModStart, $rs_id, $rs_url, $rs_ico, $subop, $
 // settype($old_id, 'string');
 
 switch ($subop) {
+    
     case "SaveSetReseaux":
     case "DeleteReseaux":
         SaveSetReseaux($ModPath, $ModStart, $rs_id, $rs_url, $rs_ico, $subop, $old_id);

@@ -4,8 +4,9 @@ use Npds\Support\Facades\Css;
 
 
 // For More security
-if (!function_exists('admindroits'))
+if (!function_exists('admindroits')) {
     include($_SERVER['DOCUMENT_ROOT'] . '/admin/die.php');
+}
 
 if (
     strstr($ModPath, '..')
@@ -22,8 +23,9 @@ if (
     || stristr($ModStart, 'applet')
     || stristr($ModStart, 'object')
     || stristr($ModStart, 'meta')
-)
+) {
     die();
+}
 
 // For More security
 $f_meta_nom = 'upConfigure';
@@ -38,6 +40,17 @@ $hlpfile = 'manuels/' . $language . '/upload.html';
 global $language;
 include("modules/upload/lang/upload.lang-$language.php");
 
+/**
+ * [upConfigure description]
+ *
+ * @param   [type]  $ModPath     [$ModPath description]
+ * @param   [type]  $ModStart    [$ModStart description]
+ * @param   [type]  $f_meta_nom  [$f_meta_nom description]
+ * @param   [type]  $f_titre     [$f_titre description]
+ * @param   [type]  $adminimg    [$adminimg description]
+ *
+ * @return  [type]               [return description]
+ */
 function upConfigure($ModPath, $ModStart, $f_meta_nom, $f_titre, $adminimg)
 {
     global $hlpfile, $filemanager, $f_meta_nom, $f_titre, $adminimg, $subop;
@@ -83,6 +96,7 @@ function upConfigure($ModPath, $ModStart, $f_meta_nom, $f_titre, $adminimg)
 
     $cky = '';
     $ckn = '';
+
     if ($autorise_upload_p == "true") {
         $cky = 'checked="checked"';
         $ckn = '';
@@ -145,17 +159,18 @@ function upConfigure($ModPath, $ModStart, $f_meta_nom, $f_titre, $adminimg)
                 </div>
             </div>';
 
-    include('modules/upload/include/mimetypes.php');
+    include('modules/upload/Support/include/mimetypes.php');
 
     $sel = '';
     $opt = '';
     $tab_ext = explode(' ', $extension_autorise);
 
     foreach ($mimetypes as $ext_name => $ext_def) {
-        if (in_array($ext_name, $tab_ext))
+        if (in_array($ext_name, $tab_ext)) {
             $sel = ' selected="selected"';
-        else 
+        } else {
             $sel = '';
+        }
 
         $opt .= '<option ' . $sel . 'value="' . $ext_name . '">.' . $ext_name . '</option>';
     };
@@ -177,10 +192,11 @@ function upConfigure($ModPath, $ModStart, $f_meta_nom, $f_titre, $adminimg)
     $hrchoice = array('0' => 'afficher les images de !divers', '1' => 'afficher les images de !mime', '2' => 'afficher les images de la racine du répertoire', '3' => 'afficher les documents');
     
     foreach ($hrchoice as $k => $af) {
-        if ($ed_profil[$k] == "1") 
+        if ($ed_profil[$k] == "1") {
             $sel = 'selected="selected"';
-        else 
+        } else {
             $sel = '';
+        }
 
         $opt .= '<option ' . $sel . ' value="' . $k . '">' . $af . '</option>';
     }
@@ -341,6 +357,27 @@ function upConfigure($ModPath, $ModStart, $f_meta_nom, $f_titre, $adminimg)
     Css::adminfoot('fv', $fv_parametres, $arg1, '');
 }
 
+/**
+ * [uploadSave description]
+ *
+ * @param   [type]  $xmax_size            [$xmax_size description]
+ * @param   [type]  $xdocumentroot        [$xdocumentroot description]
+ * @param   [type]  $xautorise_upload_p   [$xautorise_upload_p description]
+ * @param   [type]  $xracine              [$xracine description]
+ * @param   [type]  $xrep_upload          [$xrep_upload description]
+ * @param   [type]  $xrep_cache           [$xrep_cache description]
+ * @param   [type]  $xrep_log             [$xrep_log description]
+ * @param   [type]  $xurl_upload          [$xurl_upload description]
+ * @param   [type]  $xurl_upload_css      [$xurl_upload_css description]
+ * @param   [type]  $xed_profil           [$xed_profil description]
+ * @param   [type]  $xed_nb_images        [$xed_nb_images description]
+ * @param   [type]  $xextension_autorise  [$xextension_autorise description]
+ * @param   [type]  $xwidth_max           [$xwidth_max description]
+ * @param   [type]  $xheight_max          [$xheight_max description]
+ * @param   [type]  $xquota               [$xquota description]
+ *
+ * @return  [type]                        [return description]
+ */
 function uploadSave($xmax_size, $xdocumentroot, $xautorise_upload_p, $xracine, $xrep_upload, $xrep_cache, $xrep_log, $xurl_upload, $xurl_upload_css, $xed_profil, $xed_nb_images, $xextension_autorise, $xwidth_max, $xheight_max, $xquota)
 {
     $file = file("modules/upload/Config/upload.conf.php");
@@ -358,7 +395,9 @@ function uploadSave($xmax_size, $xdocumentroot, $xautorise_upload_p, $xracine, $
 
     if ($xed_profil) {
         foreach ($profil as $k => $v) {
-            if (in_array($k, $xed_profil)) $profil[$k] = 1;
+            if (in_array($k, $xed_profil)) {
+                $profil[$k] = 1;
+            }
         }
     }
 
@@ -384,6 +423,7 @@ function uploadSave($xmax_size, $xdocumentroot, $xautorise_upload_p, $xracine, $
 // settype($subop, 'string');
 
 switch ($subop) {
+    
     case "uploadSave":
         uploadSave($xmax_size, $xdocumentroot, $xautorise_upload_p, $xracine, $xrep_upload, $xrep_cache, $xrep_log, $xurl_upload, $xurl_upload_css, $xed_profil, $xed_nb_images, $xextension_autorise, $xwidth_max, $xheight_max, $xquota);
     default:

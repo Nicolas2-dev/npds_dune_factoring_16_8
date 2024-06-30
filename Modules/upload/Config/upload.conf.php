@@ -32,19 +32,28 @@ $url_upload = "http://npds-jpb.local/";
 
 global $cookie, $user, $Default_Theme, $theme;
 if (isset($user)) {
-    if ($cookie[9] == '') $cookie[9] = $Default_Theme;
-    if (isset($theme)) $cookie[9] = $theme;
+    if ($cookie[9] == '') {
+        $cookie[9] = $Default_Theme;
+    }
+
+    if (isset($theme)) {
+        $cookie[9] = $theme;
+    }
+
     $tmp_theme = $cookie[9];
-    if (!$file = @opendir("themes/$cookie[9]")) $tmp_theme = $Default_Theme;
+
+    if (!$file = @opendir("Themes/$cookie[9]")) {
+        $tmp_theme = $Default_Theme;
+    }
 } else {
     $tmp_theme = $Default_Theme;
 }
+
 /*
 pour une css dans le theme courant utiliser :
 $url_upload_css = $racine."/themes/".$tmp_theme."/style/style.css";
 */
 $url_upload_css = '/lib/bootstrap/dist/css/bootstrap.min.css';
-
 
 /* -------------- DIVERS -------------- */
 // Gére l'affichage de la Banque Images et Documents : "0000" => rien / "1111" => tous

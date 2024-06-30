@@ -1,6 +1,7 @@
 <?php
 
 use Npds\Support\Facades\Log;
+use Npds\Support\Facades\Request;
 
 
 if (!isset($FILEUPLOAD)) {
@@ -19,16 +20,45 @@ if (!isset($FILEUPLOAD)) {
     define('DEFAULT_INLINE', '1');
     define('U_MASK', '0766');
 
+
+    /**
+     * FileUpload class
+     */
     class FileUpload
     {
+        /**
+         * [$errno description]
+         *
+         * @var [type]
+         */
         var $errno = 0;
 
+        /**
+         * [$upload_dir description]
+         *
+         * @var [type]
+         */
         var $upload_dir = '';
 
+        /**
+         * [$IdForum description]
+         *
+         * @var [type]
+         */
         var $IdForum = '';
 
+        /**
+         * [$apli description]
+         *
+         * @var [type]
+         */
         var $apli = '';
 
+        /**
+         * [$Halt_On_Error description]
+         *
+         * @var [type]
+         */
         var $Halt_On_Error = 'report';
 
 
@@ -77,8 +107,9 @@ if (!isset($FILEUPLOAD)) {
                 printf('<div class="alert alert-danger m-3" role="alert"> %s %s<br /><p class="mt-2 text-center"> %s </p></span>', '<h4 class="alert-heading">File management</h4>', $msg, '<strong>' . $reason . '</strong>');
             }
 
-            if ($this->Halt_On_Error != 'report')
+            if ($this->Halt_On_Error != 'report') {
                 die('<div class="alert alert-danger m-3" role="alert">' . upload_translate("Session terminée.") . '</div>');
+            }
         }
 
         /**
@@ -108,17 +139,18 @@ if (!isset($FILEUPLOAD)) {
             if ($size == 0) {
                 $this->errno = FILE_EMPTY;
                 return false;
-            } else
+            } else {
                 $fsize = filesize($src_file);
+            }
 
             if ($size != $fsize) {
                 $this->errno = ERR_FILE;
-                return FALSE;
+                return false;
             }
 
             if ($size > $MAX_FILE_SIZE) {
                 $this->errno = FILE_TOO_BIG;
-                return FALSE;
+                return false;
             }
 
             # Check name
@@ -144,7 +176,7 @@ if (!isset($FILEUPLOAD)) {
 
             if (!$this->isAllowedFile($name, $type)) {
                 $this->errno = INVALID_FILE_TYPE;
-                return FALSE;
+                return false;
             }
 
             # Find the path to upload directory
@@ -161,7 +193,7 @@ if (!isset($FILEUPLOAD)) {
 
                 if ($id <= 0) {
                     $this->errno = DB_ERROR;
-                    return FALSE;
+                    return false;
                 }
 
                 # copy temporary file to the upload directory
@@ -173,7 +205,7 @@ if (!isset($FILEUPLOAD)) {
                     deleteAttachment($this->apli, $IdPost, $rep . $this->upload_dir, $id, $name);
                     $this->errno = COPY_ERROR;
 
-                    return FALSE;
+                    return false;
                 }
 
                 @chmod($dest_file, 0766);
@@ -190,7 +222,7 @@ if (!isset($FILEUPLOAD)) {
                     if (!$copyfunc($src_file, $rep . $rep_upload_minisite . $name)) {
                         $this->errno = COPY_ERROR;
 
-                        return FALSE;
+                        return false;
                     }
 
                     @chmod($rep . $rep_upload_minisite . $name, 0766);
@@ -205,18 +237,18 @@ if (!isset($FILEUPLOAD)) {
                     if (!$copyfunc($src_file, $rep . $rep_upload_editeur . $name)) {
                         $this->errno = COPY_ERROR;
 
-                        return FALSE;
+                        return false;
                     }
 
                     @chmod($rep . $rep_upload_editeur . $name, 0766);
                     $log_filename = $rep . $rep_upload_editeur . $name;
                 } else {
-                    return FALSE;
+                    return false;
                 }
             }
 
-            Log::Ecr_Log('security', 'Upload File(s) : ' . getip(), $log_filename);
-            return TRUE;
+            Log::Ecr_Log('security', 'Upload File(s) : ' . Request::getip(), $log_filename);
+            return true;
         }
 
         /**
@@ -227,6 +259,7 @@ if (!isset($FILEUPLOAD)) {
         function getUploadedFiles($IdPost, $IdTopic)
         {
             global $pcfile, $pcfile_size, $pcfile_name, $pcfile_type;
+
             $this->errno = 0;
 
             $att_size = 0;
@@ -261,7 +294,7 @@ if (!isset($FILEUPLOAD)) {
                 }
             } else {
                 $this->errno = NO_FILE;
-                return FALSE;
+                return false;
             }
 
             if ($att_size > 0) {
@@ -296,17 +329,17 @@ if (!isset($FILEUPLOAD)) {
                 $allowed_extensions = explode(' ', $bn_allowed_extensions);
 
                 if (is_array($allowed_extensions)) {
-                    $found = FALSE;
+                    $found = false;
 
                     foreach ($allowed_extensions as $goodext) {
                         if ($ext == $goodext) {
-                            $found = TRUE;
+                            $found = true;
                             break;
                         }
                     }
 
                     if (!$found) {
-                        return FALSE;
+                        return false;
                     }
                 }
             }
@@ -319,7 +352,7 @@ if (!isset($FILEUPLOAD)) {
                 if (is_array($banned_extensions)) {
                     foreach ($banned_extensions as $badext) {
                         if ($ext == $badext)
-                            return FALSE;
+                            return false;
                     }
                 }
             }
@@ -341,14 +374,15 @@ if (!isset($FILEUPLOAD)) {
 
                         if ($type == $good_type) {
                             if (($good_subtype == '*') || ($subtype == $good_subtype)) {
-                                $found = TRUE;
+                                $found = true;
                                 break;
                             }
                         }
                     }
 
-                    if (!$found)
-                        return FALSE;
+                    if (!$found) {
+                        return false;
+                    }
                 }
             }
 
@@ -363,13 +397,13 @@ if (!isset($FILEUPLOAD)) {
                         
                         if ($type == $bad_type) {
                             if (($bad_subtype == '*') || ($subtype == $bad_subtype)) {
-                                return FALSE;
+                                return false;
                             }
                         }
                     }
                 }
             }
-            return TRUE;
+            return true;
         }
     } // end class
 

@@ -19,16 +19,17 @@ if (strstr($ModPath, '..')
 || stristr($ModStart, 'iframe') 
 || stristr($ModStart, 'applet') 
 || stristr($ModStart, 'object') 
-|| stristr($ModStart, 'meta'))
-    die();
+|| stristr($ModStart, 'meta')) {
+    die(); 
+}
 
-if (!function_exists("Mysql_Connexion"))
-    include("mainfile.php");
+if (!function_exists("Mysql_Connexion")) {
+    include("Bootstrap/Boot.php");
+}
 
-include('functions.php');
-
-if (!$user) 
+if (!$user) {
     header('location:index.php');
+}
 
 global $cookie, $language;
 
@@ -38,12 +39,21 @@ $ModStart = 'reseaux-sociaux';
 
 include("modules/$ModPath/lang/rs-$language.php");
 
+/**
+ * [ListReseaux description]
+ *
+ * @param   [type]  $ModPath   [$ModPath description]
+ * @param   [type]  $ModStart  [$ModStart description]
+ *
+ * @return  [type]             [return description]
+ */
 function ListReseaux($ModPath, $ModStart)
 {
     global $userdata;
 
-    if (file_exists("modules/$ModPath/reseaux-sociaux.conf.php"))
-        include("modules/$ModPath/reseaux-sociaux.conf.php");
+    if (file_exists("modules/$ModPath/Config/reseaux-sociaux.conf.php")) {  
+        include("modules/$ModPath/Config/reseaux-sociaux.conf.php");
+    }
 
     include("header.php");
 
@@ -73,14 +83,23 @@ function ListReseaux($ModPath, $ModStart)
     include("footer.php");
 }
 
+/**
+ * [EditReseaux description]
+ *
+ * @param   [type]  $ModPath   [$ModPath description]
+ * @param   [type]  $ModStart  [$ModStart description]
+ *
+ * @return  [type]             [return description]
+ */
 function EditReseaux($ModPath, $ModStart)
 {
     $res_id = array();
 
     global $userdata;
 
-    if (file_exists("modules/$ModPath/reseaux-sociaux.conf.php"))
-        include("modules/$ModPath/reseaux-sociaux.conf.php");
+    if (file_exists("modules/$ModPath/Config/reseaux-sociaux.conf.php")) {
+        include("modules/$ModPath/Config/reseaux-sociaux.conf.php");
+    }
 
     include("header.php");
 
@@ -122,12 +141,15 @@ function EditReseaux($ModPath, $ModStart)
                 if (false !== $k) {
                     $ident = $y1[1];
                     break;
-                } else $ident = '';
+                } else { 
+                    $ident = '';
+                }
             }
         }
 
-        if ($i == 0) 
+        if ($i == 0) {
             echo '<div class="row">';
+        }
 
         echo '
         <div class="col-sm-6">
@@ -142,10 +164,11 @@ function EditReseaux($ModPath, $ModStart)
             </fieldset>
         </div>';
 
-        if ($i % 2 == 1) 
+        if ($i % 2 == 1) {
             echo '
             </div>
             <div class="row">';
+        }
 
         $i++;
     }
@@ -165,20 +188,31 @@ function EditReseaux($ModPath, $ModStart)
     Css::adminfoot('', '', '', '');
 }
 
+/**
+ * [SaveSetReseaux description]
+ *
+ * @param   [type]  $ModPath   [$ModPath description]
+ * @param   [type]  $ModStart  [$ModStart description]
+ *
+ * @return  [type]             [return description]
+ */
 function SaveSetReseaux($ModPath, $ModStart)
 {
     global $cookie;
 
     $li_rs = '';
     foreach ($_POST['rs'] as $v1) {
-        if ($v1['uid'] !== '')
+        if ($v1['uid'] !== '') {
             $li_rs .= $v1['id'] . '|' . $v1['uid'] . ';';
+        }
     }
 
     $li_rs = rtrim($li_rs, ';');
     $li_rs = Hack::removeHack(stripslashes(Str::FixQuotes($li_rs)));
 
-    sql_query("UPDATE " . sql_table('users_extend') . " SET M2='$li_rs' WHERE uid='$cookie[0]'");
+    sql_query("UPDATE " . sql_table('users_extend') . " 
+               SET M2='$li_rs' 
+               WHERE uid='$cookie[0]'");
 
     Header("Location: modules.php?&ModPath=$ModPath&ModStart=$ModStart");
 }
@@ -186,6 +220,7 @@ function SaveSetReseaux($ModPath, $ModStart)
 // settype($op, 'string');
 
 switch ($op) {
+    
     case 'SaveSetReseaux':
         SaveSetReseaux($ModPath, $ModStart);
         break;
