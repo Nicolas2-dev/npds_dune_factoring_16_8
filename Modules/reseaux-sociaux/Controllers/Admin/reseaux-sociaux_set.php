@@ -57,7 +57,7 @@ function ListReseaux($ModPath, $ModStart, $f_meta_nom, $f_titre, $adminimg)
         include("modules/$ModPath/Config/reseaux-sociaux.conf.php");
     }
 
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <hr />
@@ -115,7 +115,7 @@ function EditReseaux($ModPath, $ModStart, $f_meta_nom, $f_titre, $adminimg, $rs_
         include("modules/$ModPath/Config/reseaux-sociaux.conf.php");
     }
 
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     if ($subop == 'AddReseaux') {
         echo '

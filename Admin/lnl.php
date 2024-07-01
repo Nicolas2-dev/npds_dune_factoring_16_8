@@ -95,12 +95,12 @@ function ShowHeader()
  */
 function Detail_Header_Footer($ibid, $type)
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     // $type = HED or FOT
     $result = sql_query("SELECT text, html 
@@ -225,12 +225,12 @@ function ShowBody()
  */
 function Detail_Body($ibid)
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <hr />
@@ -287,12 +287,12 @@ function Detail_Body($ibid)
  */
 function Add_Body()
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <hr />
@@ -420,12 +420,12 @@ function ShowFooter()
  */
 function Add_Header_Footer($ibid)
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $t = '';
     $v = '';
@@ -516,12 +516,12 @@ function Add_Header_Footer_Submit($ibid, $xtext, $xhtml)
  */
 function main()
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <hr />
@@ -671,12 +671,12 @@ function main()
  */
 function Del_Question($retour, $param)
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <hr />
@@ -698,12 +698,12 @@ function Del_Question($retour, $param)
  */
 function Test($Yheader, $Ybody, $Yfooter)
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $result = sql_query("SELECT text, html 
                          FROM " . sql_table('lnl_head_foot') . " 
@@ -766,12 +766,12 @@ function Test($Yheader, $Ybody, $Yfooter)
  */
 function lnl_list()
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $result = sql_query("SELECT ref, header , body, footer, number_send, type_send, date, status 
                          FROM " . sql_table('lnl_send') . " 
@@ -829,12 +829,12 @@ function lnl_list()
  */
 function lnl_user_list()
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $result = sql_query("SELECT email, date, status 
                          FROM " . sql_table('lnl_outside_users') . " 

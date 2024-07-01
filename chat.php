@@ -152,7 +152,7 @@ function chatrafraich()
     if ($aff_entetes == '1') {
         $meta_op = true;
         
-        // settype($Xthing, 'string');
+        settype($Xthing, 'string');
 
         include("storage/meta/meta.php");
 

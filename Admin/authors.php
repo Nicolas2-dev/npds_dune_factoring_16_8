@@ -1,5 +1,6 @@
 <?php
 
+use Npds\Config\Config;
 use Npds\Support\Facades\Js;
 use Npds\Support\Facades\Css;
 use Npds\Support\Facades\Log;
@@ -106,12 +107,12 @@ $scri_check = '
  */
 function displayadmins()
 {
-    global $hlpfile, $admf_ext, $fieldnames, $listdroits, $listdroitsmodulo, $f_meta_nom, $f_titre, $adminimg, $scri_check;
+    global $hlpfile, $listdroits, $listdroitsmodulo, $f_meta_nom, $f_titre, $scri_check;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $result = sql_query("SELECT aid, name, url, email, radminsuper 
                          FROM " . sql_table('authors'));
@@ -152,6 +153,9 @@ function displayadmins()
                 </td>
             </tr>';
     }
+
+    $adminimg = Config::get('admin.options.adminimg');
+    $admf_ext = Config::get('admin.options.admf_ext');
 
     echo '
         </tbody>
@@ -281,12 +285,12 @@ function displayadmins()
  */
 function modifyadmin($chng_aid)
 {
-    global $hlpfile, $aid, $admf_ext, $f_meta_nom, $f_titre, $adminimg, $scri_check, $fv_parametres;
+    global $hlpfile, $f_meta_nom, $f_titre, $scri_check, $fv_parametres;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <hr />
@@ -342,6 +346,9 @@ function modifyadmin($chng_aid)
             }
         }
     }
+
+    $adminimg = Config::get('admin.options.adminimg');
+    $admf_ext = Config::get('admin.options.admf_ext');
 
     //<== construction des check-box des droits
     echo '
@@ -495,7 +502,6 @@ function updatedroits($chng_aid)
  */
 function updateadmin($chng_aid, $chng_name, $chng_email, $chng_url, $chng_radminsuper, $chng_pwd, $chng_pwd2, $ad_d_27, $old_pwd)
 {
-
     if (!($chng_aid && $chng_name && $chng_email)) {
         Header("Location: admin.php?op=mod_authors");
     }
@@ -707,7 +713,7 @@ switch ($op) {
         include("header.php");
 
         GraphicAdmin($hlpfile);
-        adminhead($f_meta_nom, $f_titre, $adminimg);
+        adminhead($f_meta_nom, $f_titre);
 
         echo '
         <hr />

@@ -175,7 +175,7 @@ function SelectCategory($cat)
  */
 function AddCategory()
 {
-    global $hlpfile, $language, $aid, $radminsuper, $adminimg;
+    global $aid;
 
     $f_meta_nom = 'adminStory';
     $f_titre = adm_translate("Articles");
@@ -187,7 +187,7 @@ function AddCategory()
     include("header.php");
 
     GraphicAdmin('');
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <hr />
@@ -224,7 +224,7 @@ function AddCategory()
  */
 function SaveCategory($title)
 {
-    global $aid, $f_meta_nom, $adminimg;
+    global $aid, $f_meta_nom;
 
     $f_meta_nom = 'adminStory';
     $f_titre = adm_translate("Articles");
@@ -250,7 +250,7 @@ function SaveCategory($title)
     include("header.php");
 
     GraphicAdmin('');
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <hr />
@@ -269,7 +269,7 @@ function SaveCategory($title)
  */
 function EditCategory($catid)
 {
-    global $hlpfile, $language, $aid, $radminsuper, $adminimg;
+    global $aid;
 
     $f_meta_nom = 'adminStory';
     $f_titre = adm_translate("Articles");
@@ -281,7 +281,7 @@ function EditCategory($catid)
     include("header.php");
 
     GraphicAdmin('');
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <hr />
@@ -360,7 +360,7 @@ function EditCategory($catid)
  */
 function SaveEditCategory($catid, $title)
 {
-    global $aid, $f_meta_nom, $adminimg;
+    global $aid, $f_meta_nom;
 
     $f_titre = adm_translate("Articles");
     $title = preg_replace('#"#', '', $title);
@@ -384,7 +384,7 @@ function SaveEditCategory($catid, $title)
     include("header.php");
 
     GraphicAdmin('');
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <hr />
@@ -403,7 +403,7 @@ function SaveEditCategory($catid, $title)
  */
 function DelCategory($cat)
 {
-    global $hlpfile, $language, $aid, $radminsuper, $adminimg;
+    global $aid;
 
     $f_meta_nom = 'adminStory';
     $f_titre = adm_translate("Articles");
@@ -415,7 +415,7 @@ function DelCategory($cat)
     include("header.php");
 
     GraphicAdmin('');
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $result = sql_query("SELECT title 
                          FROM " . sql_table('stories_cat') . " 
@@ -537,7 +537,7 @@ function YesDelCategory($catid)
  */
 function NoMoveCategory($catid, $newcat)
 {
-    global $f_meta_nom, $f_titre, $adminimg, $aid;
+    global $f_meta_nom, $f_titre, $aid;
 
     $f_meta_nom = 'adminStory';
     $f_titre = adm_translate("Articles");
@@ -549,7 +549,7 @@ function NoMoveCategory($catid, $newcat)
     include("header.php");
 
     GraphicAdmin('');
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $result = sql_query("SELECT title 
                          FROM " . sql_table('stories_cat') . " 
@@ -627,7 +627,7 @@ function NoMoveCategory($catid, $newcat)
  */
 function displayStory($qid)
 {
-    global $tipath, $hlpfile, $language, $aid, $radminsuper, $adminimg;
+    global $tipath, $hlpfile, $language, $aid, $radminsuper;
 
     $f_meta_nom = 'adminStory';
 
@@ -679,7 +679,7 @@ function displayStory($qid)
     include('header.php');
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <hr />
@@ -846,7 +846,7 @@ function displayStory($qid)
  */
 function previewStory($qid, $uid, $author, $subject, $hometext, $bodytext, $topic, $notes, $catid, $ihome, $members, $Mmembers, $dd_pub, $fd_pub, $dh_pub, $fh_pub, $epur)
 {
-    global $tipath, $hlpfile, $language, $aid, $radminsuper, $adminimg;
+    global $tipath, $hlpfile, $language, $aid, $radminsuper;
 
     $f_meta_nom = 'adminStory';
     $f_titre = adm_translate("Articles");
@@ -888,9 +888,7 @@ function previewStory($qid, $uid, $author, $subject, $hometext, $bodytext, $topi
     include('header.php');
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
-
-    global $local_user_language;
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <hr />
@@ -1164,7 +1162,7 @@ function postStory($type_pub, $qid, $uid, $author, $subject, $hometext, $bodytex
  */
 function editStory($sid)
 {
-    global $tipath, $hlpfile, $language, $aid, $radminsuper, $adminimg, $gmt;
+    global $tipath, $hlpfile, $language, $aid, $radminsuper, $gmt;
 
     $f_meta_nom = 'adminStory';
     $f_titre = adm_translate("Editer un Article");
@@ -1219,7 +1217,7 @@ function editStory($sid)
     include('header.php');
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $result = sql_query("SELECT topictext, topicimage 
                          FROM " . sql_table('topics') . " 
@@ -1240,8 +1238,6 @@ function editStory($sid)
             $topiclogo = '<img class="img-fluid " src="' . $timage . '" align="right" alt="" />';
         }
     }
-
-    global $local_user_language;
 
     echo '
     <div id="art_preview" class="card card-body mb-3">';
@@ -1648,7 +1644,7 @@ function changeStory($sid, $subject, $hometext, $bodytext, $topic, $notes, $cati
  */
 function adminStory()
 {
-    global $hlpfile, $language, $aid, $radminsuper, $adminimg;
+    global $hlpfile, $language, $aid, $radminsuper;
 
     $f_meta_nom = 'adminStory';
     $f_titre = adm_translate("Nouvel Article");
@@ -1662,7 +1658,7 @@ function adminStory()
     include('header.php');
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     // settype($hometext, 'string');
     // settype($bodytext, 'string');
@@ -1814,7 +1810,7 @@ function adminStory()
  */
 function previewAdminStory($subject, $hometext, $bodytext, $topic, $catid, $ihome, $members, $Mmembers, $dd_pub, $fd_pub, $dh_pub, $fh_pub, $epur)
 {
-    global $tipath, $hlpfile, $language, $aid, $radminsuper, $adminimg, $topicimage;
+    global $tipath, $hlpfile, $language, $aid, $radminsuper, $topicimage;
 
     $hlpfile = "manuels/$language/newarticle.html";
 
@@ -1863,9 +1859,7 @@ function previewAdminStory($subject, $hometext, $bodytext, $topic, $catid, $ihom
     include('header.php');
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
-
-    global $local_user_language;
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <hr />

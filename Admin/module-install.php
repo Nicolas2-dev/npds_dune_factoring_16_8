@@ -881,7 +881,7 @@ if ($ModInstall != '' && $ModDesinstall == '') {
 }
 
 GraphicAdmin($hlpfile);
-adminhead($f_meta_nom, $f_titre, $adminimg);
+adminhead($f_meta_nom, $f_titre);
 
 $clspin = ' text-success';
 

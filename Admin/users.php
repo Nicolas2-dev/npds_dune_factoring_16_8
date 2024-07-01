@@ -29,12 +29,12 @@ $hlpfile = "manuels/$language/users.html";
  */
 function displayUsers()
 {
-    global $hlpfile, $admf_ext, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <hr />
@@ -151,12 +151,12 @@ function extractUserCSV()
  */
 function modifyUser($chng_user)
 {
-    global $hlpfile, $admf_ext, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $result = sql_query("SELECT uid, uname, name, url, email, femail, user_from, user_occ, user_intrest, user_viewemail, user_avatar, user_sig, bio, pass, send_email, is_visible, mns, user_lnl 
                          FROM " . sql_table('users') . " 
@@ -333,7 +333,7 @@ function updateUser($chng_uid, $chng_uname, $chng_name, $chng_url, $chng_email, 
         include("header.php");
 
         GraphicAdmin($hlpfile);
-        adminhead($f_meta_nom, $f_titre, $adminimg);
+        adminhead($f_meta_nom, $f_titre);
 
         echo error_handler(adm_translate("ERREUR : cet identifiant est déjà utilisé") . '<br />');
 
@@ -351,7 +351,7 @@ function updateUser($chng_uid, $chng_uname, $chng_name, $chng_url, $chng_email, 
             include("header.php");
 
             GraphicAdmin($hlpfile);
-            adminhead($f_meta_nom, $f_titre, $adminimg);
+            adminhead($f_meta_nom, $f_titre);
 
             echo error_handler(adm_translate("Désolé, les nouveaux Mots de Passe ne correspondent pas. Cliquez sur retour et recommencez") . '<br />');
 
@@ -368,7 +368,7 @@ function updateUser($chng_uid, $chng_uname, $chng_name, $chng_url, $chng_email, 
         include("header.php");
 
         GraphicAdmin($hlpfile);
-        adminhead($f_meta_nom, $f_titre, $adminimg);
+        adminhead($f_meta_nom, $f_titre);
 
         echo error_handler(adm_translate("Erreur : DNS ou serveur de mail incorrect") . '<br />');
 
@@ -527,12 +527,12 @@ function updateUser($chng_uid, $chng_uname, $chng_name, $chng_url, $chng_email, 
  */
 function nonallowedUsers()
 {
-    global $hlpfile, $admf_ext, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $newsuti = sql_query("SELECT u.uid, u.uname, u.name, u.user_regdate 
                           FROM " . sql_table('users') . " AS u 
@@ -583,12 +583,12 @@ function nonallowedUsers()
  */
 function checkdnsmailusers()
 {
-    global $hlpfile, $admf_ext, $f_meta_nom, $f_titre, $adminimg, $gmt, $adminmail, $page, $end, $autocont;
+    global $hlpfile, $f_meta_nom, $f_titre, $gmt, $adminmail, $page, $end, $autocont;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     if (!isset($page)) {
         $page = 1;
@@ -992,7 +992,7 @@ switch ($op) {
             include("header.php");
 
             GraphicAdmin($hlpfile);
-            adminhead($f_meta_nom, $f_titre, $adminimg);
+            adminhead($f_meta_nom, $f_titre);
 
             echo error_handler('<i class="fa fa-exclamation me-2"></i>' . adm_translate("ERREUR : cet identifiant est déjà utilisé") . '<br />');
 
@@ -1007,7 +1007,7 @@ switch ($op) {
             include("header.php");
 
             GraphicAdmin($hlpfile);
-            adminhead($f_meta_nom, $f_titre, $adminimg);
+            adminhead($f_meta_nom, $f_titre);
 
             echo error_handler(adm_translate("Vous devez remplir tous les Champs") . '<br />'); // ce message n'est pas très précis ..
 
@@ -1022,7 +1022,7 @@ switch ($op) {
             include("header.php");
 
             GraphicAdmin($hlpfile);
-            adminhead($f_meta_nom, $f_titre, $adminimg);
+            adminhead($f_meta_nom, $f_titre);
 
             echo error_handler(adm_translate("Erreur : DNS ou serveur de mail incorrect") . '<br />');
 

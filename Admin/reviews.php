@@ -45,12 +45,12 @@ function mod_main($title, $description)
  */
 function reviews()
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $resultrm = sql_query("SELECT title, description 
                            FROM " . sql_table('reviews_main'));

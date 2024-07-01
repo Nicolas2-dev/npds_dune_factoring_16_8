@@ -1,5 +1,6 @@
 <?php
 
+use Npds\Config\Config;
 use Npds\Support\Facades\Css;
 use Npds\Support\Facades\Language;
 use Npds\Support\Facades\Paginator;
@@ -39,13 +40,15 @@ function admindroits($aid, $f_meta_nom)
     $radminsuper = $supers[0];
 }
 
-function adminhead($f_meta_nom, $f_titre, $adminimg)
+function adminhead($f_meta_nom, $f_titre)
 {
     global $admf_ext, $f_meta_nom, $ModPath, $adm_img_mod;
 
     list($furlscript, $ficone) = sql_fetch_row(sql_query("SELECT furlscript, ficone 
                                                           FROM " . sql_table('fonctions') . " 
                                                           WHERE fnom='$f_meta_nom'"));
+
+    $adminimg = Config::get('admin.options.adminimg');  
 
     if (file_exists($adminimg . $ficone . '.' . $admf_ext)) {
         $img_adm = '<img src="' . $adminimg . $ficone . '.' . $admf_ext . '" class="me-2" alt="' . $f_titre . '" loading="lazy" />';
@@ -943,7 +946,7 @@ function adminMain($deja_affiches)
 
 if ($admintest) {
 
-    // settype($op, 'string');
+    settype($op, 'string');
 
     switch ($op) {
         case 'GraphicAdmin':

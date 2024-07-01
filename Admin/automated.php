@@ -1,5 +1,6 @@
 <?php
 
+use Npds\Config\Config;
 use Npds\Support\Facades\Css;
 use Npds\Support\Facades\Str;
 use Npds\Support\Facades\Date;
@@ -167,12 +168,12 @@ function SelectCategory($cat)
  */
 function autoStory()
 {
-    global $hlpfile, $aid, $radminsuper, $gmt, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $aid, $radminsuper, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <hr />
@@ -268,7 +269,7 @@ function autoDelete($anid)
  */
 function autoEdit($anid)
 {
-    global $aid, $hlpfile, $tipath, $radminsuper, $adminimg;
+    global $aid, $hlpfile, $radminsuper;
 
     $f_meta_nom = 'autoStory';
     $f_titre = adm_translate("Editer un Article");
@@ -321,13 +322,15 @@ function autoEdit($anid)
     include('header.php');
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <hr />
     <h3>' . adm_translate("Editer l'Article Automatique") . '</h3>
     ' . Language::aff_local_langue('', 'local_user_language', adm_translate("Langue de Prévisualisation")) . '
     <div class="card card-body mb-3">';
+
+    $tipath = Config::get('admin.options.tipath');
 
     if ($topicimage !== '') {
         if (!$imgtmp = Theme::theme_image('topics/' . $topicimage)) {
@@ -490,7 +493,7 @@ function autoEdit($anid)
  */
 function autoSaveEdit($anid, $title, $hometext, $bodytext, $topic, $notes, $catid, $ihome, $informant, $members, $Mmembers, $date_debval, $date_finval, $epur)
 {
-    global $aid, $ultramode;
+    global $ultramode;
 
     $title = stripslashes(Str::FixQuotes(str_replace('"', '&quot;', $title)));
 

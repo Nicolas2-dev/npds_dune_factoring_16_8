@@ -26,12 +26,12 @@ $hlpfile = "manuels/$language/surveys.html";
  */
 function poll_createPoll()
 {
-    global $hlpfile, $maxOptions, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $maxOptions, $f_meta_nom, $f_titre;
 
     include('header.php');
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     global $id;
 
@@ -128,7 +128,7 @@ function poll_createPoll()
  */
 function poll_createPosted()
 {
-    global $maxOptions, $pollTitle, $optionText, $poll_type;
+    global $pollTitle, $optionText, $poll_type;
 
     $timeStamp = time();
     $pollTitle = Str::FixQuotes($pollTitle);
@@ -158,12 +158,12 @@ function poll_createPosted()
  */
 function poll_removePoll()
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include('header.php');
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <hr />
@@ -259,7 +259,7 @@ function poll_removePosted()
  */
 function poll_editPoll()
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include('header.php');
 
@@ -268,7 +268,7 @@ function poll_editPoll()
                          ORDER BY timeStamp");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <hr />
@@ -315,7 +315,7 @@ function poll_editPoll()
  */
 function poll_editPollPosted()
 {
-    global $id, $maxOptions, $f_meta_nom, $f_titre, $adminimg;
+    global $id, $maxOptions, $f_meta_nom, $f_titre;
 
     if ($id) {
         global $hlpfile;
@@ -323,7 +323,7 @@ function poll_editPollPosted()
         include('header.php');
 
         GraphicAdmin($hlpfile);
-        adminhead($f_meta_nom, $f_titre, $adminimg);
+        adminhead($f_meta_nom, $f_titre);
 
         $result = sql_query("SELECT pollID, pollTitle, timeStamp 
                              FROM " . sql_table('poll_desc') . " 
@@ -423,7 +423,7 @@ function poll_editPollPosted()
  */
 function poll_SendEditPoll()
 {
-    global $maxOptions, $pollTitle, $optionText, $poll_type, $pollID, $poll_close;
+    global $pollTitle, $optionText, $poll_type, $pollID, $poll_close;
 
     $result = sql_query("UPDATE " . sql_table('poll_desc') . " 
                          SET pollTitle='$pollTitle' 

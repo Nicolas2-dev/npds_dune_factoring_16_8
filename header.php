@@ -321,14 +321,14 @@ if (array_key_exists($pages_ref, $PAGES)) {
     }
 
     // meta description
-    // settype($m_description, 'string');
+    settype($m_description, 'string');
 
     if (array_key_exists('meta-description', $PAGES[$pages_ref]) and ($m_description == '')) {
         $m_description = Language::aff_langue($PAGES[$pages_ref]['meta-description']);
     }
 
     // meta keywords
-    // settype($m_keywords, 'string');
+    settype($m_keywords, 'string');
 
     if (array_key_exists('meta-keywords', $PAGES[$pages_ref]) and ($m_keywords == '')) {
         $m_keywords = Language::aff_langue($PAGES[$pages_ref]['meta-keywords']);

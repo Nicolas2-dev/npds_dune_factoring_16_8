@@ -26,12 +26,12 @@ $hlpfile = "manuels/$language/ephem.html";
  */
 function Ephemerids()
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $nday = '1';
 
@@ -165,7 +165,7 @@ function Ephemeridsadd($did, $mid, $yid, $content)
  */
 function Ephemeridsmaintenance($did, $mid)
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     $resultX = sql_query("SELECT eid, did, mid, yid, content 
                           FROM " . sql_table('ephem') . " 
@@ -180,7 +180,7 @@ function Ephemeridsmaintenance($did, $mid)
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <hr />
@@ -240,12 +240,12 @@ function Ephemeridsdel($eid, $did, $mid)
  */
 function Ephemeridsedit($eid, $did, $mid)
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $result = sql_query("SELECT yid, content 
                          FROM " . sql_table('ephem') . " 

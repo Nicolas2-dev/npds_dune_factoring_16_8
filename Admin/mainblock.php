@@ -27,12 +27,12 @@ $hlpfile = "manuels/$language/mainblock.html";
  */
 function mblock()
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <hr />

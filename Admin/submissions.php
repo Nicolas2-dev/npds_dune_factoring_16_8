@@ -34,7 +34,7 @@ function submissions()
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $result = sql_query("SELECT qid, subject, timestamp, topic, uname 
                          FROM " . sql_table('queue') . " 

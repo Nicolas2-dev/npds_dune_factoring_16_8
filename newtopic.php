@@ -124,7 +124,7 @@ if ($submitS) {
         $poster_ip = Request::getip();
 
         if ($dns_verif){
-            $hostname = @gethostbyaddr($poster_ip);
+            $hostname = @gethostbyaddr(urldecode($poster_ip));
         } else {
             $hostname = '';
         }

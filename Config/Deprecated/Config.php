@@ -157,7 +157,7 @@ $backend_image = "";
 $backend_width = "90";
 $backend_height = "30";
 $ultramode = 1;
-$npds_twi = 0;
+$npds_twi = 1;
 $npds_fcb = 0;
 
 ######################################################################

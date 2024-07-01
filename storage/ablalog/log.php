@@ -1,7 +1,7 @@
 <?php
-$xdate = 1442510729;
-$xtotalz = 2;
-$xmembres = 2;
+$xdate = 1719791964;
+$xtotalz = 444;
+$xmembres = 1;
 $xtotala = 4;
 $xtotalc = 2;
 $xtotald = 3;

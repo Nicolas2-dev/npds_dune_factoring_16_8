@@ -124,7 +124,7 @@ $result = sql_query("SELECT optgain, optcount
 list($gainopt, $countopt) = sql_fetch_row($result);
 
 // Affichage
-adminhead($f_meta_nom, $f_titre, $adminimg);
+adminhead($f_meta_nom, $f_titre);
 
 echo '<hr /><p class="lead">' . adm_translate("Optimisation effectuée") . ' : ' . adm_translate("Gain total réalisé") . ' ' . $total_gain . ' Ko</br>';
 

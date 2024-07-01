@@ -13,17 +13,17 @@ return array(
         /**
          * Topics images path (put / only at the end, not at the begining)
          */
-        'tipath' => 'images/topics/',
+        'tipath' => 'assets/images/topics/',
         
         /**
          * User images path (put / only at the end, not at the begining)
          */
-        'userimg' => 'images/menu/',
+        'userimg' => 'assets/images/menu/',
 
         /**
          * Administration system images path (put / only at the end, not at the begining)
          */
-        'adminimg' => 'images/admin/',
+        'adminimg' => 'assets/images/admin/',
 
         /**
          * Activate short Administration Menu? (1=Yes 0=No)

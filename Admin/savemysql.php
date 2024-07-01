@@ -44,7 +44,7 @@ function PrepareString($a_string = '')
  */
 function get_table_def($table)
 {
-    global $dbname, $crlf, $crlf2, $dblink;
+    global $crlf;
 
     // settype($index, 'array');
 
@@ -127,9 +127,8 @@ function get_table_def($table)
  */
 function get_table_content($table)
 {
-    global $dbname, $crlf, $crlf2;
+    global $crlf;
 
-    $table_list = '';
     $schema_insert = '';
 
     $result = sql_query("SELECT * FROM $table");
@@ -160,7 +159,7 @@ function get_table_content($table)
     if ($schema_insert != "") {
         $schema_insert = trim($schema_insert);
 
-        return ($schema_insert);
+        return $schema_insert;
     }
 }
 
@@ -224,7 +223,7 @@ function dbSave()
  */
 function dbSave_tofile($repertoire, $linebyline = 0, $savemysql_size = 256)
 {
-    global $dbname, $name, $MSos, $crlf, $crlf2;
+    global $dbname, $name, $MSos, $crlf;
 
     @set_time_limit(600);
 

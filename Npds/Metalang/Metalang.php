@@ -312,7 +312,9 @@ class Metalang
                     if (substr($Cword, 0, 9) == "function ") {
                         $Rword = "MM_" . str_replace("!", "", $Rword);
 
-                        if (!function_exists($Rword)) {
+                        if (method_exists(static::class, $Rword)) {
+                            @eval(static::$$Rword);
+                        } elseif (!function_exists($Rword)) {
                             @eval($Cword);
                         }
 

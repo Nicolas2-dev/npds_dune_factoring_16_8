@@ -39,7 +39,7 @@ if ($al) {
  */
 function group_liste()
 {
-    global $hlpfile, $al, $mes, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $al, $mes, $f_meta_nom, $f_titre;
 
     include('header.php');
 
@@ -77,7 +77,7 @@ function group_liste()
         }
     }
 
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '<script type="text/javascript">
     //<![CDATA[';
@@ -379,12 +379,12 @@ function group_liste()
  */
 function membre_add($gp)
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include('header.php');
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <hr />
@@ -644,12 +644,12 @@ function retiredugroupe_all($groupe_id, $tab_groupe)
  */
 function groupe_edit($groupe_id)
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include('header.php');
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $result = sql_fetch_assoc(sql_query("SELECT groupe_name, groupe_description 
                                          FROM " . sql_table('groupes') . " 
@@ -729,7 +729,7 @@ function groupe_edit($groupe_id)
  */
 function groupe_maj($sub_op)
 {
-    global $hlpfile, $groupe_id, $groupe_name, $groupe_description;
+    global $groupe_id, $groupe_name, $groupe_description;
 
     if ($sub_op == adm_translate("Sauver les modifications")) {
         sql_query("UPDATE " . sql_table('groupes') . " 
@@ -778,8 +778,6 @@ function groupe_maj($sub_op)
  */
 function groupe_delete($groupe_id)
 {
-    global $hlpfile, $groupe_name, $groupe_description, $sub_op;
-
     sql_query("DELETE 
                FROM " . sql_table('lblocks') . " 
                WHERE member='$groupe_id'");
@@ -1297,7 +1295,7 @@ function bloc_groupe_create($groupe_id)
  */
 function groupe_member_ask()
 {
-    global $sub_op, $f_meta_nom, $f_titre, $adminimg, $myrow, $hlpfile, $groupe_asked, $user_asked;
+    global $sub_op, $f_meta_nom, $f_titre, $myrow, $hlpfile, $groupe_asked, $user_asked;
 
     $directory = "users_private/groupe";
 
@@ -1372,7 +1370,7 @@ function groupe_member_ask()
     include('header.php');
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $iterator = new DirectoryIterator($directory);
     $j = 0;

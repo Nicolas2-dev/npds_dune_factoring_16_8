@@ -59,6 +59,6 @@ return array(
     /**
      * [description]
      */
-    'npds_key' => 'KSHKvXqVsrnfs5BpUZjUdDbLPTjjDoD3',
+    'npds_key' => '', //'KSHKvXqVsrnfs5BpUZjUdDbLPTjjDoD3',
 
 );    

@@ -28,12 +28,12 @@ $hlpfile = "manuels/$language/configfiles.html";
  */
 function ConfigFiles($contents, $files)
 {
-    global $hlpfile, $language, $max_car, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     if ($contents == '') {
         echo '
@@ -221,12 +221,12 @@ function ConfigFiles_save($Xtxt, $Xfiles)
  */
 function delete_configfile($fileX)
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <div class="alert alert-danger" role="alert">
@@ -278,14 +278,14 @@ function ConfigFiles_delete($modele)
  */
 function copy_sample($fileX)
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg, $header;
+    global $hlpfile, $f_meta_nom, $f_titre, $header;
 
     if ($header != 1) {
         include("header.php");
     }
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <hr />

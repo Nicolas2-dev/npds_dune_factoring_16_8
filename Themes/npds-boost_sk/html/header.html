@@ -35,7 +35,7 @@
                   <li><a class="dropdown-item " href="modules.php?ModPath=reseaux-sociaux&amp;ModStart=reseaux-sociaux" title="'.translate("Réseaux sociaux").'" ><i class="fa fa-share-alt-square fa-lg me-2"></i>'.translate("Réseaux sociaux").'</a></li>
                   <li><a class="dropdown-item " href="viewpmsg.php" title="'.translate("Message personnel").'" ><i class="fa fa-envelope fa-lg me-2 '.$cl.'"></i>'.translate("Message").'</a></li>';
       
-      <!-- settype($cookie[0], 'integer'); -->
+      settype($cookie[0], 'integer');
       list($user_avatar)=sql_fetch_row(sql_query("SELECT user_avatar FROM ".sql_table('users')." WHERE uname='".$username."'"));
 
       if (!$user_avatar)

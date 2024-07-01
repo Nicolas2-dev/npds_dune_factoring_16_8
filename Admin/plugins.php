@@ -10,7 +10,9 @@ if (!function_exists('admindroits')) {
 include("header.php");
 
 if ($ModPath != '') {
-    if (file_exists("modules/$ModPath/$ModStart.php")) {
+    if (file_exists("modules/$ModPath/Controllers/$ModStart.php")) {
+        include("modules/$ModPath/Controllers/$ModStart.php");
+    } elseif (file_exists("modules/$ModPath/$ModStart.php")) {
         include("modules/$ModPath/$ModStart.php");
     }
 } else {

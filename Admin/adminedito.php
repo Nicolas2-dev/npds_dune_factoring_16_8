@@ -33,12 +33,12 @@ $hlpfile = "manuels/$language/edito.html";
  */
 function edito($edito_type, $contents, $Xaff_jours, $Xaff_jour, $Xaff_nuit)
 {
-    global $hlpfile, $language, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '<hr />';
 

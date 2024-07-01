@@ -33,12 +33,12 @@ include("functions.php");
  */
 function ForumMaintMarkTopics()
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <h3>' . adm_translate("Marquer tous les Topics comme lus") . '</h3>
@@ -118,12 +118,12 @@ function ForumMaintMarkTopics()
  */
 function ForumMaintTopics($before, $forum_name)
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg, $parse;
+    global $hlpfile, $f_meta_nom, $f_titre, $parse;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <hr />
@@ -195,12 +195,12 @@ function ForumMaintTopics($before, $forum_name)
  */
 function ForumMaintTopicDetail($topic, $topic_title)
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $resultTT = sql_query("SELECT post_text, post_time 
                            FROM " . sql_table('posts') . " 
@@ -385,12 +385,12 @@ function SynchroForum()
  */
 function MergeForum()
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <hr/>
@@ -518,12 +518,12 @@ function MergeForumAction($oriforum, $destforum)
  */
 function ForumMaintAdmin()
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg, $language;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <hr />

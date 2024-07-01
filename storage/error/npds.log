@@ -1,0 +1,950 @@
+Exception information:
+
+    Date: Jun 30, 2024 20:20PM
+
+    Message: Undefined variable $m_description
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php
+
+    Line: 395
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php(395): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 395)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(55): include('F:\\NEW DEV\\dev_...')
+#2 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(41): index()
+#3 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(122): select_start_page()
+#4 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 20:21PM
+
+    Message: Undefined variable $m_description
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php
+
+    Line: 395
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php(395): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 395)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(55): include('F:\\NEW DEV\\dev_...')
+#2 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(41): index()
+#3 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(122): select_start_page()
+#4 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 20:24PM
+
+    Message: Undefined variable $m_description
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php
+
+    Line: 395
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php(395): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 395)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(55): include('F:\\NEW DEV\\dev_...')
+#2 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(41): index()
+#3 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(122): select_start_page()
+#4 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 20:25PM
+
+    Message: Undefined variable $m_description
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php
+
+    Line: 395
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php(395): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 395)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(55): include('F:\\NEW DEV\\dev_...')
+#2 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(41): index()
+#3 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(122): select_start_page()
+#4 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 20:28PM
+
+    Message: Undefined variable $m_description
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php
+
+    Line: 395
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php(395): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 395)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(55): include('F:\\NEW DEV\\dev_...')
+#2 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(41): index()
+#3 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(122): select_start_page()
+#4 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 18:29PM
+
+    Message: Undefined variable $poster_i
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\Bootstrap\Boot.php
+
+    Line: 67
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\Bootstrap\Boot.php(67): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 67)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(13): include('F:\\NEW DEV\\dev_...')
+#2 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 18:29PM
+
+    Message: Undefined variable $poster_i
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\Bootstrap\Boot.php
+
+    Line: 67
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\Bootstrap\Boot.php(67): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 67)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(13): include('F:\\NEW DEV\\dev_...')
+#2 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 18:29PM
+
+    Message: Undefined variable $poster_i
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\Bootstrap\Boot.php
+
+    Line: 67
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\Bootstrap\Boot.php(67): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 67)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(13): include('F:\\NEW DEV\\dev_...')
+#2 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 18:29PM
+
+    Message: Undefined variable $poster_i
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\Bootstrap\Boot.php
+
+    Line: 67
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\Bootstrap\Boot.php(67): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 67)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(13): include('F:\\NEW DEV\\dev_...')
+#2 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 18:29PM
+
+    Message: Undefined variable $poster_i
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\Bootstrap\Boot.php
+
+    Line: 67
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\Bootstrap\Boot.php(67): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 67)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(13): include('F:\\NEW DEV\\dev_...')
+#2 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 18:29PM
+
+    Message: Undefined variable $poster_i
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\Bootstrap\Boot.php
+
+    Line: 67
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\Bootstrap\Boot.php(67): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 67)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(13): include('F:\\NEW DEV\\dev_...')
+#2 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 18:29PM
+
+    Message: Undefined variable $poster_i
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\Bootstrap\Boot.php
+
+    Line: 67
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\Bootstrap\Boot.php(67): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 67)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(13): include('F:\\NEW DEV\\dev_...')
+#2 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 18:29PM
+
+    Message: Undefined variable $poster_i
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\Bootstrap\Boot.php
+
+    Line: 67
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\Bootstrap\Boot.php(67): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 67)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(13): include('F:\\NEW DEV\\dev_...')
+#2 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 18:30PM
+
+    Message: Undefined variable $poster_i
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\Bootstrap\Boot.php
+
+    Line: 67
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\Bootstrap\Boot.php(67): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 67)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(13): include('F:\\NEW DEV\\dev_...')
+#2 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 20:30PM
+
+    Message: Undefined variable $m_description
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php
+
+    Line: 395
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php(395): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 395)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(55): include('F:\\NEW DEV\\dev_...')
+#2 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(41): index()
+#3 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(122): select_start_page()
+#4 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 20:30PM
+
+    Message: Undefined variable $m_description
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php
+
+    Line: 395
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php(395): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 395)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(55): include('F:\\NEW DEV\\dev_...')
+#2 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(41): index()
+#3 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(122): select_start_page()
+#4 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 20:30PM
+
+    Message: Undefined variable $m_description
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php
+
+    Line: 395
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php(395): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 395)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(55): include('F:\\NEW DEV\\dev_...')
+#2 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(41): index()
+#3 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(122): select_start_page()
+#4 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 20:30PM
+
+    Message: Undefined variable $m_description
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php
+
+    Line: 395
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php(395): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 395)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(55): include('F:\\NEW DEV\\dev_...')
+#2 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(41): index()
+#3 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(122): select_start_page()
+#4 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 20:30PM
+
+    Message: Undefined variable $m_description
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php
+
+    Line: 395
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php(395): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 395)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(55): include('F:\\NEW DEV\\dev_...')
+#2 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(41): index()
+#3 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(122): select_start_page()
+#4 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 20:30PM
+
+    Message: Undefined variable $m_description
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php
+
+    Line: 395
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php(395): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 395)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(55): include('F:\\NEW DEV\\dev_...')
+#2 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(41): index()
+#3 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(122): select_start_page()
+#4 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 20:30PM
+
+    Message: Undefined variable $m_description
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php
+
+    Line: 395
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php(395): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 395)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(55): include('F:\\NEW DEV\\dev_...')
+#2 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(41): index()
+#3 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(122): select_start_page()
+#4 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 20:30PM
+
+    Message: Undefined variable $m_description
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php
+
+    Line: 395
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php(395): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 395)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(55): include('F:\\NEW DEV\\dev_...')
+#2 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(41): index()
+#3 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(122): select_start_page()
+#4 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 20:30PM
+
+    Message: Undefined variable $m_description
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php
+
+    Line: 395
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php(395): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 395)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(55): include('F:\\NEW DEV\\dev_...')
+#2 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(41): index()
+#3 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(122): select_start_page()
+#4 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 20:30PM
+
+    Message: Undefined variable $m_description
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php
+
+    Line: 395
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php(395): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 395)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(55): include('F:\\NEW DEV\\dev_...')
+#2 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(41): index()
+#3 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(122): select_start_page()
+#4 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 20:30PM
+
+    Message: Undefined variable $m_description
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php
+
+    Line: 395
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php(395): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 395)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(55): include('F:\\NEW DEV\\dev_...')
+#2 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(41): index()
+#3 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(122): select_start_page()
+#4 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 20:30PM
+
+    Message: Undefined variable $m_description
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php
+
+    Line: 395
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php(395): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 395)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(55): include('F:\\NEW DEV\\dev_...')
+#2 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(41): index()
+#3 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(122): select_start_page()
+#4 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 20:30PM
+
+    Message: Undefined variable $m_description
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php
+
+    Line: 395
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php(395): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 395)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(55): include('F:\\NEW DEV\\dev_...')
+#2 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(41): index()
+#3 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(122): select_start_page()
+#4 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 20:30PM
+
+    Message: Undefined variable $m_description
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php
+
+    Line: 395
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php(395): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 395)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(55): include('F:\\NEW DEV\\dev_...')
+#2 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(41): index()
+#3 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(122): select_start_page()
+#4 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 20:30PM
+
+    Message: Undefined variable $m_description
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php
+
+    Line: 395
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php(395): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 395)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(55): include('F:\\NEW DEV\\dev_...')
+#2 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(41): index()
+#3 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(122): select_start_page()
+#4 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 20:30PM
+
+    Message: Undefined variable $m_description
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php
+
+    Line: 395
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php(395): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 395)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(55): include('F:\\NEW DEV\\dev_...')
+#2 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(41): index()
+#3 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(122): select_start_page()
+#4 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 20:30PM
+
+    Message: Undefined variable $m_description
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php
+
+    Line: 395
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php(395): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 395)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(55): include('F:\\NEW DEV\\dev_...')
+#2 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(41): index()
+#3 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(122): select_start_page()
+#4 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 20:30PM
+
+    Message: Undefined variable $m_description
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php
+
+    Line: 395
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php(395): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 395)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(55): include('F:\\NEW DEV\\dev_...')
+#2 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(41): index()
+#3 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(122): select_start_page()
+#4 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 20:31PM
+
+    Message: Undefined variable $m_description
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php
+
+    Line: 395
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php(395): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 395)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(55): include('F:\\NEW DEV\\dev_...')
+#2 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(41): index()
+#3 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(122): select_start_page()
+#4 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 20:31PM
+
+    Message: Undefined variable $m_description
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php
+
+    Line: 395
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php(395): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 395)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(55): include('F:\\NEW DEV\\dev_...')
+#2 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(41): index()
+#3 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(122): select_start_page()
+#4 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 20:31PM
+
+    Message: Undefined variable $m_description
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php
+
+    Line: 395
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php(395): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 395)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(55): include('F:\\NEW DEV\\dev_...')
+#2 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(41): index()
+#3 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(122): select_start_page()
+#4 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 20:31PM
+
+    Message: Undefined variable $m_description
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php
+
+    Line: 395
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php(395): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 395)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(55): include('F:\\NEW DEV\\dev_...')
+#2 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(41): index()
+#3 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(122): select_start_page()
+#4 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 20:31PM
+
+    Message: Undefined variable $m_description
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php
+
+    Line: 395
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php(395): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 395)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(55): include('F:\\NEW DEV\\dev_...')
+#2 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(41): index()
+#3 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(122): select_start_page()
+#4 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 20:31PM
+
+    Message: Undefined variable $m_description
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php
+
+    Line: 395
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php(395): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 395)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(55): include('F:\\NEW DEV\\dev_...')
+#2 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(41): index()
+#3 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(122): select_start_page()
+#4 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 20:31PM
+
+    Message: Undefined variable $m_description
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php
+
+    Line: 395
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php(395): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 395)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(55): include('F:\\NEW DEV\\dev_...')
+#2 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(41): index()
+#3 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(122): select_start_page()
+#4 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 20:31PM
+
+    Message: Undefined variable $m_description
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php
+
+    Line: 395
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php(395): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 395)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(55): include('F:\\NEW DEV\\dev_...')
+#2 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(41): index()
+#3 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(122): select_start_page()
+#4 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 20:31PM
+
+    Message: Undefined variable $m_description
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php
+
+    Line: 395
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php(395): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 395)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(55): include('F:\\NEW DEV\\dev_...')
+#2 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(41): index()
+#3 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(122): select_start_page()
+#4 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 20:31PM
+
+    Message: Undefined variable $m_description
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php
+
+    Line: 395
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php(395): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 395)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(55): include('F:\\NEW DEV\\dev_...')
+#2 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(41): index()
+#3 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(122): select_start_page()
+#4 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 20:31PM
+
+    Message: Undefined variable $m_description
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php
+
+    Line: 395
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php(395): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 395)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(55): include('F:\\NEW DEV\\dev_...')
+#2 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(41): index()
+#3 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(122): select_start_page()
+#4 {main}
+
+---------
+
+Exception information:
+
+    Date: Jun 30, 2024 20:31PM
+
+    Message: Undefined variable $m_description
+
+    Code: 0
+
+    File: F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php
+
+    Line: 395
+
+    Stack trace:
+
+#0 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\header.php(395): Npds\Execption\ExecptionHandler->handleError(2, 'Undefined varia...', 'F:\\NEW DEV\\dev_...', 395)
+#1 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(55): include('F:\\NEW DEV\\dev_...')
+#2 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(41): index()
+#3 F:\NEW DEV\dev_revolution_jpb\npds_dune-master\revolution_16\index.php(122): select_start_page()
+#4 {main}
+
+---------
+

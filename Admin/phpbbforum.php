@@ -30,12 +30,12 @@ include("auth.php");
  */
 function ForumAdmin()
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <hr />
@@ -105,12 +105,12 @@ function ForumAdmin()
  */
 function ForumGo($cat_id)
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $result = sql_query("SELECT cat_title 
                          FROM " . sql_table('catagories') . " 
@@ -397,12 +397,12 @@ function ForumGo($cat_id)
  */
 function ForumGoEdit($forum_id, $ctg)
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $result = sql_query("SELECT forum_id, forum_name, forum_desc, forum_access, forum_moderator, cat_id, forum_type, forum_pass, arbre, attachement, forum_index 
                          FROM " . sql_table('forums') . " 
@@ -751,12 +751,12 @@ function ForumGoEdit($forum_id, $ctg)
  */
 function ForumCatEdit($cat_id)
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $result = sql_query("SELECT cat_id, cat_title 
                          FROM " . sql_table('catagories') . " 
@@ -1051,7 +1051,7 @@ function ForumGoAdd($forum_name, $forum_desc, $forum_access, $forum_mod, $cat_id
  */
 function ForumCatDel($cat_id, $ok = 0)
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     if ($ok == 1) {
         $result = sql_query("SELECT forum_id 
@@ -1092,7 +1092,7 @@ function ForumCatDel($cat_id, $ok = 0)
         include("header.php");
 
         GraphicAdmin($hlpfile);
-        adminhead($f_meta_nom, $f_titre, $adminimg);
+        adminhead($f_meta_nom, $f_titre);
 
         echo '
         <hr />
@@ -1116,7 +1116,7 @@ function ForumCatDel($cat_id, $ok = 0)
  */
 function ForumGoDel($forum_id, $ok = 0)
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     if ($ok == 1) {
         sql_query("DELETE 
@@ -1147,7 +1147,7 @@ function ForumGoDel($forum_id, $ok = 0)
         include('header.php');
 
         GraphicAdmin($hlpfile);
-        adminhead($f_meta_nom, $f_titre, $adminimg);
+        adminhead($f_meta_nom, $f_titre);
 
         echo '
         <hr />

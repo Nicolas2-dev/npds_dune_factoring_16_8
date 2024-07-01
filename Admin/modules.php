@@ -61,7 +61,7 @@ foreach ($modlist as $value) {
     }
 }
 
-adminhead($f_meta_nom, $f_titre, $adminimg);
+adminhead($f_meta_nom, $f_titre);
 
 echo '
     <hr />

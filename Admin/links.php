@@ -33,12 +33,12 @@ $rupture = 100; //100
  */
 function links()
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $results = sql_query("SELECT * 
                           FROM " . sql_table('links_links'));
@@ -504,12 +504,12 @@ function links()
  */
 function LinksModLink($lid)
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre, $anonymous;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     global $anonymous;
     $result = sql_query("SELECT cid, sid, title, url, description, name, email, hits 
@@ -741,7 +741,7 @@ function LinksModLink($lid)
  */
 function LinksListBrokenLinks()
 {
-    global $hlpfile, $anonymous, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $anonymous, $f_meta_nom, $f_titre;
 
     $resultBrok = sql_query("SELECT requestid, lid, modifysubmitter 
                              FROM " . sql_table('links_modrequest') . " WHERE brokenlink='1' 
@@ -756,7 +756,7 @@ function LinksListBrokenLinks()
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <hr />
@@ -1168,12 +1168,12 @@ function LinksDelLink($lid)
  */
 function LinksModCat($cat)
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $cat = explode('-', $cat);
 
@@ -1502,12 +1502,12 @@ function LinksDelEditorial($linkid)
  */
 function message_error($ibid)
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '<hr />';
     echo $ibid;

@@ -47,12 +47,12 @@ if (!defined('NPDS_GRAB_GLOBALS_INCLUDED')) {
         // Modify the report level of PHP
         Debug::reporting('all');
         
-        error_reporting(-1);
+        // error_reporting(-1);
 
-        ini_set('display_errors', 'Off');
+        // ini_set('display_errors', 'Off');
 
-        // Initialize the Exceptions Handler.
-        ExecptionHandler::initialize();
+        // // Initialize the Exceptions Handler.
+        // ExecptionHandler::initialize();
     }
 
     new NpdsBoot();

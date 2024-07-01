@@ -20,7 +20,10 @@ function filtre_module($strtmp)
 
 if (filtre_module($ModPath) and filtre_module($ModStart)) {
 
-    if (file_exists("modules/$ModPath/$ModStart.php")) {
+    if (file_exists("modules/$ModPath/Controllers/$ModStart.php")) {
+        include("modules/$ModPath/Controllers/$ModStart.php");
+        die();
+    } elseif (file_exists("modules/$ModPath/$ModStart.php")) {
         include("modules/$ModPath/$ModStart.php");
         die();
     } else {

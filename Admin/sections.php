@@ -253,12 +253,12 @@ function droits_publication($secid)
  */
 function sections()
 {
-    global $hlpfile, $aid, $radminsuper, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $aid, $radminsuper, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $result = $radminsuper == 1 
         ? sql_query("SELECT rubid, rubname, enligne, ordre 
@@ -564,12 +564,12 @@ function sections()
  */
 function new_rub_section($type)
 {
-    global $hlpfile, $aid, $radminsuper, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $aid, $radminsuper, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $arg1 = '';
 
@@ -681,7 +681,7 @@ function new_rub_section($type)
  */
 function publishcompat($article)
 {
-    global $hlpfile, $aid, $radminsuper, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $aid, $radminsuper, $f_meta_nom, $f_titre;
 
     $result2 = sql_query("SELECT title 
                           FROM " . sql_table('seccont') . " 
@@ -692,7 +692,7 @@ function publishcompat($article)
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $result = sql_query("SELECT rubid, rubname, enligne, ordre 
                          FROM " . sql_table('rubriques') . " 
@@ -822,7 +822,7 @@ function updatecompat($article, $admin_rub, $idx)
  */
 function rubriquedit($rubid)
 {
-    global $hlpfile, $radminsuper, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $radminsuper, $f_meta_nom, $f_titre;
 
     if ($radminsuper != 1) {
         Header("Location: admin.php?op=sections");
@@ -840,7 +840,7 @@ function rubriquedit($rubid)
 
     include("header.php");
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);   
+    adminhead($f_meta_nom, $f_titre);   
 
     $result2 = sql_query("SELECT secid 
                           FROM " . sql_table('sections') . " 
@@ -1003,12 +1003,12 @@ function rubriquechange($rubid, $rubname, $introc, $enligne)
  */
 function sectionedit($secid)
 {
-    global $hlpfile, $radminsuper, $f_meta_nom, $f_titre, $adminimg, $aid;
+    global $hlpfile, $radminsuper, $f_meta_nom, $f_titre, $aid;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $result = sql_query("SELECT secid, secname, image, userlevel, rubid, intro 
                          FROM " . sql_table('sections') . " 
@@ -1234,7 +1234,7 @@ function sectionchange($secid, $secname, $image, $members, $Mmembers, $rubref, $
  */
 function secartedit($artid)
 {
-    global $radminsuper, $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     $result2 = sql_query("SELECT author, artid, secid, title, content, userlevel 
                           FROM " . sql_table('seccont') . " 
@@ -1249,7 +1249,7 @@ function secartedit($artid)
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $title = stripslashes($title);
     $content = stripslashes(DataImage::dataimagetofileurl($content, 'cache/s'));
@@ -1334,7 +1334,7 @@ function secartedit($artid)
  */
 function secartupdate($artid)
 {
-    global $hlpfile, $aid, $radminsuper, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $aid, $radminsuper, $f_meta_nom, $f_titre;
 
     $result = sql_query("SELECT author, artid, secid, title, content, userlevel 
                          FROM " . sql_table('seccont_tempo') . " 
@@ -1396,7 +1396,7 @@ function secartupdate($artid)
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <hr />
@@ -1691,7 +1691,7 @@ function rubriquedelete($rubid, $ok = 0)
         include("header.php");
 
         GraphicAdmin($hlpfile);
-        adminhead($f_meta_nom, $f_titre, $adminimg);
+        adminhead($f_meta_nom, $f_titre);
 
         $result = sql_query("SELECT rubname 
                              FROM " . sql_table('rubriques') . " 
@@ -1760,7 +1760,7 @@ function sectiondelete($secid, $ok = 0)
         include("header.php");
 
         GraphicAdmin($hlpfile);
-        adminhead($f_meta_nom, $f_titre, $adminimg);
+        adminhead($f_meta_nom, $f_titre);
 
         $result = sql_query("SELECT secname 
                              FROM " . sql_table('sections') . " 
@@ -1836,7 +1836,7 @@ function secartdelete($artid, $ok = 0)
         include('header.php');
 
         GraphicAdmin($hlpfile);
-        adminhead($f_meta_nom, $f_titre, $adminimg);
+        adminhead($f_meta_nom, $f_titre);
 
         $result = sql_query("SELECT title 
                              FROM " . sql_table('seccont') . " 
@@ -1881,7 +1881,7 @@ function secartdelete2($artid, $ok = 0)
         include('header.php');
 
         GraphicAdmin($hlpfile);
-        adminhead($f_meta_nom, $f_titre, $adminimg);
+        adminhead($f_meta_nom, $f_titre);
 
         $result = sql_query("SELECT title 
                              FROM " . sql_table('seccont_tempo') . " 
@@ -1910,7 +1910,7 @@ function secartdelete2($artid, $ok = 0)
  */
 function ordremodule()
 {
-    global $hlpfile, $radminsuper, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $radminsuper, $f_meta_nom, $f_titre;
 
     if ($radminsuper <> 1) {
         Header("Location: admin.php?op=sections");
@@ -1919,7 +1919,7 @@ function ordremodule()
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     /////////data-toggle="table" data-striped="true" data-search="true" data-show-toggle="true" data-mobile-responsive="true" data-icons-prefix="fa" data-icons="icons"
     
@@ -1992,7 +1992,7 @@ function ordremodule()
  */
 function ordrechapitre()
 {
-    global $rubname, $rubid, $hlpfile, $radminsuper, $f_meta_nom, $f_titre, $adminimg;
+    global $rubname, $rubid, $hlpfile, $radminsuper, $f_meta_nom, $f_titre;
 
     if ($radminsuper <> 1) {
         Header("Location: admin.php?op=sections");
@@ -2001,7 +2001,7 @@ function ordrechapitre()
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <hr />
@@ -2087,7 +2087,7 @@ function ordrecours()
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $result = sql_query("SELECT secname 
                          FROM " . sql_table('sections') . " 
@@ -2231,7 +2231,7 @@ function updateordre($rubid, $artid, $secid, $op, $ordre)
  */
 function publishrights($author)
 {
-    global $hlpfile, $radminsuper, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $radminsuper, $f_meta_nom, $f_titre;
 
     if ($radminsuper != 1) {
         Header("Location: admin.php?op=sections");
@@ -2240,7 +2240,7 @@ function publishrights($author)
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <hr />

@@ -25,14 +25,14 @@ admindroits($aid, $f_meta_nom);
  */
 function MetaTagAdmin(bool $meta_saved = false)
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     $tags = GetMetaTags("meta/meta.php");
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $sel = ' selected="selected"';
 

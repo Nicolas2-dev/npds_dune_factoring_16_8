@@ -25,12 +25,12 @@ $hlpfile = "manuels/$language/banners.html";
  */
 function BannersAdmin()
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <hr />
@@ -400,7 +400,7 @@ function BannerFinishDelete($bid)
  */
 function BannerDelete($bid, $ok = 0)
 {
-    global $f_meta_nom, $f_titre, $adminimg;
+    global $f_meta_nom, $f_titre;
 
     if ($ok == 1) {
         sql_query("DELETE 
@@ -414,7 +414,7 @@ function BannerDelete($bid, $ok = 0)
         include("header.php");
 
         GraphicAdmin($hlpfile);
-        adminhead($f_meta_nom, $f_titre, $adminimg);
+        adminhead($f_meta_nom, $f_titre);
 
         $result = sql_query("SELECT cid, imptotal, impmade, clicks, imageurl, clickurl 
                              FROM " . sql_table('banner') . " 
@@ -483,12 +483,12 @@ function BannerDelete($bid, $ok = 0)
  */
 function BannerEdit($bid)
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $result = sql_query("SELECT cid, imptotal, impmade, clicks, imageurl, clickurl, userlevel 
                          FROM " . sql_table('banner') . " 
@@ -607,7 +607,7 @@ function BannerChange($bid, $cid, $imptotal, $impadded, $imageurl, $clickurl, $u
  */
 function BannerClientDelete($cid, $ok = 0)
 {
-    global $sitename, $f_meta_nom, $f_titre, $adminimg;
+    global $sitename, $f_meta_nom, $f_titre;
 
     if ($ok == 1) {
         sql_query("DELETE 
@@ -623,7 +623,7 @@ function BannerClientDelete($cid, $ok = 0)
         include("header.php");
 
         GraphicAdmin($hlpfile);
-        adminhead($f_meta_nom, $f_titre, $adminimg);
+        adminhead($f_meta_nom, $f_titre);
 
         $result = sql_query("SELECT cid, name 
                              FROM " . sql_table('bannerclient') . " 
@@ -671,12 +671,12 @@ function BannerClientDelete($cid, $ok = 0)
  */
 function BannerClientEdit($cid)
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $result = sql_query("SELECT name, contact, email, login, passwd, extrainfo 
                          FROM " . sql_table('bannerclient') . " 

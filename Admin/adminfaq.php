@@ -29,12 +29,12 @@ $hlpfile = "manuels/$language/faqs.html";
  */
 function FaqAdmin()
 {
-    global $hlpfile, $admf_ext, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <hr />
@@ -100,12 +100,12 @@ function FaqAdmin()
  */
 function FaqCatGo($id_cat)
 {
-    global $hlpfile, $admf_ext, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $lst_qr = '';
 
@@ -200,12 +200,12 @@ function FaqCatGo($id_cat)
  */
 function FaqCatEdit($id_cat)
 {
-    global $hlpfile, $admf_ext, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $result = sql_query("SELECT categories 
                          FROM " . sql_table('faqcategories') . " 
@@ -254,12 +254,12 @@ function FaqCatEdit($id_cat)
  */
 function FaqCatGoEdit($id)
 {
-    global $hlpfile, $local_user_language, $admf_ext, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $local_user_language, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $result = sql_query("SELECT fa.question, fa.answer, fa.id_cat, fc.categories 
                          FROM " . sql_table('faqanswer') . " fa 
@@ -435,7 +435,7 @@ function FaqCatDel($id_cat, $ok = 0)
         include("header.php");
 
         GraphicAdmin($hlpfile);
-        adminhead($f_meta_nom, $f_titre, $adminimg);
+        adminhead($f_meta_nom, $f_titre);
 
         echo '
         <hr />
@@ -470,7 +470,7 @@ function FaqCatGoDel($id, $ok = 0)
         include("header.php");
 
         GraphicAdmin($hlpfile);
-        adminhead($f_meta_nom, $f_titre, $adminimg);
+        adminhead($f_meta_nom, $f_titre);
 
         echo '
         <hr />

@@ -82,7 +82,6 @@ function makerblock($title, $content, $members, $Mmember, $Rindex, $Scache, $BRa
  */
 function changerblock($id, $title, $content, $members, $Mmember, $Rindex, $Scache, $Sactif, $BRaide, $css)
 {
-
     if (is_array($Mmember) and ($members == 1)) {
         $members = implode(',', $Mmember);
 
@@ -132,7 +131,6 @@ function changerblock($id, $title, $content, $members, $Mmember, $Rindex, $Scach
  */
 function changegaucherblock($id, $title, $content, $members, $Mmember, $Rindex, $Scache, $Sactif, $BRaide, $css)
 {
-
     if (is_array($Mmember) and ($members == 1)) {
         $members = implode(',', $Mmember);
 

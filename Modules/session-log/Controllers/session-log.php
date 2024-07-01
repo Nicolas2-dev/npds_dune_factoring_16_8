@@ -36,13 +36,13 @@ $FileSecure = $DOCUMENTROOT . $racine . '/slogs/security.log';
 $FileUpload = $DOCUMENTROOT . $rep_log;
 $RepTempFil = $DOCUMENT_ROOT . $rep_cache;
 
-include("modules/$ModPath/lang/session-log-$language.php");
+include("modules/$ModPath/language/session-log-$language.php");
 
 $ThisFile = "admin.php?op=Extend-Admin-SubModule&amp;ModPath=" . $ModPath . "&amp;ModStart=" . $ModStart;
 
 $f_titre = SessionLog_translate("Gestion des Logs");
 
-// settype($subop, 'string');
+settype($subop, 'string');
 
 /**
  * [action_log description]
@@ -72,7 +72,7 @@ function action_log($ThisFile, $logtype)
 }
 
 GraphicAdmin($hlpfile);
-adminhead($f_meta_nom, $f_titre, $adminimg);
+adminhead($f_meta_nom, $f_titre);
 
 $cl_a_ses = $subop == "session" ? 'active' : '';
 $cl_a_sec = $subop == "security" ? 'active' : '';
@@ -127,7 +127,7 @@ if ($subop == 'session') {
             <tr>
                <td class="small">' . $username . '</td>
                <td class="small">' . urldecode($host_addr) . ' <br /><a href="' . $ThisFile . '&amp;subop=banthisip&amp;iptoban=' . urldecode($host_addr) . '" data-bs-toggle="tooltip" data-bs-placement="right" title="' . SessionLog_translate("Déconnecter et bannir cette adresse IP !") . '"><i class="fas fa-ban text-danger"></i></a></td>
-               <td class="small">' . gethostbyaddr($host_addr) . '</td>
+               <td class="small">' . gethostbyaddr(urldecode($host_addr)) . '</td>
                <td class="small">' . $uri . '</td>
                <td class="small">' . $agent . '</td>
            </tr>';
@@ -144,7 +144,7 @@ if ($subop == 'info') {
         <br />
         <h3>' . SessionLog_translate("Informations sur l'IP") . '</h3>';
 
-    $hostname = gethostbyaddr($theip);
+    $hostname = gethostbyaddr(urldecode($theip));
 
     // settype($provider, 'string');
 

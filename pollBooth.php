@@ -62,7 +62,7 @@ function pollCollector($pollID, $voteID, $forwarder)
             $ip = Request::getip();
 
             if ($dns_verif) {
-                $hostname = "OR al_hostname='" . @gethostbyaddr($ip) . "' ";
+                $hostname = "OR al_hostname='" . @gethostbyaddr(urldecode($ip)) . "' ";
             } else {
                 $hostname = "";
             }
@@ -81,7 +81,7 @@ function pollCollector($pollID, $voteID, $forwarder)
         if ($voteValid == "1") {
             $ip = Request::getip();
 
-            $hostname = $dns_verif ? @gethostbyaddr($ip) : '';
+            $hostname = $dns_verif ? @gethostbyaddr(urldecode($ip)) : '';
             
             sql_query("INSERT INTO " . sql_table('appli_log') . " (al_id, al_name, al_subid, al_date, al_uid, al_data, al_ip, al_hostname) 
                        VALUES ('$al_id', '$al_nom', '$pollID', now(), '$cookie[0]', '$voteID', '$ip', '$hostname')");

@@ -29,12 +29,12 @@ $hlpfile = "manuels/$language/email_user.html";
  */
 function email_user()
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include('header.php');
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
         <hr />
@@ -171,7 +171,7 @@ function email_user()
  */
 function send_email_to_user($username, $subject, $message, $all, $groupe, $expediteur)
 {
-    global $f_meta_nom, $f_titre, $adminimg;
+    global $f_meta_nom, $f_titre;
 
     if ($subject != '') {
         if ($expediteur == 1) {
@@ -277,7 +277,7 @@ function send_email_to_user($username, $subject, $message, $all, $groupe, $exped
     include('header.php');
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <hr />';

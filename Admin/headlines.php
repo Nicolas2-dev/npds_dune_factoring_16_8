@@ -24,12 +24,12 @@ $hlpfile = "manuels/$language/headlines.html";
  */
 function HeadlinesAdmin()
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <hr />
@@ -124,12 +124,12 @@ function HeadlinesAdmin()
  */
 function HeadlinesEdit($hid)
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $result = sql_query("SELECT sitename, url, headlinesurl, status 
                          FROM " . sql_table('headlines') . " 
@@ -246,7 +246,7 @@ function HeadlinesAdd($xsitename, $url, $headlinesurl, $status)
  */
 function HeadlinesDel($hid, $ok = 0)
 {
-    global $f_meta_nom, $f_titre, $adminimg;
+    global $f_meta_nom, $f_titre;
 
     if ($ok == 1) {
         sql_query("DELETE 
@@ -260,7 +260,7 @@ function HeadlinesDel($hid, $ok = 0)
         include("header.php");
 
         GraphicAdmin($hlpfile);
-        adminhead($f_meta_nom, $f_titre, $adminimg);
+        adminhead($f_meta_nom, $f_titre);
 
         echo '
         <hr />

@@ -472,7 +472,7 @@ class Theme implements ThemeInterface
                 }
             }
 
-            // settype($ch_lat, 'string');
+            settype($ch_lat, 'string');
 
             $useroutils = '';
 

@@ -141,18 +141,18 @@ function droits($member)
  */
 function DownloadAdmin()
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $resultX = sql_query("SELECT DISTINCT dcategory 
                           FROM " . sql_table('downloads') . " 
                           ORDER BY dcategory");
 
-    $num_row = sql_num_rows($resultX);
+    //$num_row = sql_num_rows($resultX); // not used
 
     echo '
     <hr />
@@ -364,12 +364,12 @@ function DownloadAdmin()
  */
 function DownloadEdit($did)
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $result = sql_query("SELECT did, dcounter, durl, dfilename, dfilesize, ddate, dweb, duser, dver, dcategory, ddescription, perms 
                          FROM " . sql_table('downloads') . " 
@@ -602,7 +602,7 @@ function DownloadDel($did, $ok = 0)
         include("header.php");
 
         GraphicAdmin($hlpfile);
-        adminhead($f_meta_nom, $f_titre, $adminimg);
+        adminhead($f_meta_nom, $f_titre);
 
         echo ' 
         <div class="alert alert-danger">

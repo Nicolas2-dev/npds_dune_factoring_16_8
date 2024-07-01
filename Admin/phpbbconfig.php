@@ -25,12 +25,12 @@ $hlpfile = "manuels/$language/forumconfig.html";
  */
 function ForumConfigAdmin()
 {
-    global $hlpfile, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $result = sql_query("SELECT * 
                          FROM " . sql_table('config'));

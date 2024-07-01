@@ -111,7 +111,7 @@ if (isset($submitS)) {
     // Either valid user/pass, or valid session. continue with post.
     if ($stop != 1) {
         $poster_ip =  Request::getip();
-        $hostname = $dns_verif ? @gethostbyaddr($poster_ip) : $poster_ip;
+        $hostname = $dns_verif ? @gethostbyaddr(urldecode($poster_ip)) : $poster_ip;
 
         // anti flood
         Spam::anti_flood($Mmod, $anti_flood, $poster_ip, $userdata, $gmt);

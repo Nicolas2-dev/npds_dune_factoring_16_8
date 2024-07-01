@@ -35,7 +35,7 @@ xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
 
 <url>
 <loc>http://npds-jpb.local/viewforum.php?forum=1</loc>
-<lastmod>2024-06-28</lastmod>
+<lastmod>2024-07-01</lastmod>
 <changefreq>hourly</changefreq>
 <priority>0.9</priority>
 </url>
@@ -49,7 +49,7 @@ xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
 
 <url>
 <loc>http://npds-jpb.local/viewforum.php?forum=2</loc>
-<lastmod>2024-06-28</lastmod>
+<lastmod>2024-07-01</lastmod>
 <changefreq>hourly</changefreq>
 <priority>0.9</priority>
 </url>
@@ -63,35 +63,35 @@ xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
 
 <url>
 <loc>http://npds-jpb.local/sections.php</loc>
-<lastmod>2024-06-28</lastmod>
+<lastmod>2024-07-01</lastmod>
 <changefreq>weekly</changefreq>
 <priority>0.8</priority>
 </url>
 
 <url>
 <loc>http://npds-jpb.local/download.php</loc>
-<lastmod>2024-06-28</lastmod>
+<lastmod>2024-07-01</lastmod>
 <changefreq>weekly</changefreq>
 <priority>0.8</priority>
 </url>
 
 <url>
 <loc>http://npds-jpb.local/index.php</loc>
-<lastmod>2024-06-28</lastmod>
+<lastmod>2024-07-01</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.8</priority>
 </url>
 
 <url>
 <loc>http://npds-jpb.local/top.php</loc>
-<lastmod>2024-06-28</lastmod>
+<lastmod>2024-07-01</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://npds-jpb.local/stats.php</loc>
-<lastmod>2024-06-28</lastmod>
+<lastmod>2024-07-01</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>

@@ -58,7 +58,7 @@ function upConfigure($ModPath, $ModStart, $f_meta_nom, $f_titre, $adminimg)
     include("modules/upload/Config/upload.conf.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo (isset($subop) and $subop == 'uploadSave') 
         ? '<div class="alert alert-success alert-dismissible fade show" role="alert">

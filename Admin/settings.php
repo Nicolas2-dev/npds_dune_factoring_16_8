@@ -21,13 +21,13 @@ $hlpfile = "manuels/$language/config.html";
 
 function Configure()
 {
-    global $hlpfile, $filemanager, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $filemanager, $f_meta_nom, $f_titre;
 
-    include("config.php");
+    include("Config/Deprecated/config.php");
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <hr />

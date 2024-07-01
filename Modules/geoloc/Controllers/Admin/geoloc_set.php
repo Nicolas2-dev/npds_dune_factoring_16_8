@@ -45,7 +45,7 @@ function Configuregeoloc($subop, $ModPath, $ModStart, $ch_lat, $ch_lon, $cartyp,
     }
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
     $fonts_svg = array(
         ['user', 'uf007', 'Utilisateur'],
         ['userCircle', 'uf2bd', 'Utilisateur en cercle'],

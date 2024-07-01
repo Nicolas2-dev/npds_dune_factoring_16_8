@@ -19,18 +19,18 @@ admindroits($aid, $f_meta_nom);
 global $adminimg;
 
 //en attente implémentation pour notice php généré
-// settype($tbox_width, 'integer');
-// settype($tbox_height, 'integer');
-// settype($class_sty_2, 'string');
-// settype($class_sty_1, 'integer');
-// settype($npds_twi_post, 'integer');
-// //
-// settype($npds_twi_urshort, 'integer');
-// settype($npds_twi_arti, 'integer');
-// settype($consumer_key, 'string');
-// settype($consumer_secret, 'string');
-// settype($oauth_token_secret, 'string');
-// settype($oauth_token, 'string');
+settype($tbox_width, 'integer');
+settype($tbox_height, 'integer');
+settype($class_sty_2, 'string');
+settype($class_sty_1, 'integer');
+settype($npds_twi_post, 'integer');
+//
+settype($npds_twi_urshort, 'integer');
+settype($npds_twi_arti, 'integer');
+settype($consumer_key, 'string');
+settype($consumer_secret, 'string');
+settype($oauth_token_secret, 'string');
+settype($oauth_token, 'string');
 
 
 /**
@@ -103,7 +103,7 @@ function Configuretwi($subop, $ModPath, $ModStart, $class_sty_2, $npds_twi_arti,
     // settype($tbox_height, 'integer');
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '<hr />';
 
@@ -357,7 +357,7 @@ function SaveSettwi($npds_twi_arti, $npds_twi_urshort, $npds_twi_post, $consumer
 
 if ($admin) {
 
-    // settype($subop, 'string');
+    settype($subop, 'string');
 
     switch ($subop) {
         case "SaveSettwi":

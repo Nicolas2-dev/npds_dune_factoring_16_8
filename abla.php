@@ -33,7 +33,7 @@ if ($admin) {
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     global $startdate;
     list($membres, $totala, $totalb, $totalc, $totald, $totalz) = Stat::req_stat();
@@ -361,7 +361,7 @@ if ($admin) {
     fwrite($file, $xfile);
     fclose($file);
 
-    Css::Cssadminfoot('', '', '', '');
+    Css::adminfoot('', '', '', '');
 } else {
     Url::redirect_url("index.php");
 }

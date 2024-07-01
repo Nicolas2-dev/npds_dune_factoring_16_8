@@ -2,6 +2,7 @@
 
 use Npds\Support\Facades\Css;
 use Npds\Support\Facades\Language;
+use Npds\Support\Facades\Metalang;
 
 
 if (!function_exists('admindroits')) {
@@ -143,6 +144,10 @@ function list_type_meta($type_meta)
     return $list;
 }
 
+function MM_img($ibid) {
+    return Metalang::MM_img($ibid);
+}
+
 /**
  * [List_Meta_Lang description]
  *
@@ -173,7 +178,7 @@ function List_Meta_Lang()
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     $tablmeta = '';
     $tablmeta_c = '';
@@ -259,7 +264,7 @@ function List_Meta_Lang()
  */
 function Edit_Meta_Lang()
 {
-    global $hlpfile, $ml, $local_user_language, $language, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $ml, $local_user_language, $f_meta_nom, $f_titre;
 
     $Q = sql_query("SELECT def, content, type_meta, type_uri, uri, description, obligatoire 
                     FROM " . sql_table('metalang') . " 
@@ -272,7 +277,7 @@ function Edit_Meta_Lang()
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '<hr />';
 
@@ -417,12 +422,12 @@ function Edit_Meta_Lang()
  */
 function Creat_Meta_Lang()
 {
-    global $hlpfile, $type_meta, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $type_meta, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <hr />
@@ -553,12 +558,12 @@ function kill_Meta_Lang($nbr, $action)
  */
 function meta_exist($def)
 {
-    global $hlpfile, $language, $f_meta_nom, $f_titre, $adminimg;
+    global $hlpfile, $f_meta_nom, $f_titre;
 
     include("header.php");
 
     GraphicAdmin($hlpfile);
-    adminhead($f_meta_nom, $f_titre, $adminimg);
+    adminhead($f_meta_nom, $f_titre);
 
     echo '
     <hr />
