@@ -14,7 +14,6 @@ if (!function_exists('admindroits')) {
 
 class AdminBlockController extends Controller
 {
-
     /**
      * [$f_meta_nom description]
      *
@@ -131,14 +130,15 @@ class AdminBlockController extends Controller
 
 }
 
-
 switch (Request::input('op')) {
 
     case 'ablock':
+        //ablock();
         controllerSart(AdminBlockController::class, 'ablock');
         break;
 
     case 'changeablock':
+        //changeablock($title, $content);
         controllerSart(AdminBlockController::class, 'changeablock');
         break;
 }
