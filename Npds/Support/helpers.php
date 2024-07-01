@@ -1,9 +1,20 @@
 <?php
 
+
 use Npds\Config\Config;
 use Npds\Support\Facades\Log;
 use Npds\Support\Facades\Pollbooth;
 
+function controllerSart($controller, $method, $parameters = [])
+{
+    if (! method_exists($instance = new $controller(), $method)) {
+        throw new LogicException("Controller [$controller] has no method [$method].");
+    }
+
+    $parameters = [];
+
+    return $instance->callAction($method, $parameters, $parameters);
+}
 
 /**
  * [config description]

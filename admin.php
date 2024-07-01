@@ -42,13 +42,14 @@ function admindroits($aid, $f_meta_nom)
 
 function adminhead($f_meta_nom, $f_titre)
 {
-    global $admf_ext, $f_meta_nom, $ModPath, $adm_img_mod;
+    global $ModPath, $adm_img_mod;
 
     list($furlscript, $ficone) = sql_fetch_row(sql_query("SELECT furlscript, ficone 
                                                           FROM " . sql_table('fonctions') . " 
                                                           WHERE fnom='$f_meta_nom'"));
 
     $adminimg = Config::get('admin.options.adminimg');  
+    $admf_ext = Config::get('admin.options.admf_ext');  
 
     if (file_exists($adminimg . $ficone . '.' . $admf_ext)) {
         $img_adm = '<img src="' . $adminimg . $ficone . '.' . $admf_ext . '" class="me-2" alt="' . $f_titre . '" loading="lazy" />';

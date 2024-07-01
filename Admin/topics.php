@@ -39,7 +39,7 @@ function topicsmanager()
                          FROM " . sql_table('topics') . " 
                          ORDER BY topicname");
 
-    // settype($topicadmin, 'string');
+    settype($topicadmin, 'string');
     
     if (sql_num_rows($result) > 0) {
         echo '
@@ -184,7 +184,7 @@ function topicsmanager()
     inpandfieldlen("topicimage",20);
     inpandfieldlen("topicadmin",255);
     ';
-    echo Js::auto_complete_multi('admin', 'aid', 'authors', 'topicadmin', '');
+    echo Js::autoCompleteMulti('admin', 'aid', 'authors', 'topicadmin', '');
 
     sql_free_result($result);
 
@@ -371,7 +371,7 @@ function topicedit($topicid)
     inpandfieldlen("url",320);
     ';
 
-    echo Js::auto_complete_multi('admin', 'aid', 'authors', 'topicadmin', '');
+    echo Js::autoComplete_multi('admin', 'aid', 'authors', 'topicadmin', '');
 
     Css::adminfoot('fv', $fv_parametres, $arg1, '');
 }

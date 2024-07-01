@@ -1,6 +1,8 @@
 <?php
 
+
 use Npds\Config\Config;
+use Npds\Routing\Controller;
 use Npds\Support\Facades\News;
 use Npds\Support\Facades\User;
 use Npds\Cache\SuperCacheEmpty;
@@ -13,97 +15,102 @@ if (!function_exists("Mysql_Connexion")) {
     include("Bootstrap/Boot.php");
 }
 
-/**
- * Redirect for default Start Page of the portal - look at Admin Preferences for choice
- *
- * @return  [type]  [return description]
- */
-function select_start_page()
+class StartPageController extends Controller
 {
-    global $index;
 
-    if (!User::AutoReg()) {
-        global $user;
-        unset($user);
-    }
-
-    $op = Request::input('op');
-
-    $start_page = Config::get('npds.start_page');
-
-    if (($start_page == '') 
-    or ($op == "index.php") 
-    or ($op == "edito") 
-    or ($op == "edito-nonews")) 
+    /**
+     * Redirect for default Start Page of the portal - look at Admin Preferences for choice
+     *
+     * @return  [type]  [return description]
+     */
+    protected function select_start_page()
     {
-        $index = 1;
+        global $index;
 
-        index();
-        die('');
-    } else {
-        Header("Location: $start_page");
-    }
-}
+        if (!User::AutoReg()) {
+            global $user;
+            unset($user);
+        }
 
-/**
- * [index description]
- *
- * @return  [type]  [return description]
- */
-function index()
-{
-    include("header.php");
+        $op = Request::input('op');
 
-    // Include cache manager
-    $SuperCache = Config::get('cache.super_cache');
+        $start_page = Config::get('npds.start_page');
 
-    if ($SuperCache) {
-        $cache_obj = new SuperCacheManager();
-        $cache_obj->startCachingPage();
-    } else {
-        $cache_obj = new SuperCacheEmpty();
-    }
-
-    if (($cache_obj->genereting_output == 1) or ($cache_obj->genereting_output == -1) or (!$SuperCache)) {
-        // Appel de la publication de News et la purge automatique
-        News::automatednews();
-
-        $op         = Request::input('op');
-        $catid      = Request::query('catid');
-        $marqeur    = Request::query('marqeur');
-
-        global $theme;
-        if (($op == 'newcategory') 
-        or ($op == 'newtopic') 
-        or ($op == 'newindex') 
-        or ($op == 'edito-newindex')) 
+        if (($start_page == '') 
+        or ($op == "index.php") 
+        or ($op == "edito") 
+        or ($op == "edito-nonews")) 
         {
-            //
-            News::aff_news($op, $catid, $marqeur);
-        } else {
-            if (file_exists("Themes/$theme/central.php")) {
-                include("Themes/$theme/central.php");
-            } else {
-                if (($op == 'edito') 
-                or ($op == 'edito-nonews')) 
-                {
-                    //
-                    Edito::affEdito();
-                }
+            $index = 1;
 
-                if ($op != 'edito-nonews') {
-                    //
-                    News::aff_news($op, $catid, $marqeur);
-                }
-            }
+            $this->index();
+            die('');
+        } else {
+            Header("Location: $start_page");
         }
     }
 
-    if ($SuperCache) {
-        $cache_obj->endCachingPage();
+    /**
+     * [index description]
+     *
+     * @return  [type]  [return description]
+     */
+    protected function index()
+    {
+        include("header.php");
+
+        // Include cache manager
+        $SuperCache = Config::get('cache.super_cache');
+
+        if ($SuperCache) {
+            $cache_obj = new SuperCacheManager();
+            $cache_obj->startCachingPage();
+        } else {
+            $cache_obj = new SuperCacheEmpty();
+        }
+
+        if (($cache_obj->genereting_output == 1) or ($cache_obj->genereting_output == -1) or (!$SuperCache)) {
+            // Appel de la publication de News et la purge automatique
+            News::automatednews();
+
+            $op         = Request::input('op');
+            $catid      = Request::query('catid');
+            $marqeur    = Request::query('marqeur');
+
+            global $theme;
+            if (($op == 'newcategory') 
+            or ($op == 'newtopic') 
+            or ($op == 'newindex') 
+            or ($op == 'edito-newindex')) 
+            {
+                //
+                News::aff_news($op, $catid, $marqeur);
+            } else {
+                if (file_exists("Themes/$theme/central.php")) {
+                    include("Themes/$theme/central.php");
+                } else {
+                    if (($op == 'edito') 
+                    or ($op == 'edito-nonews')) 
+                    {
+                        //
+                        Edito::affEdito();
+                    }
+
+                    if ($op != 'edito-nonews') {
+                        //
+                        News::aff_news($op, $catid, $marqeur);
+                    }
+                }
+            }
+        }
+
+        if ($SuperCache) {
+            $cache_obj->endCachingPage();
+        }
+
+        include("footer.php");
     }
 
-    include("footer.php");
 }
 
 switch (Request::input('op')) 
@@ -111,14 +118,14 @@ switch (Request::input('op'))
     case 'newindex':
     case 'edito-newindex':
     case 'newcategory':
-        index();
+        controllerSart(StartPageController::class, 'index'); 
         break;
 
     case 'newtopic':
-        index();
+        controllerSart(StartPageController::class, 'index');        
         break;
 
     default:
-        select_start_page();
+        controllerSart(StartPageController::class, 'select_start_page');
         break;
 }

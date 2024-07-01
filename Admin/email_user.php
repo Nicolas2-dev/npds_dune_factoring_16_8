@@ -152,7 +152,7 @@ function email_user()
     inpandfieldlen("subject",100);
     ';
 
-    echo Js::auto_complete('membre', 'uname', 'users', 'username', '86400');
+    echo Js::autoComplete('membre', 'uname', 'users', 'username', '86400');
 
     Css::adminfoot('fv', '', $arg1, '');
 }

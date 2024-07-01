@@ -98,7 +98,7 @@ function puthome($ihome)
 
     $tmp_groupe = '';
 
-    // settype($Mmembers, 'integer');
+    settype($Mmembers, 'integer');
 
     foreach ($mX as $groupe_id => $groupe_name) {
         if ($groupe_id == '0') {
@@ -1660,16 +1660,16 @@ function adminStory()
     GraphicAdmin($hlpfile);
     adminhead($f_meta_nom, $f_titre);
 
-    // settype($hometext, 'string');
-    // settype($bodytext, 'string');
-    // settype($dd_pub, 'string');
-    // settype($fd_pub, 'string');
-    // settype($dh_pub, 'string');
-    // settype($fh_pub, 'string');
-    // settype($epur, 'integer');
-    // settype($ihome, 'integer');
-    // settype($sel, 'string');
-    // settype($topic, 'string');
+    settype($hometext, 'string');
+    settype($bodytext, 'string');
+    settype($dd_pub, 'string');
+    settype($fd_pub, 'string');
+    settype($dh_pub, 'string');
+    settype($fh_pub, 'string');
+    settype($epur, 'integer');
+    settype($ihome, 'integer');
+    settype($sel, 'string');
+    settype($topic, 'string');
 
     echo '
     <hr />
@@ -1818,7 +1818,7 @@ function previewAdminStory($subject, $hometext, $bodytext, $topic, $catid, $ihom
     $hometext = stripslashes(DataImage::dataimagetofileurl($hometext, 'cache/ai'));
     $bodytext = stripslashes(DataImage::dataimagetofileurl($bodytext, 'cache/ac'));
 
-    // settype($sel, 'string');
+    settype($sel, 'string');
 
     if ($topic < 1) {
         $topic = 1;
@@ -2012,7 +2012,7 @@ function previewAdminStory($subject, $hometext, $bodytext, $topic, $catid, $ihom
     Css::adminfoot('fv', $fv_parametres, $arg1, '');
 }
 
-// settype($catid, 'integer');
+settype($catid, 'integer');
 
 switch ($op) {
 
@@ -2053,11 +2053,11 @@ switch ($op) {
         break;
 
     case 'PostStory':
-        // settype($notes, 'string');
-        // settype($date_debval, 'string');
-        // settype($date_finval, 'string');
-        // settype($qid, 'integer');
-        // settype($uid, 'string');
+        settype($notes, 'string');
+        settype($date_debval, 'string');
+        settype($date_finval, 'string');
+        settype($qid, 'integer');
+        settype($uid, 'string');
 
         if (!$date_debval) {
             $date_debval = $dd_pub . ' ' . $dh_pub . ':01';
@@ -2091,12 +2091,12 @@ switch ($op) {
         break;
 
     case 'ChangeStory':
-        // settype($fd_pub, 'string');
-        // settype($fh_pub, 'string');
-        // settype($dd_pub, 'string');
-        // settype($dh_pub, 'string');
-        // settype($Cdate, 'string');
-        // settype($Csid, 'boolean');
+        settype($fd_pub, 'string');
+        settype($fh_pub, 'string');
+        settype($dd_pub, 'string');
+        settype($dh_pub, 'string');
+        settype($Cdate, 'string');
+        settype($Csid, 'boolean');
 
         $date_finval = "$fd_pub $fh_pub:00";
 

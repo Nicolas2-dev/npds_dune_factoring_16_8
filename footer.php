@@ -4,10 +4,10 @@ use Npds\Support\Facades\Theme;
 use Npds\Support\Facades\Editeur;
 
 
-global $tiny_mce;
-if ($tiny_mce){
+global $tiny_mce, $Default_Theme;
+//if ($tiny_mce){
     echo Editeur::fetch('tiny_mce', 'end');
-}
+//}
 
 // include externe file from modules/include for functions, codes ...
 if (file_exists("Themes/default/include/footer_before.inc")) {

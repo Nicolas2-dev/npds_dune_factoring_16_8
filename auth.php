@@ -15,7 +15,7 @@ if ($rowQ1) {
     $upload_table = sql_table($upload_table);
 }
 
-// settype($forum, 'integer');
+settype($forum, 'integer');
 
 if ($allow_upload_forum) {
     $rowQ1 = Q_Select("SELECT attachement 

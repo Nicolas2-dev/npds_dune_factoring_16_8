@@ -1,5 +1,7 @@
 <?php
 
+use Npds\Support\Counter;
+use Npds\Support\Referer;
 use Npds\Support\Facades\Css;
 use Npds\Support\Facades\Hack;
 use Npds\Support\Facades\Editeur;
@@ -81,9 +83,9 @@ function head($tiny_mce_init, $css_pages_ref, $css, $tmp_theme, $skin, $js, $m_d
     ';
 
     // Tiny_mce
-    if ($tiny_mce_init) {
+    //if ($tiny_mce_init) {
         echo Editeur::fetch("tiny_mce", "begin");
-    }
+    //}
 
     // include externe JAVASCRIPT file from modules/include or themes/.../include for functions, codes in the <body onload="..." event...
     $body_onloadH = '
@@ -394,18 +396,9 @@ if (array_key_exists($pages_ref, $PAGES)) {
 
 head($tiny_mce_init, $css_pages_ref, $css, $tmp_theme, $skin, $js, $m_description, $m_keywords);
 
-global $httpref, $nuke_url, $httprefmax, $admin;
-if ($httpref == 1) {
-    $referer = htmlentities(strip_tags(Hack::removeHack(getenv("HTTP_REFERER"))), ENT_QUOTES, cur_charset);
+Referer::update();
 
-    if ($referer != '' and !strstr($referer, "unknown") and !stristr($referer, $_SERVER['SERVER_NAME'])) {
-        sql_query("INSERT 
-                   INTO " . sql_table('referer') . " 
-                   VALUES (NULL, '$referer')");
-    }
-}
-
-include("counter.php");
+Counter::update();
 
 // include externe file from Themes/default/include for functions, codes ...
 if (file_exists("Themes/default/include/header_after.inc")) {
